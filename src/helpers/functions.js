@@ -30,6 +30,11 @@ module.exports.getModelProperties = model => {
       type: sequelizeDatatypes[type] ? sequelizeDatatypes[type] : type
     };
 
+    // Ref option
+    if (modelProps[key].references && modelProps[key].references.model) {
+      property.ref = modelProps[key].references.model;
+    }
+
     if (key === 'id') {
       modelFields.unshift(property);
     } else {
@@ -131,19 +136,20 @@ module.exports.refFields = (item, fieldsToPopulate) => {
 
     if (matchingField) {
       let label = '';
-      if (matchingField.select === '_id') {
-        label = global._.get(item, `${attr}._id`);
+      if (matchingField.attributes.join(' ') === 'id') {
+        label = item.id;
       }
       else {
-        label = matchingField.select.replace(/[a-z._]+/gi, word => {
-          return global._.get(item, `${attr}.${word}`);
+        label = matchingField.attributes.join(' ').replace(/[a-z._]+/gi, word => {
+          return item[attr][word];
         });
       }
 
       if (item[attr]) {
+        console.log('====item[attr]', item[attr])
         item[attr] = {
           type: 'ref',
-          id: item[attr]._id,
+          id: item[attr].id,
           label
         };
       }
@@ -156,26 +162,14 @@ module.exports.refFields = (item, fieldsToPopulate) => {
 };
 
 module.exports.getFieldsToPopulate = (keys, fieldsToFetch, refFields = {}) => {
-  // Build ref fields for the model (for mongoose population purpose)
+  console.log('===!!!!!!!!', keys, fieldsToFetch, refFields)
+  // Build ref fields for the model (for sequelize include purpose)
   const refFieldsForModel = {};
   keys.forEach(prop => {
-    if (prop.type === 'ObjectID' && (prop.ref || prop.refPath)) {
-      if (prop.ref) {
-        const currentRefModelName = prop.ref.toLowerCase();
-        const currentRefModelNamePlural = mongooseLegacyPluralize(currentRefModelName);
-        if (refFields[currentRefModelName] || refFields[currentRefModelNamePlural]) {
-          refFieldsForModel[prop.path] = refFields[currentRefModelName] || refFields[currentRefModelNamePlural];
-        }
-      }
-      else if (prop.refPath) {
-        const refPathField = keys.find(k => k.path === prop.refPath);
-        if (refPathField && refPathField.enum) {
-          const currentRefModelName = refPathField.enum[0].toLowerCase();
-          const currentRefModelNamePlural = mongooseLegacyPluralize(currentRefModelName);
-          if (refFields[currentRefModelName] || refFields[currentRefModelNamePlural]) {
-            refFieldsForModel[prop.path] = refFields[currentRefModelName] || refFields[currentRefModelNamePlural];
-          }
-        }
+    if (prop.ref) {
+      const currentRefModelName = prop.ref.toLowerCase();
+      if (refFields[currentRefModelName]) {
+        refFieldsForModel[prop.path] = refFields[currentRefModelName];
       }
     }
   });
@@ -184,11 +178,16 @@ module.exports.getFieldsToPopulate = (keys, fieldsToFetch, refFields = {}) => {
   let fieldsToPopulate = [];
   fieldsToFetch.forEach(field => {
     const matchingField = keys.find(k => k.path === field);
-    if (matchingField && matchingField.type === 'ObjectID' && (matchingField.ref || matchingField.refPath)) {
-      fieldsToPopulate.push({
-        path: field,
-        select: refFieldsForModel[field] ? refFieldsForModel[field] : '_id'
-      });
+    if (matchingField && matchingField.ref) {
+      const modelObject = global._amConfig.models.find(m => m.slug === matchingField.ref);
+      if (modelObject) {
+        fieldsToPopulate.push({
+          path: field,
+          // as: 'test',
+          model: modelObject.model,
+          attributes: refFieldsForModel[field] ? refFieldsForModel[field].split(' ') : ['id']
+        });
+      }
     }
   });
 

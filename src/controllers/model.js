@@ -137,8 +137,9 @@ module.exports.get = async (req, res) => {
   const fieldsToSearchIn = /*['email', 'firstname', 'lastname'] ||*/ defaultFieldsToSearchIn;
   const sortingFields = { _id: 'desc' };
 
-  // Build ref fields for the model (for mongoose population purpose)
+  // Build ref fields for the model (for sequelize include purpose)
   const fieldsToPopulate = fnHelper.getFieldsToPopulate(keys, fieldsToFetch, refFields);
+  console.log('=====fieldsToPopulate', fieldsToPopulate);
 
   let params = {};
 
@@ -169,9 +170,12 @@ module.exports.get = async (req, res) => {
   }
 
   const data = await currentModel
-    .findAll({ where: params })
+    .findAll({
+      where: params,
+      include: fieldsToPopulate
+    })
     .catch(e => {
-      res.status(403).json({ message: e.message, test: 'lol' });
+      res.status(403).json({ message: e.message });
     });
 
   // const data = await currentModel
@@ -190,12 +194,22 @@ module.exports.get = async (req, res) => {
     return res.status(403).json();
   }
 
+  const formattedData1 = data
+    .map(d => d.toJSON())
+    .map(d => {
+      const userId = d.userId;
+      d.userId = d.user;
+      d.user.id = userId;
+      delete d.user;
+      return d;
+    });
+
   // const dataCount = await currentModel.countDocuments(params);
   const dataCount = await currentModel.count({});
   const nbPage = Math.ceil(dataCount / nbItemPerPage);
 
   // Make ref fields appeared as link in the dashboard
-  const formattedData = data.map(item => {
+  const formattedData = formattedData1.map(item => {
     return fnHelper.refFields(item, fieldsToPopulate);
   });
 
