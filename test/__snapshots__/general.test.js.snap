@@ -78,17 +78,6 @@ Object {
 }
 `;
 
-exports[`Testing GET /api/models/:model/smartactions should return a 200 http response 1`] = `
-Object {
-  "list": Array [
-    Object {
-      "code": "delete",
-      "label": "Delete item",
-    },
-  ],
-}
-`;
-
 exports[`Testing GET /api/models/properties should return a 200 http response 1`] = `
 Object {
   "properties": Array [
@@ -149,11 +138,5 @@ Object {
       "path": "userId",
     },
   ],
-}
-`;
-
-exports[`Testing GET /api/models/smartactions should return a 200 http response 1`] = `
-Object {
-  "list": Array [],
 }
 `;

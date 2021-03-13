@@ -113,67 +113,6 @@ describe('Testing GET /api/models/properties', () => {
   });
 });
 
-// Custom actions
-describe('Testing GET /api/models/smartactions', () => {
-  it('should return a 403 http response', async () => {
-    // Make request
-    const response = await supertest(app)
-      .get(prefix + '/models/smartactions');
-
-    // Check response
-    expect(response.status).toBe(403);
-    expect(response.body.code).toBe('not_authorized');
-  });
-
-  it('should return a 200 http response', async () => {
-    // Make request
-    const response = await supertest(app)
-      .get(prefix + '/models/smartactions')
-      .set('x-access-token', adminToken);
-
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
-  });
-});
-
-// Custom actions
-describe('Testing GET /api/models/:model/smartactions', () => {
-  it('should return a 403 http response', async () => {
-    // Make request
-    const response = await supertest(app)
-      .get(prefix + '/models/users/smartactions');
-
-    // Check response
-    expect(response.status).toBe(403);
-    expect(response.body.code).toBe('not_authorized');
-  });
-
-  it('should return a 403 http response', async () => {
-    // Make request
-    const response = await supertest(app)
-      .get(prefix + '/models/users/smartactions')
-      .set('x-access-token', adminToken)
-      .query({ ids: [], target: '' })
-
-    // Check response
-    expect(response.status).toBe(403);
-    expect(response.body.message).toBe('Invalid request');
-  });
-
-  it('should return a 200 http response', async () => {
-    // Make request
-    const response = await supertest(app)
-      .get(prefix + '/models/users/smartactions')
-      .set('x-access-token', adminToken)
-      .query({ ids: [9], target: 'item' })
-
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
-  });
-});
-
 // After all
 afterAll(done => {
   done();

@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing GET /api/models/segments should return a 200 http response 1`] = `
+Object {
+  "list": Array [],
+}
+`;

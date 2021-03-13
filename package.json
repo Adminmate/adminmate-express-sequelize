@@ -5,7 +5,7 @@
   "author": "Marc Delalonde",
   "scripts": {
     "start": "node ./index",
-    "test": "jest --testTimeout=10000"
+    "test": "jest --testTimeout=10000 --verbose"
   },
   "repository": {
     "type": "git",
