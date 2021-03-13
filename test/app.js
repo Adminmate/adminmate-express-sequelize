@@ -1,8 +1,11 @@
 'use strict';
 
 const express = require('express');
-const plugin = require('../index.js');
 
+// If you want to use the dev version of @adminmate-express-core
+global.AM_DEV_MODE = true;
+
+// Create express app
 const app = express();
 
 app.use(express.json());
@@ -34,6 +37,7 @@ const config = {
   ]
 };
 
+const plugin = require('../index.js');
 app.use('/adminmate', plugin.init(config));
 // app.use('/adminmate/smartactions', require('./server/routes/adminmate_sa'));
 // app.use('/adminmate/custom_api', require('./server/routes/custom_api'));

@@ -14,13 +14,13 @@ const prefix = '/adminmate/api';
 // })
 
 // check_connection
-describe('Testing POST /api/check_connection endpoint', () => {
+describe('Testing POST /api/check_connection', () => {
   it('should return a 403 http response', async () => {
-    // Make POST Request
+    // Make request
     const response = await supertest(app)
       .post(prefix + '/check_connection')
       .send({
-        // title: 'How to write a shot'
+        // data: ''
       });
 
     // Check response
@@ -30,18 +30,30 @@ describe('Testing POST /api/check_connection endpoint', () => {
 });
 
 // login
-describe('Testing POST /api/login endpoint', () => {
+describe('Testing POST /api/login', () => {
   it('should return a 403 http response', async () => {
-    // Make POST Request
+    // Make request
     const response = await supertest(app)
       .post(prefix + '/login')
       .send({
-        title: 'How to write a shot',
-        body: "Access the Edpresso tutorial"
+        // data: ''
       });
 
-    // Compare response with expectations
+    // Check response
     expect(response.status).toBe(403);
     expect(response.body.message).toBe('Invalid request');
+  });
+});
+
+// Models
+describe('Testing GET /api/models', () => {
+  it('should return a 403 http response', async () => {
+    // Make request
+    const response = await supertest(app)
+      .get(prefix + '/models');
+
+    // Check response
+    expect(response.status).toBe(403);
+    expect(response.body.code).toBe('not_authorized');
   });
 });
