@@ -15,7 +15,7 @@ app.use(express.urlencoded({
 
 // Connect to database
 const db = require('./database');
-db.sequelize.sync();
+//db.sequelize.sync();
 
 // Init
 const config = {

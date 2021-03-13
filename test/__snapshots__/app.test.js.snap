@@ -1,77 +1,159 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Testing GET /api/models should return a 200 http response 1`] = `
-Array [
-  Object {
-    "properties": Array [
-      Object {
-        "path": "id",
-        "type": "Number",
-      },
-      Object {
-        "path": "firstname",
-        "type": "String",
-      },
-      Object {
-        "path": "lastname",
-        "type": "String",
-      },
-      Object {
-        "path": "birthdate",
-        "type": "Date",
-      },
-      Object {
-        "path": "rating",
-        "type": "Number",
-      },
-      Object {
-        "path": "createdAt",
-        "type": "Date",
-      },
-      Object {
-        "path": "updatedAt",
-        "type": "Date",
-      },
-    ],
-    "segments": Array [],
-    "slug": "users",
-    "smart_actions": Array [],
-  },
-  Object {
-    "properties": Array [
-      Object {
-        "path": "id",
-        "type": "Number",
-      },
-      Object {
-        "path": "name",
-        "type": "String",
-      },
-      Object {
-        "path": "model",
-        "type": "String",
-      },
-      Object {
-        "path": "year",
-        "type": "Date",
-      },
-      Object {
-        "path": "createdAt",
-        "type": "Date",
-      },
-      Object {
-        "path": "updatedAt",
-        "type": "Date",
-      },
-      Object {
-        "path": "userId",
-        "ref": "users",
-        "type": "Number",
-      },
-    ],
-    "segments": Array [],
-    "slug": "cars",
-    "smart_actions": Array [],
-  },
-]
+Object {
+  "models": Array [
+    Object {
+      "properties": Array [
+        Object {
+          "path": "id",
+          "type": "Number",
+        },
+        Object {
+          "path": "firstname",
+          "type": "String",
+        },
+        Object {
+          "path": "lastname",
+          "type": "String",
+        },
+        Object {
+          "path": "birthdate",
+          "type": "Date",
+        },
+        Object {
+          "path": "rating",
+          "type": "Number",
+        },
+        Object {
+          "path": "createdAt",
+          "type": "Date",
+        },
+        Object {
+          "path": "updatedAt",
+          "type": "Date",
+        },
+      ],
+      "segments": Array [],
+      "slug": "users",
+      "smart_actions": Array [],
+    },
+    Object {
+      "properties": Array [
+        Object {
+          "path": "id",
+          "type": "Number",
+        },
+        Object {
+          "path": "name",
+          "type": "String",
+        },
+        Object {
+          "path": "model",
+          "type": "String",
+        },
+        Object {
+          "path": "year",
+          "type": "Date",
+        },
+        Object {
+          "path": "createdAt",
+          "type": "Date",
+        },
+        Object {
+          "path": "updatedAt",
+          "type": "Date",
+        },
+        Object {
+          "path": "userId",
+          "ref": "users",
+          "type": "Number",
+        },
+      ],
+      "segments": Array [],
+      "slug": "cars",
+      "smart_actions": Array [],
+    },
+  ],
+}
+`;
+
+exports[`Testing GET /api/models/:model/smartactions should return a 200 http response 1`] = `
+Object {
+  "list": Array [
+    Object {
+      "code": "delete",
+      "label": "Delete item",
+    },
+  ],
+}
+`;
+
+exports[`Testing GET /api/models/properties should return a 200 http response 1`] = `
+Object {
+  "properties": Array [
+    Object {
+      "model": "users",
+      "path": "id",
+    },
+    Object {
+      "model": "users",
+      "path": "firstname",
+    },
+    Object {
+      "model": "users",
+      "path": "lastname",
+    },
+    Object {
+      "model": "users",
+      "path": "birthdate",
+    },
+    Object {
+      "model": "users",
+      "path": "rating",
+    },
+    Object {
+      "model": "users",
+      "path": "createdAt",
+    },
+    Object {
+      "model": "users",
+      "path": "updatedAt",
+    },
+    Object {
+      "model": "cars",
+      "path": "id",
+    },
+    Object {
+      "model": "cars",
+      "path": "name",
+    },
+    Object {
+      "model": "cars",
+      "path": "model",
+    },
+    Object {
+      "model": "cars",
+      "path": "year",
+    },
+    Object {
+      "model": "cars",
+      "path": "createdAt",
+    },
+    Object {
+      "model": "cars",
+      "path": "updatedAt",
+    },
+    Object {
+      "model": "cars",
+      "path": "userId",
+    },
+  ],
+}
+`;
+
+exports[`Testing GET /api/models/smartactions should return a 200 http response 1`] = `
+Object {
+  "list": Array [],
+}
 `;
