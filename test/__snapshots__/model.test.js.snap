@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing POST /api/models/:model should return a 200 http response 1`] = `
+Object {
+  "count": 2,
+  "data": Array [
+    Object {
+      "birthdate": "2021-03-13T22:52:16.000Z",
+      "createdAt": "2021-03-13T22:52:16.000Z",
+      "firstname": "John",
+      "id": 22,
+      "lastname": "Doe",
+      "rating": 4,
+      "updatedAt": "2021-03-13T22:52:16.000Z",
+    },
+    Object {
+      "birthdate": "2021-03-13T22:52:16.000Z",
+      "createdAt": "2021-03-13T22:52:16.000Z",
+      "firstname": "Maria",
+      "id": 23,
+      "lastname": "Doe",
+      "rating": 5,
+      "updatedAt": "2021-03-13T22:52:16.000Z",
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;

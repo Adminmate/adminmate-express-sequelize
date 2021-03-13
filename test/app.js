@@ -14,11 +14,10 @@ app.use(express.urlencoded({
 }));
 
 // Connect to database
-const db = require('./database');
-//db.sequelize.sync();
+const db = require('../models/index.js');
 
 // Init
-const config = {
+const amConfig = {
   projectId: '6037b459cbb0f63c219789eb',
   secretKey: '7dn6m0zrcsqta5b57hug52xlira4upqdempch65mwy5guehr33vt0r1s8cyrnmko',
   authKey: 'authkey_secret',
@@ -38,7 +37,7 @@ const config = {
 };
 
 const plugin = require('../index.js');
-app.use('/adminmate', plugin.init(config));
+app.use('/adminmate', plugin.init(amConfig));
 // app.use('/adminmate/smartactions', require('./server/routes/adminmate_sa'));
 // app.use('/adminmate/custom_api', require('./server/routes/custom_api'));
 

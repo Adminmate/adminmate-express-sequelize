@@ -33,9 +33,6 @@ beforeAll(done => {
 // check_connection
 describe('Testing POST /api/check_connection', () => {
   it('should return a 403 http response', async () => {
-    // Add a little delay
-    //await new Promise((r) => setTimeout(r, 5000));
-
     // Make request
     const response = await supertest(app)
       .post(prefix + '/check_connection')
