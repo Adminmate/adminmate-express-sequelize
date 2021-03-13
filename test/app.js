@@ -14,8 +14,8 @@ app.use(express.urlencoded({
 }));
 
 // Connect to database
-// const db = require('./server/database');
-// db.sequelize.sync();
+const db = require('./database');
+db.sequelize.sync();
 
 // Init
 const config = {
@@ -26,12 +26,12 @@ const config = {
   models: [
     {
       slug: 'users',
-      //model: db.users,
+      model: db.users,
       smartActions: []
     },
     {
       slug: 'cars',
-      //model: db.cars,
+      model: db.cars,
       smartActions: []
     }
   ]
