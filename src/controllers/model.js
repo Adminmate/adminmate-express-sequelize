@@ -194,24 +194,24 @@ module.exports.get = async (req, res) => {
     return res.status(403).json();
   }
 
-  const formattedData1 = data
+  const formattedData = data
     .map(d => d.toJSON())
     .map(d => {
-      const userId = d.userId;
-      d.userId = d.user;
-      d.user.id = userId;
-      delete d.user;
+      fieldsToPopulate.forEach(ftp => {
+        const refId = d[ftp.path];
+        d[ftp.path] = { ...d[ftp.as], id: refId };
+        delete d[ftp.as];
+      });
       return d;
+    })
+    // Make ref fields appeared as link in the dashboard
+    .map(item => {
+      return fnHelper.refFields(item, fieldsToPopulate);
     });
 
   // const dataCount = await currentModel.countDocuments(params);
   const dataCount = await currentModel.count({});
   const nbPage = Math.ceil(dataCount / nbItemPerPage);
-
-  // Make ref fields appeared as link in the dashboard
-  const formattedData = formattedData1.map(item => {
-    return fnHelper.refFields(item, fieldsToPopulate);
-  });
 
   res.json({
     data: formattedData,

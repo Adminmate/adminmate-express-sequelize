@@ -34,5 +34,5 @@ const Adminmate = ({ projectId, secretKey, authKey, masterPassword, models, auth
 
 module.exports = {
   init: Adminmate,
-  isAuthorized,
+  isAuthorized
 };
