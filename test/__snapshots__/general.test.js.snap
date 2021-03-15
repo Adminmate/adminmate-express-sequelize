@@ -70,7 +70,12 @@ Object {
           "type": "Number",
         },
       ],
-      "segments": Array [],
+      "segments": Array [
+        Object {
+          "code": "ferrari",
+          "label": "Ferrari",
+        },
+      ],
       "slug": "cars",
       "smart_actions": Array [],
     },

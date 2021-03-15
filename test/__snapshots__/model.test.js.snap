@@ -421,6 +421,68 @@ Object {
 }
 `;
 
+exports[`Testing POST /api/models/cars With a "segment" parameter 1`] = `
+Object {
+  "count": 10,
+  "data": Array [
+    Object {
+      "id": 20,
+      "name": "Ferrari 250 LM",
+      "year": 1964,
+    },
+    Object {
+      "id": 19,
+      "name": "Ferrari 275",
+      "year": 1964,
+    },
+    Object {
+      "id": 17,
+      "name": "Ferrari 250 GT Lusso",
+      "year": 1962,
+    },
+    Object {
+      "id": 16,
+      "name": "Ferrari 250 GTO",
+      "year": 1962,
+    },
+    Object {
+      "id": 15,
+      "name": "Ferrari 250 GT 2+2",
+      "year": 1960,
+    },
+    Object {
+      "id": 14,
+      "name": "Ferrari 250 GT Berlinetta SWB",
+      "year": 1959,
+    },
+    Object {
+      "id": 13,
+      "name": "Ferrari 250 GT Coupé",
+      "year": 1954,
+    },
+    Object {
+      "id": 12,
+      "name": "Ferrari 250 MM",
+      "year": 1952,
+    },
+    Object {
+      "id": 11,
+      "name": "Ferrari 212 Inter",
+      "year": 1951,
+    },
+    Object {
+      "id": 10,
+      "name": "Ferrari 166 MM",
+      "year": 1948,
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
 exports[`Testing POST /api/models/cars With access token 1`] = `
 Object {
   "count": 20,

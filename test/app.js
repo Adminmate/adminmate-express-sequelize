@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const { Op } = require('sequelize');
 
 // If you want to use the dev version of @adminmate-express-core
 global.AM_DEV_MODE = true;
@@ -31,7 +32,16 @@ const amConfig = {
     {
       slug: 'cars',
       model: db.cars,
-      smartActions: []
+      smartActions: [],
+      segments: [
+        {
+          label: 'Ferrari',
+          code: 'ferrari',
+          query: {
+            name: { [Op.like]: '%erra%' }
+          }
+        }
+      ]
     }
   ]
 };
