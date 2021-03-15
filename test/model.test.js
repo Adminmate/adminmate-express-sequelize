@@ -141,6 +141,28 @@ describe('Testing POST /api/models/cars', () => {
     expect(response.status).toBe(200);
     expect(response.body).toMatchSnapshot();
   });
+
+  it.only('With a "filters" parameter', async () => {
+    // Make request
+    const response = await supertest(app)
+      .post(prefix + '/models/cars')
+      .set('x-access-token', adminToken)
+      .send({
+        fields: ['name', 'year'],
+        search: 'Porsche',
+        filters: {
+          operator: 'or',
+          list: [
+            { field: 'year', operator: 'is', value: 1968 },
+            { field: 'year', operator: 'is', value: 1969 }
+          ]
+        }
+      });
+
+    // Check response
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchSnapshot();
+  });
 });
 
 // After all

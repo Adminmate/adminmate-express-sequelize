@@ -1,8 +1,6 @@
-const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const { serializeError } = require('serialize-error');
 const _ = require('lodash');
-
-const Op = Sequelize.Op;
 
 const sequelizeDatatypes = {
   'STRING': 'String',
@@ -88,16 +86,16 @@ module.exports.constructQuery = (criterias, operator = 'and') => {
   criterias.forEach(criteria => {
     let q = {};
     if (criteria.operator === 'is') {
-      q[criteria.field] = { $eq: criteria.value };
+      q[criteria.field] = { [Op.eq]: criteria.value };
     }
     else if (criteria.operator === 'is_not') {
-      q[criteria.field] = { $neq: criteria.value };
+      q[criteria.field] = { [Op.neq]: criteria.value };
     }
     else if (criteria.operator === 'is_true') {
-      q[criteria.field] = { $eq: true };
+      q[criteria.field] = { [Op.eq]: true };
     }
     else if (criteria.operator === 'is_false') {
-      q[criteria.field] = { $eq: false };
+      q[criteria.field] = { [Op.eq]: false };
     }
     else if (criteria.operator === 'is_present') {
       q[criteria.field] = { $exists: true };
@@ -123,7 +121,7 @@ module.exports.constructQuery = (criterias, operator = 'and') => {
     }
     query.push(q);
   });
-  return query.length ? { [`$${operator}`]: query } : {};
+  return query.length ? { [eval(`Op.${operator}`)]: query } : {};
 };
 
 module.exports.refFields = (item, fieldsToPopulate) => {
@@ -207,7 +205,7 @@ const isPositiveInteger = n => {
   return n >>> 0 === parseFloat(n);
 };
 
-module.exports.constructSearch = (search, fieldsToSearchIn, fieldsToPopulate = []) => {
+module.exports.constructSearch = (search, fieldsToSearchIn) => {
   params = { [Op.or]: [] };
 
   fieldsToSearchIn.map(field => {

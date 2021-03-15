@@ -54,7 +54,7 @@ Object {
         },
         Object {
           "path": "year",
-          "type": "Date",
+          "type": "Number",
         },
         Object {
           "path": "createdAt",

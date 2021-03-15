@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     year: {
-      type: Sequelize.DATE
+      type: Sequelize.INTEGER
     }
   }, {
     tableName: 'cars'

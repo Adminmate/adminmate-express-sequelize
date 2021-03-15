@@ -1,4 +1,4 @@
-// const mongoose = require('mongoose');
+const { Op } = require('sequelize');
 const fnHelper = require('../helpers/functions');
 
 module.exports.getModelsProperties = (req, res) => {
@@ -160,16 +160,14 @@ module.exports.get = async (req, res) => {
 
   // If there is a text search query
   if (search) {
-    params = fnHelper.constructSearch(search, fieldsToSearchInSafe, includeConfig);
+    params = fnHelper.constructSearch(search, fieldsToSearchInSafe);
   }
-
-  console.log('===params', params)
 
   // Filters
   if (filters && filters.operator && filters.list && filters.list.length) {
     const filtersQuery = fnHelper.constructQuery(filters.list, filters.operator);
     if (filtersQuery) {
-      params = { $and: [params, filtersQuery] };
+      params = { [Op.and]: [params, filtersQuery] };
     }
   }
 
@@ -179,10 +177,12 @@ module.exports.get = async (req, res) => {
     if (modelSegments) {
       const matchingSegment = modelSegments.find(s => s.code === segment.data);
       if (matchingSegment) {
-        params = { $and: [params, matchingSegment.query] };
+        params = { [Op.and]: [params, matchingSegment.query] };
       }
     }
   }
+
+  console.log('===params', params);
 
   // Fetch data
   const data = await currentModel
