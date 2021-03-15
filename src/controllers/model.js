@@ -182,10 +182,13 @@ module.exports.get = async (req, res) => {
   }
 
   const data = await currentModel
-    .findAll({
+    .findAndCountAll({
       where: params,
       attributes: [...fieldsToFetchSafe, 'id'], // just to be sure id is in
-      include: includeConfig
+      include: includeConfig,
+      // Pagination
+      offset: nbItemPerPage * (page - 1),
+      limit: nbItemPerPage
     })
     .catch(e => {
       console.log('===err', e);
@@ -208,7 +211,7 @@ module.exports.get = async (req, res) => {
     return res.status(403).json();
   }
 
-  const formattedData = data
+  const formattedData = data.rows
     .map(d => d.toJSON())
     .map(d => {
       includeConfig.forEach(ftp => {
@@ -223,8 +226,8 @@ module.exports.get = async (req, res) => {
       return fnHelper.refFields(item, includeConfig);
     });
 
-  // const dataCount = await currentModel.countDocuments(params);
-  const dataCount = await currentModel.count({});
+  // Total result - not taking pagination in account
+  const dataCount = data.count;
   const nbPage = Math.ceil(dataCount / nbItemPerPage);
 
   res.json({

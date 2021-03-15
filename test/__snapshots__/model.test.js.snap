@@ -1,5 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Testing POST /api/models/cars With "fields" parameter (name & manufacturer only) 1`] = `
+Object {
+  "count": 2,
+  "data": Array [
+    Object {
+      "id": 1,
+      "manufacturer": "Porsche",
+      "name": "Porsche 356",
+    },
+    Object {
+      "id": 2,
+      "manufacturer": "Porsche",
+      "name": "Porsche 550",
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Testing POST /api/models/cars With "page" parameter set to 2 1`] = `
+Object {
+  "count": 2,
+  "data": Array [],
+  "pagination": Object {
+    "count": 1,
+    "current": 2,
+  },
+}
+`;
+
+exports[`Testing POST /api/models/cars With "refFields" parameter 1`] = `
+Object {
+  "count": 2,
+  "data": Array [
+    Object {
+      "createdAt": "2021-03-13T23:00:00.000Z",
+      "id": 1,
+      "manufacturer": "Porsche",
+      "name": "Porsche 356",
+      "updatedAt": "2021-03-13T23:00:00.000Z",
+      "userId": Object {
+        "id": 1,
+        "label": "John Doe",
+        "type": "ref",
+      },
+      "year": 1948,
+    },
+    Object {
+      "createdAt": "2021-03-13T23:00:00.000Z",
+      "id": 2,
+      "manufacturer": "Porsche",
+      "name": "Porsche 550",
+      "updatedAt": "2021-03-13T23:00:00.000Z",
+      "userId": Object {
+        "id": 2,
+        "label": "Maria Doe",
+        "type": "ref",
+      },
+      "year": 1953,
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
 exports[`Testing POST /api/models/cars With access token 1`] = `
 Object {
   "count": 2,
@@ -26,66 +97,6 @@ Object {
       "userId": Object {
         "id": 2,
         "label": 2,
-        "type": "ref",
-      },
-      "year": 1953,
-    },
-  ],
-  "pagination": Object {
-    "count": 1,
-    "current": 1,
-  },
-}
-`;
-
-exports[`Testing POST /api/models/cars With fields (name & manufacturer only) 1`] = `
-Object {
-  "count": 2,
-  "data": Array [
-    Object {
-      "id": 1,
-      "manufacturer": "Porsche",
-      "name": "Porsche 356",
-    },
-    Object {
-      "id": 2,
-      "manufacturer": "Porsche",
-      "name": "Porsche 550",
-    },
-  ],
-  "pagination": Object {
-    "count": 1,
-    "current": 1,
-  },
-}
-`;
-
-exports[`Testing POST /api/models/cars With refFields 1`] = `
-Object {
-  "count": 2,
-  "data": Array [
-    Object {
-      "createdAt": "2021-03-13T23:00:00.000Z",
-      "id": 1,
-      "manufacturer": "Porsche",
-      "name": "Porsche 356",
-      "updatedAt": "2021-03-13T23:00:00.000Z",
-      "userId": Object {
-        "id": 1,
-        "label": "John Doe",
-        "type": "ref",
-      },
-      "year": 1948,
-    },
-    Object {
-      "createdAt": "2021-03-13T23:00:00.000Z",
-      "id": 2,
-      "manufacturer": "Porsche",
-      "name": "Porsche 550",
-      "updatedAt": "2021-03-13T23:00:00.000Z",
-      "userId": Object {
-        "id": 2,
-        "label": "Maria Doe",
         "type": "ref",
       },
       "year": 1953,

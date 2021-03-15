@@ -2,14 +2,14 @@
 require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 
 // Hide console.log
-global.console = {
-  log: jest.fn(),
-  // Keep native behaviour for other methods
-  error: console.error,
-  warn: console.warn,
-  info: console.info,
-  debug: console.debug,
-};
+// global.console = {
+//   log: jest.fn(),
+//   // Keep native behaviour for other methods
+//   error: console.error,
+//   warn: console.warn,
+//   info: console.info,
+//   debug: console.debug,
+// };
 
 const supertest = require('supertest');
 const jwt = require('jwt-simple');
@@ -67,7 +67,7 @@ describe('Testing POST /api/models/cars', () => {
     expect(response.body).toMatchSnapshot();
   });
 
-  it('With refFields', async () => {
+  it('With "refFields" parameter', async () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/cars')
@@ -83,13 +83,27 @@ describe('Testing POST /api/models/cars', () => {
     expect(response.body).toMatchSnapshot();
   });
 
-  it('With fields (name & manufacturer only)', async () => {
+  it('With "fields" parameter (name & manufacturer only)', async () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken)
       .send({
         fields: ['name', 'manufacturer']
+      });
+
+    // Check response
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchSnapshot();
+  });
+
+  it('With "page" parameter set to 2', async () => {
+    // Make request
+    const response = await supertest(app)
+      .post(prefix + '/models/cars')
+      .set('x-access-token', adminToken)
+      .send({
+        page: 2
       });
 
     // Check response
