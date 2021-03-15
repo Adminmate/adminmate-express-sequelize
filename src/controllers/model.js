@@ -126,6 +126,7 @@ module.exports.get = async (req, res) => {
   const page = parseInt(req.body.page || 1);
   const nbItemPerPage = 10;
   const defaultOrdering = [ ['id', 'DESC'] ];
+  const order = req.body.order || null;
 
   const currentModel = fnHelper.getModelObject(modelName);
   if (!currentModel) {
@@ -134,6 +135,9 @@ module.exports.get = async (req, res) => {
 
   // Get model properties
   const keys = fnHelper.getModelProperties(currentModel);
+
+  // Ordering config
+  const orderSafe = fnHelper.validateOrderStructure(order) ? order : defaultOrdering;
 
   // Construct default fields to fetch
   const defaultFieldsToFetch = keys
@@ -149,7 +153,7 @@ module.exports.get = async (req, res) => {
 
   // Build ref fields for the model (for sequelize include purpose)
   const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
-  console.log('=====includeConfig', includeConfig);
+  // console.log('=====includeConfig', includeConfig);
 
   // Init request params
   let params = {};
@@ -186,7 +190,7 @@ module.exports.get = async (req, res) => {
       where: params,
       attributes: [...fieldsToFetchSafe, 'id'], // just to be sure id is in
       include: includeConfig,
-      order: defaultOrdering,
+      order: orderSafe,
       // Pagination
       offset: nbItemPerPage * (page - 1),
       limit: nbItemPerPage
@@ -200,6 +204,7 @@ module.exports.get = async (req, res) => {
     return res.status(403).json();
   }
 
+  // Format data for the admin dashboard
   const formattedData = data.rows
     .map(item => item.toJSON())
     .map(item => {

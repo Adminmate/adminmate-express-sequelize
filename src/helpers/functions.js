@@ -268,6 +268,21 @@ module.exports.getModelSegments = modelCode => {
   return currentModel.segments;
 };
 
+module.exports.validateOrderStructure = orderConfig => {
+  let bool = true;
+  if (orderConfig && Array.isArray(orderConfig)) {
+    orderConfig.forEach(oc => {
+      if (!Array.isArray(oc) || oc.length !== 2 && !['ASC', 'DESC'].includes(oc[1])) {
+        bool = false;
+      }
+    });
+  }
+  else {
+    bool = false;
+  }
+  return bool;
+};
+
 module.exports.buildError = (e, defaultMessage) => {
   if (e && e.errors) {
     let arr = [];

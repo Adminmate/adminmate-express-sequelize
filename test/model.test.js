@@ -110,6 +110,37 @@ describe('Testing POST /api/models/cars', () => {
     expect(response.status).toBe(200);
     expect(response.body).toMatchSnapshot();
   });
+
+  it('With a "search" parameter', async () => {
+    // Make request
+    const response = await supertest(app)
+      .post(prefix + '/models/cars')
+      .set('x-access-token', adminToken)
+      .send({
+        fields: ['name'],
+        search: 'Porsche 91'
+      });
+
+    // Check response
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchSnapshot();
+  });
+
+  it('With a "order" parameter', async () => {
+    // Make request
+    const response = await supertest(app)
+      .post(prefix + '/models/cars')
+      .set('x-access-token', adminToken)
+      .send({
+        fields: ['name'],
+        search: 'Porsche 91',
+        order: [['name', 'ASC']]
+      });
+
+    // Check response
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchSnapshot();
+  });
 });
 
 // After all
