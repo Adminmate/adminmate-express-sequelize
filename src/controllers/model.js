@@ -120,7 +120,9 @@ module.exports.get = async (req, res) => {
   const segment = req.body.segment;
   const search = (req.body.search || '').trim();
   const filters = req.body.filters;
+  const fieldsToFetch = req.body.fields || [];
   const refFields = req.body.refFields;
+  const fieldsToSearchIn = req.body.fieldsToSearchIn || [];
   const page = parseInt(req.body.page || 1);
   const nbItemPerPage = 10;
 
@@ -129,23 +131,33 @@ module.exports.get = async (req, res) => {
     return res.status(403).json({ message: 'Invalid request' });
   }
 
+  // Get model properties
   const keys = fnHelper.getModelProperties(currentModel);
-  const defaultFieldsToFetch = keys.filter(key => !key.path.includes('.')).map(key => key.path);
-  const fieldsToFetch = req.body.fields || defaultFieldsToFetch;
 
-  const defaultFieldsToSearchIn = keys.filter(key => ['String'].includes(key.type)).map(key => key.path);
-  const fieldsToSearchIn = /*['email', 'firstname', 'lastname'] ||*/ defaultFieldsToSearchIn;
+  // Construct default fields to fetch
+  const defaultFieldsToFetch = keys
+    .filter(key => !key.path.includes('.'))
+    .map(key => key.path);
+  const fieldsToFetchSafe = Array.isArray(fieldsToFetch) && fieldsToFetch.length ? fieldsToFetch : defaultFieldsToFetch;
+
+  // Construct default fields to search in (only String type)
+  const defaultFieldsToSearchIn = keys
+    .filter(key => ['String'].includes(key.type))
+    .map(key => key.path);
+  const fieldsToSearchInSafe = Array.isArray(fieldsToSearchIn) && fieldsToSearchIn.length ? fieldsToSearchIn : defaultFieldsToSearchIn;
+
+  // Sorting config
   const sortingFields = { _id: 'desc' };
 
   // Build ref fields for the model (for sequelize include purpose)
-  const fieldsToPopulate = fnHelper.getFieldsToPopulate(keys, fieldsToFetch, refFields);
-  console.log('=====fieldsToPopulate', fieldsToPopulate);
+  const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
+  console.log('=====includeConfig', includeConfig);
 
   let params = {};
 
   // If there is a text search query
   if (search) {
-    params = fnHelper.constructSearch(search, fieldsToSearchIn, fieldsToPopulate);
+    params = fnHelper.constructSearch(search, fieldsToSearchInSafe, includeConfig);
   }
 
   console.log('===params', params)
@@ -172,9 +184,11 @@ module.exports.get = async (req, res) => {
   const data = await currentModel
     .findAll({
       where: params,
-      include: fieldsToPopulate
+      attributes: [...fieldsToFetchSafe, 'id'], // just to be sure id is in
+      include: includeConfig
     })
     .catch(e => {
+      console.log('===err', e);
       res.status(403).json({ message: e.message });
     });
 
@@ -197,7 +211,7 @@ module.exports.get = async (req, res) => {
   const formattedData = data
     .map(d => d.toJSON())
     .map(d => {
-      fieldsToPopulate.forEach(ftp => {
+      includeConfig.forEach(ftp => {
         const refId = d[ftp.path];
         d[ftp.path] = { ...d[ftp.as], id: refId };
         delete d[ftp.as];
@@ -206,7 +220,7 @@ module.exports.get = async (req, res) => {
     })
     // Make ref fields appeared as link in the dashboard
     .map(item => {
-      return fnHelper.refFields(item, fieldsToPopulate);
+      return fnHelper.refFields(item, includeConfig);
     });
 
   // const dataCount = await currentModel.countDocuments(params);

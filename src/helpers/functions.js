@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { serializeError } = require('serialize-error');
+const _ = require('lodash');
 
 const Op = Sequelize.Op;
 
@@ -15,13 +16,14 @@ const sequelizeDatatypes = {
 module.exports.getModelProperties = model => {
   let modelFields = [];
   const modelProps = model.rawAttributes;
-  console.log('===model', model, modelProps)
+  // console.log('===============MODEL', model, modelProps);
 
+  const fields = [];
   for (let key in modelProps) {
-    console.log('Field: ', key); // this is name of the field
-    console.log('TypeField: ', modelProps[key].type.key); // Sequelize type of field
-    console.log('TypeField: ', modelProps[key].type, modelProps[key].type.options);
-    console.log('=======================');
+    // console.log('Field: ', key); // this is name of the field
+    // console.log('TypeField: ', modelProps[key].type.key); // Sequelize type of field
+    // console.log('TypeField: ', modelProps[key].type, modelProps[key].type.options);
+    // console.log('=======================');
 
     const type = modelProps[key].type.key;
 
@@ -146,7 +148,6 @@ module.exports.refFields = (item, fieldsToPopulate) => {
       }
 
       if (item[attr]) {
-        console.log('====item[attr]', item[attr])
         item[attr] = {
           type: 'ref',
           id: item[attr].id,
@@ -161,8 +162,20 @@ module.exports.refFields = (item, fieldsToPopulate) => {
   return item;
 };
 
-module.exports.getFieldsToPopulate = (keys, fieldsToFetch, refFields = {}) => {
-  console.log('===!!!!!!!!', keys, fieldsToFetch, refFields)
+const getSchemaAssociationDetails = association => {
+  const schema = {
+    as: association.associationAccessor,
+    relationship: association.associationType,
+    // reference: `${association.target.name}.${association.foreignKey}`,
+    foreignKey: association.foreignKey,
+    identifierField: association.identifierField,
+    model: association.target.unscoped()
+  };
+
+  return schema;
+}
+
+module.exports.getIncludeParams = (model, keys, fieldsToFetch, refFields = {}) => {
   // Build ref fields for the model (for sequelize include purpose)
   const refFieldsForModel = {};
   keys.forEach(prop => {
@@ -174,24 +187,20 @@ module.exports.getFieldsToPopulate = (keys, fieldsToFetch, refFields = {}) => {
     }
   });
 
-  // Create query populate config
-  let fieldsToPopulate = [];
-  fieldsToFetch.forEach(field => {
-    const matchingField = keys.find(k => k.path === field);
-    if (matchingField && matchingField.ref) {
-      const modelObject = global._amConfig.models.find(m => m.slug === matchingField.ref);
-      if (modelObject) {
-        fieldsToPopulate.push({
-          path: field,
-          // as: 'test',
-          model: modelObject.model,
-          attributes: refFieldsForModel[field] ? refFieldsForModel[field].split(' ') : ['id']
-        });
+  const associations = _.values(model.associations)
+    .map(ass => getSchemaAssociationDetails(ass))
+    .filter(ass => fieldsToFetch.includes(ass.identifierField) && ass.relationship === 'BelongsTo')
+    .map(ass => {
+      const attributes = refFieldsForModel[ass.identifierField] ? refFieldsForModel[ass.identifierField].split(' ') : ['id'];
+      return {
+        path: ass.identifierField,
+        as: ass.as,
+        model: ass.model,
+        attributes
       }
-    }
-  });
+    });
 
-  return fieldsToPopulate;
+  return associations;
 };
 
 const isPositiveInteger = n => {

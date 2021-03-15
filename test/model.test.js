@@ -30,9 +30,9 @@ beforeAll(done => {
   done();
 });
 
-// Models properties
-describe('Testing POST /api/models/:model', () => {
-  it('should return a 403 http response', async () => {
+// POST /models/users
+describe('Testing POST /api/models/users', () => {
+  it('Without access token', async () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/users');
@@ -42,7 +42,7 @@ describe('Testing POST /api/models/:model', () => {
     expect(response.body.code).toBe('not_authorized');
   });
 
-  it('should return a 200 http response for users model', async () => {
+  it('With access token', async () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/users')
@@ -52,12 +52,45 @@ describe('Testing POST /api/models/:model', () => {
     expect(response.status).toBe(200);
     expect(response.body).toMatchSnapshot();
   });
+});
 
-  it('should return a 200 http response for cars model', async () => {
+// POST /models/cars
+describe('Testing POST /api/models/cars', () => {
+  it('With access token', async () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken);
+
+    // Check response
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchSnapshot();
+  });
+
+  it('With refFields', async () => {
+    // Make request
+    const response = await supertest(app)
+      .post(prefix + '/models/cars')
+      .set('x-access-token', adminToken)
+      .send({
+        refFields: {
+          users: 'firstname lastname'
+        }
+      });
+
+    // Check response
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchSnapshot();
+  });
+
+  it('With fields (name & manufacturer only)', async () => {
+    // Make request
+    const response = await supertest(app)
+      .post(prefix + '/models/cars')
+      .set('x-access-token', adminToken)
+      .send({
+        fields: ['name', 'manufacturer']
+      });
 
     // Check response
     expect(response.status).toBe(200);
