@@ -125,6 +125,7 @@ module.exports.get = async (req, res) => {
   const fieldsToSearchIn = req.body.fieldsToSearchIn || [];
   const page = parseInt(req.body.page || 1);
   const nbItemPerPage = 10;
+  const defaultOrdering = [ ['id', 'DESC'] ];
 
   const currentModel = fnHelper.getModelObject(modelName);
   if (!currentModel) {
@@ -146,13 +147,11 @@ module.exports.get = async (req, res) => {
     .map(key => key.path);
   const fieldsToSearchInSafe = Array.isArray(fieldsToSearchIn) && fieldsToSearchIn.length ? fieldsToSearchIn : defaultFieldsToSearchIn;
 
-  // Sorting config
-  const sortingFields = { _id: 'desc' };
-
   // Build ref fields for the model (for sequelize include purpose)
   const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
   console.log('=====includeConfig', includeConfig);
 
+  // Init request params
   let params = {};
 
   // If there is a text search query
@@ -181,11 +180,13 @@ module.exports.get = async (req, res) => {
     }
   }
 
+  // Fetch data
   const data = await currentModel
     .findAndCountAll({
       where: params,
       attributes: [...fieldsToFetchSafe, 'id'], // just to be sure id is in
       include: includeConfig,
+      order: defaultOrdering,
       // Pagination
       offset: nbItemPerPage * (page - 1),
       limit: nbItemPerPage
@@ -195,31 +196,19 @@ module.exports.get = async (req, res) => {
       res.status(403).json({ message: e.message });
     });
 
-  // const data = await currentModel
-  //   .find(params)
-  //   .select(fieldsToFetch)
-  //   .populate(fieldsToPopulate)
-  //   .sort(sortingFields)
-  //   .skip(nbItemPerPage * (page - 1))
-  //   .limit(nbItemPerPage)
-  //   .lean()
-  //   .catch(e => {
-  //     res.status(403).json({ message: e.message });
-  //   });
-
   if (!data) {
     return res.status(403).json();
   }
 
   const formattedData = data.rows
-    .map(d => d.toJSON())
-    .map(d => {
+    .map(item => item.toJSON())
+    .map(item => {
       includeConfig.forEach(ftp => {
-        const refId = d[ftp.path];
-        d[ftp.path] = { ...d[ftp.as], id: refId };
-        delete d[ftp.as];
+        const refId = item[ftp.path];
+        item[ftp.path] = { ...item[ftp.as], id: refId };
+        delete item[ftp.as];
       });
-      return d;
+      return item;
     })
     // Make ref fields appeared as link in the dashboard
     .map(item => {
