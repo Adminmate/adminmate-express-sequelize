@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
     name: {
       type: Sequelize.STRING
     },
-    model: {
+    manufacturer: {
       type: Sequelize.STRING
     },
     year: {

@@ -49,7 +49,7 @@ Object {
           "type": "String",
         },
         Object {
-          "path": "model",
+          "path": "manufacturer",
           "type": "String",
         },
         Object {
@@ -119,7 +119,7 @@ Object {
     },
     Object {
       "model": "cars",
-      "path": "model",
+      "path": "manufacturer",
     },
     Object {
       "model": "cars",

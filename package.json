@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node ./index",
     "test": "jest --testTimeout=10000 --verbose",
-    "reset-db": "NODE_ENV=test npm run migrate:reset",
-    "migrate": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
-    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:seed:undo:all && npm run migrate"
+    "reset-db": "NODE_ENV=test npm run migrate",
+    "migrate": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npm run seed",
+    "seed": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",

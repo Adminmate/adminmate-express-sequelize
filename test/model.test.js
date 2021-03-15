@@ -42,10 +42,21 @@ describe('Testing POST /api/models/:model', () => {
     expect(response.body.code).toBe('not_authorized');
   });
 
-  it('should return a 200 http response', async () => {
+  it('should return a 200 http response for users model', async () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/users')
+      .set('x-access-token', adminToken);
+
+    // Check response
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchSnapshot();
+  });
+
+  it('should return a 200 http response for cars model', async () => {
+    // Make request
+    const response = await supertest(app)
+      .post(prefix + '/models/cars')
       .set('x-access-token', adminToken);
 
     // Check response
