@@ -98,26 +98,22 @@ module.exports.constructQuery = (criterias, operator = 'and') => {
       q[criteria.field] = { [Op.eq]: false };
     }
     else if (criteria.operator === 'is_present') {
-      q[criteria.field] = { $exists: true };
+      q[criteria.field] = { [Op.not]: null };
     }
     else if (criteria.operator === 'is_blank') {
-      q[criteria.field] = { $exists: false };
+      q[criteria.field] = { [Op.not]: null };
     }
     else if (criteria.operator === 'start_with') {
-      const regexp = new RegExp(`^${criteria.value}`);
-      q[criteria.field] = { $regex: regexp, $options: 'i' };
+      q[criteria.field] = { [Op.startsWith]: criteria.value };
     }
     else if (criteria.operator === 'end_with') {
-      const regexp = new RegExp(`${criteria.value}$`);
-      q[criteria.field] = { $regex: regexp, $options: 'i' };
+      q[criteria.field] = { [Op.endsWith]: criteria.value };
     }
     else if (criteria.operator === 'contains') {
-      const regexp = new RegExp(`${criteria.value}`);
-      q[criteria.field] = { $regex: regexp, $options: 'i' };
+      q[criteria.field] = { [Op.like]: `%${criteria.value}%` };
     }
     else if (criteria.operator === 'not_contains') {
-      const regexp = new RegExp(`^((?!${criteria.value}).)*$`);
-      q[criteria.field] = { $regex: regexp, $options: 'i' };
+      q[criteria.field] = { [Op.notLike]: `%${criteria.value}%` };
     }
     query.push(q);
   });
@@ -209,7 +205,11 @@ module.exports.constructSearch = (search, fieldsToSearchIn) => {
   params = { [Op.or]: [] };
 
   fieldsToSearchIn.map(field => {
-    params[Op.or].push({ [field]: { [Op.like]: '%' + search + '%' } });
+    params[Op.or].push({
+      [field]: {
+        [Op.like]: `%${search}%`
+      }
+    });
   });
 
   // If the search is a valid sql id

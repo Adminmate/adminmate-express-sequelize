@@ -142,7 +142,7 @@ describe('Testing POST /api/models/cars', () => {
     expect(response.body).toMatchSnapshot();
   });
 
-  it.only('With a "filters" parameter', async () => {
+  it('With a "filters" parameter', async () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/cars')
