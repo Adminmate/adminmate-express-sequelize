@@ -23,16 +23,16 @@ module.exports.getAll = (req, res) => {
     const modelObject = {
       slug: modelConfig.slug,
       properties: fnHelper.getModelProperties(modelConfig.model),
-      smart_actions: [],
+      customactions: [],
       segments: []
     };
 
-    // Add smart actions if present
-    if (modelConfig.smartActions) {
-      modelObject.smart_actions = modelConfig.smartActions;
+    // Add custom actions if present
+    if (modelConfig.customActions) {
+      modelObject.customactions = modelConfig.customActions;
     }
 
-    // Add smart actions if present
+    // Add segments if present
     if (modelConfig.segments) {
       modelObject.segments = modelConfig.segments.map(segment => ({ label: segment.label, code: segment.code }));
     }

@@ -248,13 +248,13 @@ module.exports.getModelOptions = modelCode => {
   return currentModel.options;
 };
 
-module.exports.getModelSmartActions = modelCode => {
+module.exports.getModelCustomActions = modelCode => {
   const currentModel = getModel(modelCode);
   if (!currentModel) {
     return null;
   }
 
-  return currentModel.smartActions;
+  return currentModel.customActions;
 };
 
 module.exports.getModelSegments = modelCode => {

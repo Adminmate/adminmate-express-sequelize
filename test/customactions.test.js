@@ -31,11 +31,11 @@ beforeAll(done => {
 });
 
 // Custom actions
-describe('Testing GET /api/models/smartactions', () => {
+describe('Testing GET /api/models/customactions', () => {
   it('should return a 403 http response', async () => {
     // Make request
     const response = await supertest(app)
-      .get(prefix + '/models/smartactions');
+      .get(prefix + '/models/customactions');
 
     // Check response
     expect(response.status).toBe(403);
@@ -45,7 +45,7 @@ describe('Testing GET /api/models/smartactions', () => {
   it('should return a 200 http response', async () => {
     // Make request
     const response = await supertest(app)
-      .get(prefix + '/models/smartactions')
+      .get(prefix + '/models/customactions')
       .set('x-access-token', adminToken);
 
     // Check response
@@ -55,11 +55,11 @@ describe('Testing GET /api/models/smartactions', () => {
 });
 
 // Custom actions
-describe('Testing GET /api/models/:model/smartactions', () => {
+describe('Testing GET /api/models/:model/customactions', () => {
   it('should return a 403 http response', async () => {
     // Make request
     const response = await supertest(app)
-      .get(prefix + '/models/users/smartactions');
+      .get(prefix + '/models/users/customactions');
 
     // Check response
     expect(response.status).toBe(403);
@@ -69,7 +69,7 @@ describe('Testing GET /api/models/:model/smartactions', () => {
   it('should return a 403 http response', async () => {
     // Make request
     const response = await supertest(app)
-      .get(prefix + '/models/users/smartactions')
+      .get(prefix + '/models/users/customactions')
       .set('x-access-token', adminToken)
       .query({ ids: [], target: '' })
 
@@ -81,7 +81,7 @@ describe('Testing GET /api/models/:model/smartactions', () => {
   it('should return a 200 http response', async () => {
     // Make request
     const response = await supertest(app)
-      .get(prefix + '/models/users/smartactions')
+      .get(prefix + '/models/users/customactions')
       .set('x-access-token', adminToken)
       .query({ ids: [9], target: 'item' })
 

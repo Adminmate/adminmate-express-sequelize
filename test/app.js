@@ -27,12 +27,12 @@ const amConfig = {
     {
       slug: 'users',
       model: db.users,
-      smartActions: []
+      customActions: []
     },
     {
       slug: 'cars',
       model: db.cars,
-      smartActions: [],
+      customActions: [],
       segments: [
         {
           label: 'Ferrari',
@@ -48,7 +48,7 @@ const amConfig = {
 
 const plugin = require('../index.js');
 app.use('/adminmate', plugin.init(amConfig));
-// app.use('/adminmate/smartactions', require('./server/routes/adminmate_sa'));
+// app.use('/adminmate/customactions', require('./server/routes/adminmate_ca'));
 // app.use('/adminmate/custom_api', require('./server/routes/custom_api'));
 
 module.exports = app;

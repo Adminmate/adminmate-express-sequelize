@@ -21,14 +21,14 @@ const Adminmate = ({ projectId, secretKey, authKey, masterPassword, models, auth
     getModelsProperties: modelsController.getAllProperties,
 
     // Custom actions
-    getSmartActions: customActionsController.getAll,
-    getSmartAction: customActionsController.getMatching,
+    getCustomActions: customActionsController.getAll,
+    getCustomAction: customActionsController.getMatching,
 
     // Segments
     getSegments: segmentsController.getAll,
 
     // CRUD
-    modelGet: getAll,
+    modelGetAll: getAll,
     modelGetAutocomplete: getAutocomplete,
     modelGetOne: getOne,
     modelPostOne: postOne,
