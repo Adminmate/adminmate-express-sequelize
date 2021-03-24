@@ -19,7 +19,7 @@ module.exports.getAll = async (req, res) => {
   res.json({ list });
 };
 
-module.exports.get = async (req, res) => {
+module.exports.getMatching = async (req, res) => {
   const modelName = req.params.model;
   const items = req.query.ids || '';
   const target = req.query.target || '';

@@ -1,24 +1,40 @@
 const { init, isAuthorized } = require(global.AM_DEV_MODE ? '../adminmate-express-core' : 'adminmate-express-core');
 
 // Controllers
-const modelController = require('./src/controllers/model');
-const smartActionsController = require('./src/controllers/smartactions');
+const modelsController = require('./src/controllers/models');
+const customActionsController = require('./src/controllers/customactions');
 const segmentsController = require('./src/controllers/segments');
+
+// CRUD
+const { getAll } = require('./src/controllers/model-getall');
+const { getAutocomplete } = require('./src/controllers/model-autocomplete');
+const { getOne } = require('./src/controllers/model-getone');
+const { postOne } = require('./src/controllers/model-postone');
+const { putOne } = require('./src/controllers/model-putone');
+const { deleteSome } = require('./src/controllers/model-deletesome');
+const { customQuery } = require('./src/controllers/model-query');
 
 const Adminmate = ({ projectId, secretKey, authKey, masterPassword, models, authorizedIps }) => {
   const api = {
-    getModels: modelController.getModels,
-    getModelsProperties: modelController.getModelsProperties,
-    getSmartActions: smartActionsController.getAll,
-    getSmartAction: smartActionsController.get,
+    // General
+    getModels: modelsController.getAll,
+    getModelsProperties: modelsController.getAllProperties,
+
+    // Custom actions
+    getSmartActions: customActionsController.getAll,
+    getSmartAction: customActionsController.getMatching,
+
+    // Segments
     getSegments: segmentsController.getAll,
-    modelGet: modelController.get,
-    modelGetAutocomplete: modelController.getAutocomplete,
-    modelGetOne: modelController.getOne,
-    modelPostOne: modelController.postOne,
-    modelPutOne: modelController.putOne,
-    modelDeleteSome: modelController.deleteSome,
-    modelCustomQuery: modelController.customQuery
+
+    // CRUD
+    modelGet: getAll,
+    modelGetAutocomplete: getAutocomplete,
+    modelGetOne: getOne,
+    modelPostOne: postOne,
+    modelPutOne: putOne,
+    modelDeleteSome: deleteSome,
+    modelCustomQuery: customQuery
   };
 
   return init({
