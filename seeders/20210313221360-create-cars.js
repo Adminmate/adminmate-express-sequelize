@@ -9,8 +9,8 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1948,
         userId: 1,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 2,
@@ -18,8 +18,8 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1953,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 3,
@@ -27,8 +27,8 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1963,
         userId: 1,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 4,
@@ -36,8 +36,8 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1964,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 5,
@@ -45,8 +45,8 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1966,
         userId: 1,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 6,
@@ -54,8 +54,8 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1968,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 7,
@@ -63,8 +63,8 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1969,
         userId: 1,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 8,
@@ -72,8 +72,8 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1969,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 9,
@@ -81,17 +81,17 @@ module.exports = {
         manufacturer: 'Porsche',
         year: 1976,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 10,
-        name: 'Ferrari 166 MM',
-        manufacturer: 'Ferrari',
-        year: 1948,
+        name: 'Porsche Macan',
+        manufacturer: 'Porsche',
+        year: 2014,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 11,
@@ -99,8 +99,8 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1951,
         userId: 1,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 12,
@@ -108,8 +108,8 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1952,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 13,
@@ -117,8 +117,8 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1954,
         userId: 1,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 14,
@@ -126,8 +126,8 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1959,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 15,
@@ -135,8 +135,8 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1960,
         userId: 1,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 16,
@@ -144,8 +144,8 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1962,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 17,
@@ -153,17 +153,17 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1962,
         userId: 1,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 18,
-        name: '',
+        name: 'Ferrari 488',
         manufacturer: 'Ferrari',
         year: 1969,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 19,
@@ -171,8 +171,8 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1964,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 20,
@@ -180,8 +180,8 @@ module.exports = {
         manufacturer: 'Ferrari',
         year: 1964,
         userId: 2,
-        createdAt: "2021-03-13 23:00:00",
-        updatedAt: "2021-03-13 23:00:00"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       }
     ], {});
   },

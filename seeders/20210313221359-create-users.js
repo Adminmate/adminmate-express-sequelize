@@ -7,19 +7,19 @@ module.exports = {
         id: 1,
         firstname: "John",
         lastname: "Doe",
-        birthdate: "2021-03-13 22:49:15",
+        birthdate: "2021-04-02 00:00:00",
         rating: 4,
-        createdAt: "2021-03-13 22:49:15",
-        updatedAt: "2021-03-13 22:49:15"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       },
       {
         id: 2,
         firstname: "Maria",
         lastname: "Doe",
-        birthdate: "2021-03-13 22:49:15",
+        birthdate: "2021-04-02 00:00:00",
         rating: 5,
-        createdAt: "2021-03-13 22:49:15",
-        updatedAt: "2021-03-13 22:49:15"
+        createdAt: "2021-04-02 00:00:00",
+        updatedAt: "2021-04-02 00:00:00"
       }
     ], {});
   },
