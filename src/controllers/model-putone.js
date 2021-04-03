@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+const _ = require('lodash');
 const fnHelper = require('../helpers/functions');
 
 module.exports.putOne = async (req, res) => {
@@ -16,7 +17,7 @@ module.exports.putOne = async (req, res) => {
   // Only keep authorized keys
   // const cleanData = {};
   // updatableFields.forEach(updatableField => {
-  //   const fieldValue = global._.get(data, updatableField);
+  //   const fieldValue = _.get(data, updatableField);
   //   if (fieldValue) {
   //     global._.set(cleanData, updatableField, fieldValue)
   //   }

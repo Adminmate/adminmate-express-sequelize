@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+const _ = require('lodash');
 const fnHelper = require('../helpers/functions');
 
 module.exports.getAutocomplete = async (req, res) => {
@@ -44,7 +45,7 @@ module.exports.getAutocomplete = async (req, res) => {
   let formattedData = [];
   if (data.length) {
     formattedData = data.map(d => {
-      const label = fieldsToDisplay.replace(/[a-z._]+/gi, word => global._.get(d, word));
+      const label = fieldsToDisplay.replace(/[a-z._]+/gi, word => _.get(d, word));
       return { label, value: d._id };
     });
   }

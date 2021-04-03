@@ -1,0 +1,18 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    container_name: adminmate-express-sequelize
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'demo'
+      MYSQL_PASSWORD: 'demo'
+      MYSQL_ROOT_PASSWORD: 'demo'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+  my-db:

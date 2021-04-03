@@ -1,9 +1,9 @@
 {
   "test": {
     "username": "demo",
-    "password": "azerty123$",
-    "database": "demo",
-    "host": "34.123.145.28",
+    "password": "demo",
+    "database": "db",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   }
 }
