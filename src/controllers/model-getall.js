@@ -40,14 +40,13 @@ module.exports.getAll = async (req, res) => {
   // Build ref fields for the model (for sequelize include purpose)
   const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
 
-  // Init request params
-  let params = { [Op.and]: [] };
+  const queriesArray = [];
 
   // Search -----------------------------------------------------------------------------
 
   if (search) {
     const searchQuery = fnHelper.constructSearch(search, fieldsToSearchInSafe);
-    params[Op.and].push(searchQuery);
+    queriesArray.push(searchQuery);
   }
 
   // Filters ----------------------------------------------------------------------------
@@ -55,7 +54,7 @@ module.exports.getAll = async (req, res) => {
   if (filters && filters.operator && filters.list && filters.list.length) {
     const filtersQuery = fnHelper.constructQuery(filters.list, filters.operator);
     if (filtersQuery) {
-      params[Op.and].push(filtersQuery);
+      queriesArray.push(filtersQuery);
     }
   }
 
@@ -64,14 +63,16 @@ module.exports.getAll = async (req, res) => {
   if (segment && segment.type === 'code' && segment.data) {
     const modelSegment = fnHelper.getModelSegment(modelName, segment.data);
     if (modelSegment) {
-      params[Op.and].push(modelSegment.query);
+      queriesArray.push(modelSegment.query);
     }
   }
+
+  const findParams = queriesArray.length ? { [Op.and]: queriesArray } : {};
 
   // Fetch data
   const data = await currentModel
     .findAndCountAll({
-      where: params,
+      where: findParams,
       attributes: [...fieldsToFetchSafe, 'id'], // just to be sure id is in
       include: includeConfig,
       order: orderSafe,
