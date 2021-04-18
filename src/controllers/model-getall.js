@@ -39,36 +39,34 @@ module.exports.getAll = async (req, res) => {
 
   // Build ref fields for the model (for sequelize include purpose)
   const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
-  // console.log('=====includeConfig', includeConfig);
 
   // Init request params
-  let params = {};
+  let params = { [Op.and]: [] };
 
-  // If there is a text search query
+  // Search -----------------------------------------------------------------------------
+
   if (search) {
-    params = fnHelper.constructSearch(search, fieldsToSearchInSafe);
+    const searchQuery = fnHelper.constructSearch(search, fieldsToSearchInSafe);
+    params[Op.and].push(searchQuery);
   }
 
-  // Filters
+  // Filters ----------------------------------------------------------------------------
+
   if (filters && filters.operator && filters.list && filters.list.length) {
     const filtersQuery = fnHelper.constructQuery(filters.list, filters.operator);
     if (filtersQuery) {
-      params = { [Op.and]: [params, filtersQuery] };
+      params[Op.and].push(filtersQuery);
     }
   }
 
-  // Segments
-  if (segment && segment.type === 'code') {
-    const modelSegments = fnHelper.getModelSegments(modelName);
-    if (modelSegments) {
-      const matchingSegment = modelSegments.find(s => s.code === segment.data);
-      if (matchingSegment) {
-        params = { [Op.and]: [params, matchingSegment.query] };
-      }
+  // Segments ---------------------------------------------------------------------------
+
+  if (segment && segment.type === 'code' && segment.data) {
+    const modelSegment = fnHelper.getModelSegment(modelName, segment.data);
+    if (modelSegment) {
+      params[Op.and].push(modelSegment.query);
     }
   }
-
-  // console.log('===params', params);
 
   // Fetch data
   const data = await currentModel

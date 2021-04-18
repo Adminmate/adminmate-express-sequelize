@@ -248,6 +248,16 @@ module.exports.getModelSegments = modelCode => {
   return currentModel.segments;
 };
 
+module.exports.getModelSegment = (modelCode, segmentCode) => {
+  const currentModel = getModel(modelCode);
+  if (!currentModel || !currentModel.segments || currentModel.segments.length === 0) {
+    return null;
+  }
+
+  return currentModel.segments
+    .find(s => s.code === segmentCode);
+};
+
 module.exports.validateOrderStructure = orderConfig => {
   let bool = true;
   if (orderConfig && Array.isArray(orderConfig)) {
