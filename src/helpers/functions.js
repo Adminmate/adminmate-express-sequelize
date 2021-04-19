@@ -103,10 +103,10 @@ module.exports.constructQuery = (criterias, operator = 'and') => {
     else if (criteria.operator === 'is_blank') {
       q[criteria.field] = { [Op.not]: null };
     }
-    else if (criteria.operator === 'start_with') {
+    else if (criteria.operator === 'starts_with') {
       q[criteria.field] = { [Op.startsWith]: criteria.value };
     }
-    else if (criteria.operator === 'end_with') {
+    else if (criteria.operator === 'ends_with') {
       q[criteria.field] = { [Op.endsWith]: criteria.value };
     }
     else if (criteria.operator === 'contains') {
