@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const fnHelper = require('../helpers/functions');
 
 module.exports.customQuery = async (req, res) => {
@@ -37,20 +36,23 @@ module.exports.customQuery = async (req, res) => {
     res.json({ data: repartitionData });
   }
   else if (data.type === 'single_value') {
-    if (data.operation === 'sum') {
-      const sumData = await currentModel
-        .aggregate([{
-          $group: {
-            _id: `$${data.group_by}`,
-            count: { $sum: `$${data.field}` },
-          }
-        }]);
+    if (data.operation === 'sum' || data.operation === 'avg') {
+      const sequelizeInstance = currentModel.sequelize;
 
-      if (!sumData || !sumData[0] || typeof sumData[0].count !== 'number') {
+      const queryData = await currentModel.findAll({
+        attributes: [
+          [sequelizeInstance.fn(data.operation, sequelizeInstance.col(data.field)), 'queryResult']
+        ],
+        raw: true
+        // group: ['total'],
+        // order: sequelize.literal('total DESC')
+      });
+
+      if (!queryData || !queryData[0] || typeof queryData[0].queryResult !== 'number') {
         return res.status(403).json();
       }
 
-      res.json({ data: sumData[0].count });
+      res.json({ data: queryData[0].queryResult });
     }
     else {
       const dataCount = await currentModel.countDocuments({});
