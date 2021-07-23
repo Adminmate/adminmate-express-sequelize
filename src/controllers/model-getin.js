@@ -8,7 +8,11 @@ module.exports.getIn = async (modelName, ids) => {
 
   // Get corresponding items
   const items = await currentModel
-    .findAll({ id: ids });
+    .findAll({
+      where: {
+        id: ids
+      }
+    });
     // .catch(e => {
     //   res.status(403).json({ message: e.message });
     // });

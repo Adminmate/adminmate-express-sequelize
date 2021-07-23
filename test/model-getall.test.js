@@ -25,6 +25,14 @@ const adminToken = jwt.encode({
   exp_date: Date.now() + 1000
 }, 'authkey_secret');
 
+// Generate the perm token
+const permToken = jwt.encode({
+  exp_date: Date.now() + 1000,
+  data: {
+    authorized_models: ['*']
+  }
+}, '7dn6m0zrcsqta5b57hug52xlira4upqdempch65mwy5guehr33vt0r1s8cyrnmko');
+
 // Before all
 beforeAll(done => {
   done();
@@ -46,7 +54,8 @@ describe('Testing POST /api/models/users', () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/users')
-      .set('x-access-token', adminToken);
+      .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken);
 
     // Check response
     expect(response.status).toBe(200);
@@ -60,7 +69,8 @@ describe('Testing POST /api/models/cars', () => {
     // Make request
     const response = await supertest(app)
       .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken);
+      .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken);
 
     // Check response
     expect(response.status).toBe(200);
@@ -72,6 +82,7 @@ describe('Testing POST /api/models/cars', () => {
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken)
       .send({
         refFields: {
           users: 'firstname lastname'
@@ -88,6 +99,7 @@ describe('Testing POST /api/models/cars', () => {
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken)
       .send({
         fields: ['name', 'manufacturer']
       });
@@ -102,6 +114,7 @@ describe('Testing POST /api/models/cars', () => {
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken)
       .send({
         page: 2
       });
@@ -116,6 +129,7 @@ describe('Testing POST /api/models/cars', () => {
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken)
       .send({
         fields: ['name'],
         search: 'Porsche 91'
@@ -131,6 +145,7 @@ describe('Testing POST /api/models/cars', () => {
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken)
       .send({
         fields: ['name'],
         search: 'Porsche 91',
@@ -147,6 +162,7 @@ describe('Testing POST /api/models/cars', () => {
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken)
       .send({
         fields: ['name', 'year'],
         search: 'Porsche',
@@ -169,6 +185,7 @@ describe('Testing POST /api/models/cars', () => {
     const response = await supertest(app)
       .post(prefix + '/models/cars')
       .set('x-access-token', adminToken)
+      .set('x-perm-token', permToken)
       .send({
         fields: ['name', 'year'],
         segment: {
