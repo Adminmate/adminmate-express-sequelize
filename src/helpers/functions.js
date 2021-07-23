@@ -45,6 +45,11 @@ module.exports.getModelProperties = model => {
   return modelFields;
 };
 
+// Return real sequelize model name (/= table name)
+module.exports.getModelRealname = model => {
+  return model.name;
+};
+
 // To be used in this file
 const permutations = list => {
   if (list.length <= 1) {

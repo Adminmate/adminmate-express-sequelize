@@ -13,33 +13,39 @@ module.exports.getOne = async (req, res) => {
 
   const keys = fnHelper.getModelProperties(currentModel);
   const defaultFieldsToFetch = keys.map(key => key.path);
-  const fieldsToFetch = req.body.fields ? req.body.fields : defaultFieldsToFetch;
+  const fieldsToFetchSafe = Array.isArray(req.body.fields) && req.body.fields.length ? req.body.fields : defaultFieldsToFetch;
 
-  // Build ref fields for the model (for mongoose population purpose)
-  const fieldsToPopulate = fnHelper.getFieldsToPopulate(keys, fieldsToFetch, refFields);
+  // Build ref fields for the model (for sequelize include purpose)
+  const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
 
   let data = await currentModel
-    .findByPk(modelItemId)
+    .findOne({
+      where: {
+        id: modelItemId
+      },
+      attributes: [...fieldsToFetchSafe, 'id'], // just to be sure id is in
+      include: includeConfig
+    })
     .catch(e => {
       res.status(403).json({ message: e.message });
     });
-
-  // let data = await currentModel
-  //   .findById(modelItemId)
-  //   .select(fieldsToFetch)
-  //   .populate(fieldsToPopulate)
-  //   .lean()
-  //   .catch(e => {
-  //     res.status(403).json({ message: e.message });
-  //   });
 
   if (!data) {
     return res.status(403).json();
   }
 
-  data = fnHelper.refFields(data, fieldsToPopulate);
+  // Format data for the admin dashboard
+  data = data.toJSON();
+  includeConfig.forEach(ftp => {
+    const refId = data[ftp.path];
+    data[ftp.path] = { ...data[ftp.as], id: refId };
+    delete data[ftp.as];
+  });
+
+  data = fnHelper.refFields(data, includeConfig);
 
   res.json({
-    data
+    data,
+    linkedModels: []
   });
 };
