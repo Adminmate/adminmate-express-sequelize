@@ -8,6 +8,7 @@ const sequelizeDatatypes = {
   'INTEGER': 'Number',
   'FLOAT': 'Number',
   'DATE': 'Date',
+  'ENUM': 'String',
   'BOOLEAN': 'Boolean'
 };
 
@@ -33,6 +34,11 @@ module.exports.getModelProperties = model => {
     // Ref option
     if (modelProps[key].references && modelProps[key].references.model) {
       property.ref = modelProps[key].references.model;
+    }
+
+    // Enum option
+    if (type === 'ENUM') {
+      property.enum = modelProps[key].values;
     }
 
     if (key === 'id') {
