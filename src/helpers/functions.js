@@ -17,7 +17,6 @@ module.exports.getModelProperties = model => {
   const modelProps = model.rawAttributes;
   // console.log('===============MODEL', model, modelProps);
 
-  const fields = [];
   for (let key in modelProps) {
     // console.log('Field: ', key); // this is name of the field
     // console.log('TypeField: ', modelProps[key].type.key); // Sequelize type of field
@@ -31,6 +30,16 @@ module.exports.getModelProperties = model => {
       type: sequelizeDatatypes[type] ? sequelizeDatatypes[type] : type
     };
 
+    // Required option
+    if (modelProps[key].allowNull === false) {
+      property.required = true;
+    }
+
+    // Default value option
+    if (typeof modelProps[key].defaultValue !== 'undefined') {
+      property.default = modelProps[key].defaultValue;
+    }
+
     // Ref option
     if (modelProps[key].references && modelProps[key].references.model) {
       property.ref = modelProps[key].references.model;
@@ -43,7 +52,8 @@ module.exports.getModelProperties = model => {
 
     if (key === 'id') {
       modelFields.unshift(property);
-    } else {
+    }
+    else {
       modelFields.push(property);
     }
   }
