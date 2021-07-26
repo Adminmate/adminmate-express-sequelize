@@ -81,7 +81,7 @@ module.exports.customQuery = async (req, res) => {
 
     res.json({ data: repartitionData });
   }
-  else if (data.type === 'single_value') {
+  else if (data.type === 'single_value' || data.type === 'objective') {
     if (data.operation === 'sum' || data.operation === 'avg') {
       const queryData = await currentModel.findAll({
         attributes: [
