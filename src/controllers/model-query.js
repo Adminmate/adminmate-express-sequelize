@@ -63,43 +63,31 @@ module.exports.customQuery = async (req, res) => {
     return res.status(403).json({ message: 'Invalid request' });
   }
 
-  if (data.type === 'pie') {
-    let sum = 1;
-    if (data.field && data.operation === 'sum') {
-      sum = `$${data.field}`;
-    }
+  const sequelizeInstance = currentModel.sequelize;
 
-    const repartitionData = await currentModel
-      .aggregate([
-        {
-          $group: {
-            _id: `$${data.group_by}`,
-            count: { $sum: sum },
-          }
-        },
-        {
-          $project: {
-            key: '$_id',
-            value: '$count',
-            _id: false
-          }
-        }
-      ])
-      .sort({ key: 1 });
+  if (data.type === 'pie') {
+    const seqFnField = data.field ? sequelizeInstance.col(data.field) : 1;
+
+    const repartitionData = await currentModel.findAll({
+      attributes: [
+        [ data.group_by, 'key' ],
+        [ sequelizeInstance.fn(data.operation, seqFnField), 'value' ]
+      ],
+      group: ['key'],
+      raw: true
+    });
+
+    console.log('====repartitionData', repartitionData);
 
     res.json({ data: repartitionData });
   }
   else if (data.type === 'single_value') {
     if (data.operation === 'sum' || data.operation === 'avg') {
-      const sequelizeInstance = currentModel.sequelize;
-
       const queryData = await currentModel.findAll({
         attributes: [
           [sequelizeInstance.fn(data.operation, sequelizeInstance.col(data.field)), 'queryResult']
         ],
         raw: true
-        // group: ['total'],
-        // order: sequelize.literal('total DESC')
       });
 
       if (!queryData || !queryData[0] || typeof queryData[0].queryResult !== 'number') {
