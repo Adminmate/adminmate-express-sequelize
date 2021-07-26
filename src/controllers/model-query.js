@@ -12,15 +12,47 @@ const getGroupByFieldFormated_SQLite = (sequelizeObject, timerange, groupByDateF
       return sequelizeObject.fn('STRFTIME', '%Y-%W', sequelizeObject.col(groupByDateField));
     }
     case 'month': {
-      return sequelizeObject.fn('STRFTIME', '%Y-%m-01', sequelizeObject.col(groupByDateField));
+      return sequelizeObject.fn('STRFTIME', '%Y-%m', sequelizeObject.col(groupByDateField));
     }
     case 'year': {
-      return sequelizeObject.fn('STRFTIME', '%Y-01-01', sequelizeObject.col(groupByDateField));
+      return sequelizeObject.fn('STRFTIME', '%Y', sequelizeObject.col(groupByDateField));
     }
     default:
       return null;
   }
 };
+
+const getGroupByFieldFormated_MySQL = (sequelizeObject, timerange, groupByDateField) => {
+  const groupByDateFieldFormated = `\`${groupByDateField.replace('.', '`.`')}\``;
+  switch (timerange) {
+    case 'day': {
+      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m-%d 00:00:00');
+    }
+    case 'week': {
+      return sequelizeObject.literal(`DATE_FORMAT(DATE_SUB(${groupByDateFieldFormated}, INTERVAL ((7 + WEEKDAY(${groupByDateFieldFormated})) % 7) DAY), '%Y-%m-%d 00:00:00')`);
+    }
+    case 'month': {
+      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m-01 00:00:00');
+    }
+    case 'year': {
+      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-01-01 00:00:00');
+    }
+    default:
+      return null;
+  }
+}
+
+const getSequelizeDialect = connection => {
+  return connection.options.dialect;
+}
+
+const isMySQL = connection => {
+  return ['mysql', 'mariadb'].includes(getSequelizeDialect(connection));
+};
+
+const isSQLite = connection => {
+  return getSequelizeDialect(connection) === 'sqlite';
+}
 
 module.exports.customQuery = async (req, res) => {
   const data = req.body.data;
@@ -117,11 +149,25 @@ module.exports.customQuery = async (req, res) => {
       };
     }
 
+    let groupByElement;
+
+    // MySQL
+    if (isMySQL(currentModel.sequelize)) {
+      groupByElement = getGroupByFieldFormated_MySQL(currentModel.sequelize, data.timeframe, data.group_by);
+    }
+    // SQLite
+    else if (isSQLite(currentModel.sequelize)) {
+      groupByElement = getGroupByFieldFormated_SQLite(currentModel.sequelize, data.timeframe, data.group_by);
+    }
+    else {
+      return res.status(403).json({ message: 'Unmanaged database type' });
+    }
+
     // Request
     const repartitionData = await currentModel
       .findAll({
         attributes: [
-          [ getGroupByFieldFormated_SQLite(currentModel.sequelize, data.timeframe, data.group_by), 'key' ],
+          [ groupByElement, 'key' ],
           [ currentModel.sequelize.fn(data.operation, currentModel.sequelize.col(data.field)), 'value' ]
         ],
         group: 'key',
@@ -164,7 +210,7 @@ module.exports.customQuery = async (req, res) => {
       for (let i = 0; i < 12; i++) {
         const currentMonth = moment().subtract(i, 'month');
 
-        const countForTheTimeframe = _.find(repartitionData, { key: currentMonth.format('MM') });
+        const countForTheTimeframe = _.find(repartitionData, { key: currentMonth.format('YYYY-MM') });
         formattedData.push({
           key: currentMonth.startOf('month').format('MMM'),
           value: countForTheTimeframe ? countForTheTimeframe.value : 0
