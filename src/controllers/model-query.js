@@ -235,6 +235,56 @@ module.exports.customQuery = async (req, res) => {
 
     res.json({ data: finalData });
   }
+  else if (data.type === 'ranking') {
+    const relationshipModel = fnHelper.getModelObject(data.relationship_model);
+    if (!relationshipModel) {
+      return res.status(403).json({ message: 'Invalid request' });
+    }
+
+    const seqFnField = data.relationship_field ? sequelizeInstance.col(data.relationship_field) : 1;
+
+    const joinField = 'user_id';
+
+    // Get model properties
+    const keys = fnHelper.getModelProperties(relationshipModel);
+
+    // Construct default fields to fetch
+    const defaultFieldsToFetch = [ joinField ];
+
+    console.log('===defaultFieldsToFetch', defaultFieldsToFetch);
+
+    // Build ref fields for the model (for sequelize include purpose)
+    const includeConfig = fnHelper.getIncludeParams(relationshipModel, keys, defaultFieldsToFetch, {});
+    console.log('=====includeConfig', includeConfig);
+
+    const refModel = includeConfig.find(ic => ic.path === joinField);
+    console.log('========refModel', refModel);
+
+    const repartitionData = await relationshipModel.findAll({
+      attributes: [
+        [ sequelizeInstance.col(`${refModel.as}.id`), 'item_id' ],
+        [ sequelizeInstance.col(`${refModel.as}.firstname`), 'key' ],
+        [ sequelizeInstance.fn(data.relationship_operation, seqFnField), 'value' ]
+      ],
+      include: includeConfig,
+      group: [`${refModel.as}.id`],
+      limit: data.limit,
+      raw: true
+    });
+
+    const cleanData = repartitionData.map(d => ({
+      key: d.key,
+      value: d.value,
+      item_id: d.item_id
+    }));
+
+    // Order results
+    const orderedData = _.orderBy(cleanData, 'value', 'desc');
+
+    console.log('====repartitionData', orderedData);
+
+    res.json({ data: orderedData });
+  }
   else {
     res.json({ data: null });
   }

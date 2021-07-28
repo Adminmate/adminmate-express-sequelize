@@ -186,7 +186,7 @@ const getSchemaAssociationDetails = association => {
   };
 
   return schema;
-}
+};
 
 module.exports.getIncludeParams = (model, keys, fieldsToFetch, refFields = {}) => {
   // Build ref fields for the model (for sequelize include purpose)
