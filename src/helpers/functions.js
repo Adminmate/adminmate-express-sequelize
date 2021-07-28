@@ -12,17 +12,11 @@ const sequelizeDatatypes = {
   'BOOLEAN': 'Boolean'
 };
 
-module.exports.getModelProperties = model => {
+const getModelProperties = model => {
   let modelFields = [];
   const modelProps = model.rawAttributes;
-  // console.log('===============MODEL', model, modelProps);
 
   for (let key in modelProps) {
-    // console.log('Field: ', key); // this is name of the field
-    // console.log('TypeField: ', modelProps[key].type.key); // Sequelize type of field
-    // console.log('TypeField: ', modelProps[key].type, modelProps[key].type.options);
-    // console.log('=======================');
-
     const type = modelProps[key].type.key;
 
     let property = {
@@ -61,10 +55,14 @@ module.exports.getModelProperties = model => {
   return modelFields;
 };
 
+module.exports.getModelProperties = getModelProperties;
+
 // Return real sequelize model name (/= table name)
-module.exports.getModelRealname = model => {
+const getModelRealname = model => {
   return model.name;
 };
+
+module.exports.getModelRealname = getModelRealname;
 
 // To be used in this file
 const permutations = list => {
@@ -239,6 +237,38 @@ module.exports.constructSearch = (search, fieldsToSearchIn) => {
   }
 
   return params;
+};
+
+module.exports.getModelAssociations = modelCode => {
+  if (!modelCode) {
+    return null;
+  }
+
+  // Get current model mongoose realname
+  const currentModel = global._amConfig.models.find(m => m.slug === modelCode);
+  const currentModelRealName = getModelRealname(currentModel.model);
+
+  // List all the models that reference the current model
+  const associationsList = [];
+  global._amConfig.models
+    .filter(mc => mc.slug !== modelCode)
+    .forEach(mc => {
+      const modelProperties = getModelProperties(mc.model);
+      if (modelProperties && modelProperties.length) {
+        modelProperties.forEach(mp => {
+          if (mp.ref === currentModelRealName) {
+            associationsList.push({
+              model: mc.model,
+              model_slug: mc.slug,
+              slug: `${mc.slug}_${mp.path}`,
+              ref_field: mp.path
+            });
+          }
+        })
+      }
+    });
+
+  return associationsList;
 };
 
 const getModel = modelCode => {
