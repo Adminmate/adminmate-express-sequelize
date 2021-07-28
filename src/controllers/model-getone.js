@@ -18,10 +18,6 @@ module.exports.getOne = async (req, res) => {
   // Build ref fields for the model (for sequelize include purpose)
   const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
 
-  // Get model associations
-  const modelAssociations = fnHelper.getModelAssociations(modelName)
-    .map(ma => ({ slug: ma.slug, model_slug: ma.model_slug, ref_field: ma.ref_field }));
-
   let data = await currentModel
     .findOne({
       where: {
@@ -49,7 +45,6 @@ module.exports.getOne = async (req, res) => {
   data = fnHelper.refFields(data, includeConfig);
 
   res.json({
-    data,
-    linkedModels: modelAssociations
+    data
   });
 };

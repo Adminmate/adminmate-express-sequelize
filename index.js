@@ -18,6 +18,7 @@ const Adminmate = ({ projectId, secretKey, authKey, masterPassword, models, auth
     // General
     getModelProperties: fnHelper.getModelProperties,
     getModelRealname: fnHelper.getModelRealname,
+    getModelRelationships: fnHelper.getModelAssociations,
 
     // CRUD
     modelGetAll: getAll,

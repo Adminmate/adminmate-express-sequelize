@@ -239,19 +239,18 @@ module.exports.constructSearch = (search, fieldsToSearchIn) => {
   return params;
 };
 
-module.exports.getModelAssociations = modelCode => {
-  if (!modelCode) {
-    return null;
-  }
-
+module.exports.getModelAssociations = model => {
   // Get current model mongoose realname
-  const currentModel = global._amConfig.models.find(m => m.slug === modelCode);
-  const currentModelRealName = getModelRealname(currentModel.model);
+  const currentModelRealName = getModelRealname(model);
+
+  if (!currentModelRealName) {
+    return [];
+  }
 
   // List all the models that reference the current model
   const associationsList = [];
   global._amConfig.models
-    .filter(mc => mc.slug !== modelCode)
+    .filter(mc => getModelRealname(mc.model) !== currentModelRealName)
     .forEach(mc => {
       const modelProperties = getModelProperties(mc.model);
       if (modelProperties && modelProperties.length) {
