@@ -1,58 +1,8 @@
-const _ = require('lodash');
-const moment = require('moment');
-const { Op } = require('sequelize');
 const fnHelper = require('../helpers/functions');
-
-const getGroupByFieldFormated_SQLite = (sequelizeObject, timerange, groupByDateField) => {
-  switch (timerange) {
-    case 'day': {
-      return sequelizeObject.fn('STRFTIME', '%Y-%m-%d', sequelizeObject.col(groupByDateField));
-    }
-    case 'week': {
-      return sequelizeObject.fn('STRFTIME', '%Y-%W', sequelizeObject.col(groupByDateField));
-    }
-    case 'month': {
-      return sequelizeObject.fn('STRFTIME', '%Y-%m', sequelizeObject.col(groupByDateField));
-    }
-    case 'year': {
-      return sequelizeObject.fn('STRFTIME', '%Y', sequelizeObject.col(groupByDateField));
-    }
-    default:
-      return null;
-  }
-};
-
-const getGroupByFieldFormated_MySQL = (sequelizeObject, timerange, groupByDateField) => {
-  const groupByDateFieldFormated = `\`${groupByDateField.replace('.', '`.`')}\``;
-  switch (timerange) {
-    case 'day': {
-      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m-%d 00:00:00');
-    }
-    case 'week': {
-      return sequelizeObject.literal(`DATE_FORMAT(DATE_SUB(${groupByDateFieldFormated}, INTERVAL ((7 + WEEKDAY(${groupByDateFieldFormated})) % 7) DAY), '%Y-%m-%d 00:00:00')`);
-    }
-    case 'month': {
-      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m-01 00:00:00');
-    }
-    case 'year': {
-      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-01-01 00:00:00');
-    }
-    default:
-      return null;
-  }
-}
-
-const getSequelizeDialect = connection => {
-  return connection.options.dialect;
-}
-
-const isMySQL = connection => {
-  return ['mysql', 'mariadb'].includes(getSequelizeDialect(connection));
-};
-
-const isSQLite = connection => {
-  return getSequelizeDialect(connection) === 'sqlite';
-}
+const chartPie = require('./chart-pie');
+const chartValue = require('./chart-value');
+const chartTime = require('./chart-time');
+const chartRanking = require('./chart-ranking');
 
 module.exports.customQuery = async (req, res) => {
   const data = req.body.data;
@@ -63,229 +13,31 @@ module.exports.customQuery = async (req, res) => {
     return res.status(403).json({ message: 'Invalid request' });
   }
 
-  const sequelizeInstance = currentModel.sequelize;
+  let result = [ false, '' ];
 
-  if (data.type === 'pie') {
-    const seqFnField = data.field ? sequelizeInstance.col(data.field) : 1;
+  switch(data.type) {
+    case 'pie':
+      result = await chartPie(currentModel, data);
+      break;
 
-    const repartitionData = await currentModel.findAll({
-      attributes: [
-        [ data.group_by, 'key' ],
-        [ sequelizeInstance.fn(data.operation, seqFnField), 'value' ]
-      ],
-      group: ['key'],
-      raw: true
-    });
+    case 'single_value':
+    case 'objective':
+      result = await chartValue(currentModel, data);
+      break;
 
-    console.log('====repartitionData', repartitionData);
+    case 'bar':
+    case 'line':
+      result = await chartTime(currentModel, data);
+      break;
 
-    res.json({ data: repartitionData });
+    case 'ranking':
+      result = await chartRanking(currentModel, data);
+      break;
   }
-  else if (data.type === 'single_value' || data.type === 'objective') {
-    if (data.operation === 'sum' || data.operation === 'avg') {
-      const queryData = await currentModel.findAll({
-        attributes: [
-          [sequelizeInstance.fn(data.operation, sequelizeInstance.col(data.field)), 'queryResult']
-        ],
-        raw: true
-      });
 
-      if (!queryData || !queryData[0] || typeof queryData[0].queryResult !== 'number') {
-        return res.status(403).json();
-      }
-
-      res.json({ data: queryData[0].queryResult });
-    }
-    else {
-      const dataCount = await currentModel.count({});
-      res.json({ data: dataCount });
-    }
+  // Response
+  if (result[0] === true) {
+    return res.json({ data: result[1] });
   }
-  else if (data.type === 'bar' || data.type === 'line') {
-    if (!['day', 'week', 'month', 'year'].includes(data.timeframe)) {
-      return res.status(403).json();
-    }
-
-    let matchReq = {};
-
-    // Day timeframe
-    if (data.timeframe === 'day') {
-      matchReq = {
-        [Op.gte]: new Date(moment().subtract(30, 'day').startOf('day').format()),
-        [Op.lte]: new Date(moment().endOf('day').format())
-      };
-    }
-    // Week timeframe
-    else if (data.timeframe === 'week') {
-      matchReq = {
-        [Op.gte]: new Date(moment().subtract(26, 'week').startOf('week').format()),
-        [Op.lte]: new Date(moment().endOf('week').format())
-      };
-    }
-    // Month timeframe
-    else if (data.timeframe === 'month') {
-      matchReq = {
-        [Op.gte]: new Date(moment().subtract(12, 'month').startOf('month').format()),
-        [Op.lte]: new Date(moment().endOf('month').format())
-      };
-    }
-    // Year timeframe
-    else if (data.timeframe === 'year') {
-      matchReq = {
-        [Op.gte]: new Date(moment().subtract(8, 'year').startOf('year').format()),
-        [Op.lte]: new Date(moment().endOf('year').format())
-      };
-    }
-
-    let groupByElement;
-
-    // MySQL
-    if (isMySQL(currentModel.sequelize)) {
-      groupByElement = getGroupByFieldFormated_MySQL(currentModel.sequelize, data.timeframe, data.group_by);
-    }
-    // SQLite
-    else if (isSQLite(currentModel.sequelize)) {
-      groupByElement = getGroupByFieldFormated_SQLite(currentModel.sequelize, data.timeframe, data.group_by);
-    }
-    else {
-      return res.status(403).json({ message: 'Unmanaged database type' });
-    }
-
-    // Request
-    const repartitionData = await currentModel
-      .findAll({
-        attributes: [
-          [ groupByElement, 'key' ],
-          [ currentModel.sequelize.fn(data.operation, currentModel.sequelize.col(data.field)), 'value' ]
-        ],
-        group: 'key',
-        where: {
-          [data.group_by]: matchReq
-        },
-        raw: true
-      });
-
-    console.log('=========repartitionData', repartitionData);
-
-    const formattedData = [];
-
-    // Day timeframe
-    if (data.timeframe === 'day') {
-      for (let i = 0; i < 30; i++) {
-        const currentDate = moment().subtract(i, 'day');
-
-        const countForTheTimeframe = _.find(repartitionData, { key: currentDate.format('YYYY-MM-DD') });
-        formattedData.push({
-          key: currentDate.format('DD/MM'),
-          value: countForTheTimeframe ? countForTheTimeframe.value : 0
-        });
-      }
-    }
-    // Week timeframe
-    else if (data.timeframe === 'week') {
-      for (let i = 0; i < 26; i++) {
-        const currentWeek = moment().subtract(i, 'week');
-
-        const countForTheTimeframe = _.find(repartitionData, { key: currentWeek.format('YYYY-WW') });
-        formattedData.push({
-          key: currentWeek.startOf('week').format('DD/MM'),
-          value: countForTheTimeframe ? countForTheTimeframe.value : 0
-        });
-      }
-    }
-    // Month timeframe
-    else if (data.timeframe === 'month') {
-      for (let i = 0; i < 12; i++) {
-        const currentMonth = moment().subtract(i, 'month');
-
-        const countForTheTimeframe = _.find(repartitionData, { key: currentMonth.format('YYYY-MM') });
-        formattedData.push({
-          key: currentMonth.startOf('month').format('MMM'),
-          value: countForTheTimeframe ? countForTheTimeframe.value : 0
-        });
-      }
-    }
-    // Year timeframe
-    else if (data.timeframe === 'year') {
-      for (let i = 0; i < 8; i++) {
-        const currentYear = moment().subtract(i, 'year');
-
-        const countForTheTimeframe = _.find(repartitionData, { key: currentYear.format('YYYY') });
-        formattedData.push({
-          key: currentYear.startOf('year').format('YYYY'),
-          value: countForTheTimeframe ? countForTheTimeframe.value : 0
-        });
-      }
-    }
-
-    formattedDataOrdered = formattedData.reverse();
-
-    const finalData = {
-      config: {
-        xaxis: [
-          { dataKey: 'key' }
-        ],
-        yaxis: [
-          { dataKey: 'value' },
-          // { dataKey: 'test', orientation: 'right' }
-        ]
-      },
-      data: formattedDataOrdered
-    };
-
-    res.json({ data: finalData });
-  }
-  else if (data.type === 'ranking') {
-    const relationshipModel = fnHelper.getModelObject(data.relationship_model);
-    if (!relationshipModel) {
-      return res.status(403).json({ message: 'Invalid request' });
-    }
-
-    const seqFnField = data.relationship_field ? sequelizeInstance.col(data.relationship_field) : 1;
-
-    const joinField = 'user_id';
-
-    // Get model properties
-    const keys = fnHelper.getModelProperties(relationshipModel);
-
-    // Construct default fields to fetch
-    const defaultFieldsToFetch = [ joinField ];
-
-    console.log('===defaultFieldsToFetch', defaultFieldsToFetch);
-
-    // Build ref fields for the model (for sequelize include purpose)
-    const includeConfig = fnHelper.getIncludeParams(relationshipModel, keys, defaultFieldsToFetch, {});
-    console.log('=====includeConfig', includeConfig);
-
-    const refModel = includeConfig.find(ic => ic.path === joinField);
-    console.log('========refModel', refModel);
-
-    const repartitionData = await relationshipModel.findAll({
-      attributes: [
-        [ sequelizeInstance.col(`${refModel.as}.id`), 'item_id' ],
-        [ sequelizeInstance.col(`${refModel.as}.firstname`), 'key' ],
-        [ sequelizeInstance.fn(data.relationship_operation, seqFnField), 'value' ]
-      ],
-      include: includeConfig,
-      group: [`${refModel.as}.id`],
-      limit: data.limit,
-      raw: true
-    });
-
-    const cleanData = repartitionData.map(d => ({
-      key: d.key,
-      value: d.value,
-      item_id: d.item_id
-    }));
-
-    // Order results
-    const orderedData = _.orderBy(cleanData, 'value', 'desc');
-
-    console.log('====repartitionData', orderedData);
-
-    res.json({ data: orderedData });
-  }
-  else {
-    res.json({ data: null });
-  }
+  return res.status(403).json({ message: result[1] || 'Invalid request' });
 };
