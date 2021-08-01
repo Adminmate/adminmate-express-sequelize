@@ -15,7 +15,7 @@ const supertest = require('supertest');
 const jwt = require('jwt-simple');
 
 // Include the app
-const app = require('./app.js');
+const app = require('../app.js');
 
 // Endpoint prefix
 const prefix = '/adminmate/api';

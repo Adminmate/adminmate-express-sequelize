@@ -5,8 +5,10 @@
   "author": "Marc Delalonde",
   "scripts": {
     "start": "node ./index",
-    "test": "jest --testTimeout=10000 --verbose",
-    "reset-db": "NODE_ENV=test AM_DEV_MODE=true npm run migrate",
+    "test": "jest",
+    "reset-db": "npm run reset-mysql && npm run reset-sqlite",
+    "reset-mysql": "NODE_ENV=mysql npm run migrate",
+    "reset-sqlite": "NODE_ENV=sqlite npm run migrate",
     "migrate": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npm run seed",
     "seed": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:seed:all"
   },
@@ -25,6 +27,8 @@
     "jest": "^26.6.3",
     "jwt-simple": "^0.5.6",
     "mysql2": "^2.2.5",
+    "node-mocks-http": "^1.10.1",
+    "sqlite3": "^5.0.2",
     "supertest": "^6.1.3"
   }
 }

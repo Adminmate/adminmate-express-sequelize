@@ -289,15 +289,6 @@ module.exports.getModelObject = modelCode => {
   return currentModel.model;
 };
 
-module.exports.getModelSegments = modelCode => {
-  const currentModel = getModel(modelCode);
-  if (!currentModel) {
-    return null;
-  }
-
-  return currentModel.segments;
-};
-
 module.exports.getModelSegment = (modelCode, segmentCode) => {
   const currentModel = getModel(modelCode);
   if (!currentModel || !currentModel.segments || currentModel.segments.length === 0) {

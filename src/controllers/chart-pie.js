@@ -12,7 +12,5 @@ module.exports = async (currentModel, data) => {
     raw: true
   });
 
-  console.log('====repartitionData', repartitionData);
-
   return [ true, repartitionData ];
 };

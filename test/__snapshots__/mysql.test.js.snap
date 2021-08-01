@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chart PIE - Count 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "key": 4,
+      "value": 1,
+    },
+    Object {
+      "key": 5,
+      "value": 1,
+    },
+  ],
+}
+`;

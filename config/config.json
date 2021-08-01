@@ -1,5 +1,12 @@
 {
-  "test": {
+  "sqlite": {
+    "username": "demo",
+    "password": "demo",
+    "database": "demo",
+    "dialect": "sqlite",
+    "storage": "./test/database.sqlite"
+  },
+  "mysql": {
     "username": "demo",
     "password": "demo",
     "database": "db",

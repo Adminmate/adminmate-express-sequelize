@@ -52,7 +52,5 @@ module.exports = async (currentModel, data) => {
   // Order results
   const orderedData = _.orderBy(cleanData, 'value', 'desc');
 
-  console.log('====repartitionData', orderedData);
-
   return [ true, orderedData ];
 };
