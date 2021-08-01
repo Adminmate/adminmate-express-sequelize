@@ -39,5 +39,5 @@ module.exports.customQuery = async (req, res) => {
   if (result[0] === true) {
     return res.json({ data: result[1] });
   }
-  return res.status(403).json({ message: result[1] || 'Invalid request' });
+  res.status(403).json({ message: result[1] || 'Invalid request' });
 };

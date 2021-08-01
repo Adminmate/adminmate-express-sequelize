@@ -25,16 +25,16 @@ const getGroupByFieldFormated_MySQL = (sequelizeObject, timerange, groupByDateFi
   const groupByDateFieldFormated = `\`${groupByDateField.replace('.', '`.`')}\``;
   switch (timerange) {
     case 'day': {
-      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m-%d 00:00:00');
+      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m-%d');
     }
     case 'week': {
-      return sequelizeObject.literal(`DATE_FORMAT(DATE_SUB(${groupByDateFieldFormated}, INTERVAL ((7 + WEEKDAY(${groupByDateFieldFormated})) % 7) DAY), '%Y-%m-%d 00:00:00')`);
+      return sequelizeObject.literal(`DATE_FORMAT(DATE_SUB(${groupByDateFieldFormated}, INTERVAL ((7 + WEEKDAY(${groupByDateFieldFormated})) % 7) DAY), '%Y-%u')`);
     }
     case 'month': {
-      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m-01 00:00:00');
+      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m');
     }
     case 'year': {
-      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-01-01 00:00:00');
+      return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y');
     }
     default:
       return null;
