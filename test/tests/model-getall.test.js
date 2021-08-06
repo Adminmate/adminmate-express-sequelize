@@ -1,206 +1,63 @@
-// see https://stackoverflow.com/questions/46227783/encoding-not-recognized-in-jest-js
-require('mysql2/node_modules/iconv-lite').encodingExists('foo');
+const httpMocks = require('node-mocks-http');
+const { getAll } = require('../../src/controllers/model-getall');
 
-// Hide console.log
-// global.console = {
-//   log: jest.fn(),
-//   // Keep native behaviour for other methods
-//   error: console.error,
-//   warn: console.warn,
-//   info: console.info,
-//   debug: console.debug,
-// };
-
-const supertest = require('supertest');
-const jwt = require('jwt-simple');
-
-// Include the app
-const app = require('../app.js');
-
-// Endpoint prefix
-const prefix = '/adminmate/api';
-
-// Generate the admin token
-const adminToken = jwt.encode({
-  exp_date: Date.now() + 1000
-}, 'authkey_secret');
-
-// Generate the perm token
-const permToken = jwt.encode({
-  exp_date: Date.now() + 1000,
-  data: {
-    authorized_models: ['*']
-  }
-}, '7dn6m0zrcsqta5b57hug52xlira4upqdempch65mwy5guehr33vt0r1s8cyrnmko');
-
-// Before all
-beforeAll(done => {
-  done();
-});
-
-// POST /models/users
-describe('Testing POST /api/models/users', () => {
-  it('Without access token', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/users');
-
-    // Check response
-    expect(response.status).toBe(403);
-    expect(response.body.code).toBe('not_authorized');
+const makeUsersReq = data => {
+  return httpMocks.createRequest({
+    method: 'POST',
+    params: {
+      model: 'users'
+    },
+    body: data
   });
+};
 
-  it('With access token', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/users')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken);
+const makeCarsReq = data => {
+  return httpMocks.createRequest({
+    method: 'POST',
+    params: {
+      model: 'cars'
+    },
+    body: data
+  });
+};
 
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
+describe('Users request', () => {
+  it('- No parameter', async () => {
+    const request = makeUsersReq({});
+
+    const response = httpMocks.createResponse();
+    await getAll(request, response, (err) => expect(err).toBeFalsy());
+
+    const responseData = response._getJSONData();
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toMatchSpecificSnapshot('./__snapshots__/model-getall.shot');
   });
 });
 
-// POST /models/cars
-describe('Testing POST /api/models/cars', () => {
-  it('With access token', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken);
+describe('Cars request', () => {
+  it('- No parameter', async () => {
+    const request = makeCarsReq({});
 
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
+    const response = httpMocks.createResponse();
+    await getAll(request, response, (err) => expect(err).toBeFalsy());
+
+    const responseData = response._getJSONData();
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toMatchSpecificSnapshot('./__snapshots__/model-getall.shot');
   });
 
-  it('With "refFields" parameter', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken)
-      .send({
-        refFields: {
-          users: 'firstname lastname'
-        }
-      });
+  it('- With refFields params', async () => {
+    const request = makeCarsReq({
+      refFields: {
+        users: 'firstname lastname'
+      }
+    });
 
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
-  });
+    const response = httpMocks.createResponse();
+    await getAll(request, response, (err) => expect(err).toBeFalsy());
 
-  it('With "fields" parameter (name & manufacturer only)', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken)
-      .send({
-        fields: ['name', 'manufacturer']
-      });
-
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
-  });
-
-  it('With "page" parameter set to 2', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken)
-      .send({
-        page: 2
-      });
-
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
-  });
-
-  it('With a "search" parameter', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken)
-      .send({
-        fields: ['name'],
-        search: 'Porsche 91'
-      });
-
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
-  });
-
-  it('With a "order" parameter', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken)
-      .send({
-        fields: ['name'],
-        search: 'Porsche 91',
-        order: [['name', 'ASC']]
-      });
-
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
-  });
-
-  it('With a "filters" parameter', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken)
-      .send({
-        fields: ['name', 'year'],
-        search: 'Porsche',
-        filters: {
-          operator: 'or',
-          list: [
-            { field: 'year', operator: 'is', value: 1968 },
-            { field: 'year', operator: 'is', value: 1969 }
-          ]
-        }
-      });
-
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
-  });
-
-  it('With a "segment" parameter', async () => {
-    // Make request
-    const response = await supertest(app)
-      .post(prefix + '/models/cars')
-      .set('x-access-token', adminToken)
-      .set('x-perm-token', permToken)
-      .send({
-        fields: ['name', 'year'],
-        segment: {
-          type: 'code',
-          data: 'ferrari'
-        }
-      });
-
-    // Check response
-    expect(response.status).toBe(200);
-    expect(response.body).toMatchSnapshot();
+    const responseData = response._getJSONData();
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toMatchSpecificSnapshot('./__snapshots__/model-getall.shot');
   });
 });
-
-// After all
-afterAll(done => {
-  done();
-})

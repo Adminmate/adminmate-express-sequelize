@@ -152,7 +152,7 @@ module.exports.refFields = (item, fieldsToPopulate) => {
     if (matchingField) {
       let label = '';
       if (matchingField.attributes.join(' ') === 'id') {
-        label = item.id;
+        label = item[attr].id;
       }
       else {
         label = matchingField.attributes.join(' ').replace(/[a-z._]+/gi, word => {

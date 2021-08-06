@@ -4,13 +4,15 @@
     "password": "demo",
     "database": "demo",
     "dialect": "sqlite",
-    "storage": "./test/database.sqlite"
+    "storage": "./test/database.sqlite",
+    "logging": false
   },
   "mysql": {
     "username": "demo",
     "password": "demo",
     "database": "db",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   }
 }
