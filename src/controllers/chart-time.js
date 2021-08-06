@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const moment = require('moment');
+const strftime = require('strftime');
 const { Op } = require('sequelize');
 
 const getGroupByFieldFormated_SQLite = (sequelizeObject, timerange, groupByDateField) => {
@@ -28,7 +29,7 @@ const getGroupByFieldFormated_MySQL = (sequelizeObject, timerange, groupByDateFi
       return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m-%d');
     }
     case 'week': {
-      return sequelizeObject.literal(`DATE_FORMAT(DATE_SUB(${groupByDateFieldFormated}, INTERVAL ((7 + WEEKDAY(${groupByDateFieldFormated})) % 7) DAY), '%Y-%u')`);
+      return sequelizeObject.literal(`DATE_FORMAT(DATE_SUB(${groupByDateFieldFormated}, INTERVAL ((7 + WEEKDAY(${groupByDateFieldFormated})) % 7) DAY), '%Y-%v')`);
     }
     case 'month': {
       return sequelizeObject.fn('DATE_FORMAT', sequelizeObject.col(groupByDateField), '%Y-%m');
@@ -133,12 +134,35 @@ module.exports = async (currentModel, data) => {
   }
   // Week timeframe
   else if (data.timeframe === 'week') {
-    for (let i = 0; i < 26; i++) {
-      const currentWeek = moment().subtract(i, 'week');
+    let chartData = repartitionData;
 
-      const countForTheTimeframe = _.find(repartitionData, { key: currentWeek.format('YYYY-WW') });
+    // Special treatment for sqlite
+    // %W for strftime can be 00 and have no unix week equivalent
+    if (isSQLite(currentModel.sequelize)) {
+      const currentYear = moment().format('YYYY');
+      const previousYear = currentYear - 1;
+      const findWeek0 = chartData.find(d => d.key === currentYear + '-00');
+      const findWeek52 = chartData.find(d => d.key === previousYear + '-52');
+      if (findWeek0) {
+        if (findWeek52) {
+          findWeek52.value += findWeek0.value;
+        }
+        else {
+          chartData.push({ key: previousYear + '-52', value: findWeek0.value });
+        }
+      }
+    }
+
+    for (let i = 0; i < 26; i++) {
+      const currentWeek = moment().startOf('isoWeek').subtract(i, 'week');
+
+      const strftimeFormat = strftime('%Y-%W', currentWeek.toDate());
+      const momentFormat = currentWeek.format('YYYY-WW');
+      const keyValueToCheck = isSQLite(currentModel.sequelize) ? strftimeFormat : momentFormat;
+      const countForTheTimeframe = _.find(chartData, { key: keyValueToCheck });
+
       formattedData.push({
-        key: currentWeek.startOf('week').format('DD/MM'),
+        key: currentWeek.startOf('isoWeek').format('YYYY-MM-DD'),
         value: countForTheTimeframe ? countForTheTimeframe.value : 0
       });
     }

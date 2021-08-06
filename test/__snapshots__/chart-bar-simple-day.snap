@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Bar/Lines chart - Simple day 1`] = `
+Object {
+  "data": Object {
+    "config": Object {
+      "xaxis": Array [
+        Object {
+          "dataKey": "key",
+        },
+      ],
+      "yaxis": Array [
+        Object {
+          "dataKey": "value",
+        },
+      ],
+    },
+    "data": Array [
+      Object {
+        "key": "08/07",
+        "value": 0,
+      },
+      Object {
+        "key": "09/07",
+        "value": 0,
+      },
+      Object {
+        "key": "10/07",
+        "value": 0,
+      },
+      Object {
+        "key": "11/07",
+        "value": 0,
+      },
+      Object {
+        "key": "12/07",
+        "value": 0,
+      },
+      Object {
+        "key": "13/07",
+        "value": 0,
+      },
+      Object {
+        "key": "14/07",
+        "value": 0,
+      },
+      Object {
+        "key": "15/07",
+        "value": 0,
+      },
+      Object {
+        "key": "16/07",
+        "value": 0,
+      },
+      Object {
+        "key": "17/07",
+        "value": 0,
+      },
+      Object {
+        "key": "18/07",
+        "value": 0,
+      },
+      Object {
+        "key": "19/07",
+        "value": 0,
+      },
+      Object {
+        "key": "20/07",
+        "value": 0,
+      },
+      Object {
+        "key": "21/07",
+        "value": 0,
+      },
+      Object {
+        "key": "22/07",
+        "value": 0,
+      },
+      Object {
+        "key": "23/07",
+        "value": 0,
+      },
+      Object {
+        "key": "24/07",
+        "value": 0,
+      },
+      Object {
+        "key": "25/07",
+        "value": 0,
+      },
+      Object {
+        "key": "26/07",
+        "value": 0,
+      },
+      Object {
+        "key": "27/07",
+        "value": 0,
+      },
+      Object {
+        "key": "28/07",
+        "value": 0,
+      },
+      Object {
+        "key": "29/07",
+        "value": 0,
+      },
+      Object {
+        "key": "30/07",
+        "value": 0,
+      },
+      Object {
+        "key": "31/07",
+        "value": 0,
+      },
+      Object {
+        "key": "01/08",
+        "value": 0,
+      },
+      Object {
+        "key": "02/08",
+        "value": 0,
+      },
+      Object {
+        "key": "03/08",
+        "value": 0,
+      },
+      Object {
+        "key": "04/08",
+        "value": 0,
+      },
+      Object {
+        "key": "05/08",
+        "value": 0,
+      },
+      Object {
+        "key": "06/08",
+        "value": 0,
+      },
+    ],
+  },
+}
+`;

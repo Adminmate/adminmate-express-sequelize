@@ -1,4 +1,5 @@
 const httpMocks = require('node-mocks-http');
+const jestCustomSnapshot = require('jest-specific-snapshot');
 
 const { customQuery } = require('../../src/controllers/model-query');
 
@@ -26,7 +27,8 @@ describe('Pie chart', () => {
 
     const responseData = response._getJSONData();
     expect(response.statusCode).toBe(200);
-    expect(responseData).toMatchSnapshot();
+    // expect(responseData).toMatchSnapshot();
+    expect(responseData).toMatchSpecificSnapshot('./__snapshots__/chart-pie-count.snap');
   });
 });
 
@@ -47,7 +49,8 @@ describe('Bar/Lines chart', () => {
 
       const responseData = response._getJSONData();
       expect(response.statusCode).toBe(200);
-      expect(responseData).toMatchSnapshot();
+      // expect(responseData).toMatchSnapshot();
+      expect(responseData).toMatchSpecificSnapshot(`./__snapshots__/chart-bar-simple-${timeframe}.snap`);
     });
   })
 });
