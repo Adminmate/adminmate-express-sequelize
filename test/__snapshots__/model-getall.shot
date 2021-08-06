@@ -142,6 +142,347 @@ Object {
 }
 `;
 
+exports[`Cars request - With "fields" parameter (name & manufacturer only) 1`] = `
+Object {
+  "count": 20,
+  "data": Array [
+    Object {
+      "id": 20,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 250 LM",
+    },
+    Object {
+      "id": 19,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 275",
+    },
+    Object {
+      "id": 18,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 488",
+    },
+    Object {
+      "id": 17,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 250 GT Lusso",
+    },
+    Object {
+      "id": 16,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 250 GTO",
+    },
+    Object {
+      "id": 15,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 250 GT 2+2",
+    },
+    Object {
+      "id": 14,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 250 GT Berlinetta SWB",
+    },
+    Object {
+      "id": 13,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 250 GT Coupé",
+    },
+    Object {
+      "id": 12,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 250 MM",
+    },
+    Object {
+      "id": 11,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 212 Inter",
+    },
+  ],
+  "pagination": Object {
+    "count": 2,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars request - With "page" parameter set to 2 1`] = `
+Object {
+  "count": 20,
+  "data": Array [
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 10,
+      "manufacturer": "Porsche",
+      "name": "Porsche Macan",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 2,
+        "label": 2,
+        "type": "ref",
+      },
+      "year": 2014,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 9,
+      "manufacturer": "Porsche",
+      "name": "Porsche 924",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 2,
+        "label": 2,
+        "type": "ref",
+      },
+      "year": 1976,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 8,
+      "manufacturer": "Porsche",
+      "name": "Porsche 917",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 2,
+        "label": 2,
+        "type": "ref",
+      },
+      "year": 1969,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 7,
+      "manufacturer": "Porsche",
+      "name": "Porsche 914",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 1,
+        "label": 1,
+        "type": "ref",
+      },
+      "year": 1969,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 6,
+      "manufacturer": "Porsche",
+      "name": "Porsche 908",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 2,
+        "label": 2,
+        "type": "ref",
+      },
+      "year": 1968,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 5,
+      "manufacturer": "Porsche",
+      "name": "Porsche 906",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 1,
+        "label": 1,
+        "type": "ref",
+      },
+      "year": 1966,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 4,
+      "manufacturer": "Porsche",
+      "name": "Porsche 904",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 2,
+        "label": 2,
+        "type": "ref",
+      },
+      "year": 1964,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 3,
+      "manufacturer": "Porsche",
+      "name": "Porsche 911",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 1,
+        "label": 1,
+        "type": "ref",
+      },
+      "year": 1963,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 2,
+      "manufacturer": "Porsche",
+      "name": "Porsche 550",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 2,
+        "label": 2,
+        "type": "ref",
+      },
+      "year": 1953,
+    },
+    Object {
+      "createdAt": "2021-04-02T00:00:00.000Z",
+      "id": 1,
+      "manufacturer": "Porsche",
+      "name": "Porsche 356",
+      "updatedAt": "2021-04-02T00:00:00.000Z",
+      "userId": Object {
+        "id": 1,
+        "label": 1,
+        "type": "ref",
+      },
+      "year": 1948,
+    },
+  ],
+  "pagination": Object {
+    "count": 2,
+    "current": 2,
+  },
+}
+`;
+
+exports[`Cars request - With a "filters" parameter 1`] = `
+Object {
+  "count": 3,
+  "data": Array [
+    Object {
+      "id": 8,
+      "name": "Porsche 917",
+      "year": 1969,
+    },
+    Object {
+      "id": 7,
+      "name": "Porsche 914",
+      "year": 1969,
+    },
+    Object {
+      "id": 6,
+      "name": "Porsche 908",
+      "year": 1968,
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars request - With a "order" parameter 1`] = `
+Object {
+  "count": 3,
+  "data": Array [
+    Object {
+      "id": 3,
+      "name": "Porsche 911",
+    },
+    Object {
+      "id": 7,
+      "name": "Porsche 914",
+    },
+    Object {
+      "id": 8,
+      "name": "Porsche 917",
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars request - With a "search" parameter 1`] = `
+Object {
+  "count": 3,
+  "data": Array [
+    Object {
+      "id": 8,
+      "name": "Porsche 917",
+    },
+    Object {
+      "id": 7,
+      "name": "Porsche 914",
+    },
+    Object {
+      "id": 3,
+      "name": "Porsche 911",
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars request - With a "segment" parameter 1`] = `
+Object {
+  "count": 10,
+  "data": Array [
+    Object {
+      "id": 20,
+      "name": "Ferrari 250 LM",
+      "year": 1964,
+    },
+    Object {
+      "id": 19,
+      "name": "Ferrari 275",
+      "year": 1964,
+    },
+    Object {
+      "id": 18,
+      "name": "Ferrari 488",
+      "year": 1969,
+    },
+    Object {
+      "id": 17,
+      "name": "Ferrari 250 GT Lusso",
+      "year": 1962,
+    },
+    Object {
+      "id": 16,
+      "name": "Ferrari 250 GTO",
+      "year": 1962,
+    },
+    Object {
+      "id": 15,
+      "name": "Ferrari 250 GT 2+2",
+      "year": 1960,
+    },
+    Object {
+      "id": 14,
+      "name": "Ferrari 250 GT Berlinetta SWB",
+      "year": 1959,
+    },
+    Object {
+      "id": 13,
+      "name": "Ferrari 250 GT Coupé",
+      "year": 1954,
+    },
+    Object {
+      "id": 12,
+      "name": "Ferrari 250 MM",
+      "year": 1952,
+    },
+    Object {
+      "id": 11,
+      "name": "Ferrari 212 Inter",
+      "year": 1951,
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
 exports[`Cars request - With refFields params 1`] = `
 Object {
   "count": 20,
