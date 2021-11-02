@@ -68,7 +68,7 @@ module.exports = async (currentModel, data) => {
   if (data.timeframe === 'day') {
     const startOfCurrentDay = moment().startOf('day');
     matchReq = {
-      [Op.gte]: new Date(startOfCurrentDay.subtract(30, 'day').startOf('day').format()),
+      [Op.gte]: new Date(startOfCurrentDay.clone().subtract(30, 'day').startOf('day').format()),
       [Op.lt]: new Date(startOfCurrentDay.format())
     };
   }
@@ -76,7 +76,7 @@ module.exports = async (currentModel, data) => {
   else if (data.timeframe === 'week') {
     const startOfCurrentWeek = moment().startOf('week');
     matchReq = {
-      [Op.gte]: new Date(startOfCurrentWeek.subtract(26, 'week').startOf('week').format()),
+      [Op.gte]: new Date(startOfCurrentWeek.clone().subtract(26, 'week').startOf('week').format()),
       [Op.lt]: new Date(startOfCurrentWeek.format())
     };
   }
@@ -84,7 +84,7 @@ module.exports = async (currentModel, data) => {
   else if (data.timeframe === 'month') {
     const startOfCurrentMonth = moment().startOf('month');
     matchReq = {
-      [Op.gte]: new Date(startOfCurrentMonth.subtract(12, 'month').startOf('month').format()),
+      [Op.gte]: new Date(startOfCurrentMonth.clone().subtract(12, 'month').startOf('month').format()),
       [Op.lt]: new Date(startOfCurrentMonth.format())
     };
   }
@@ -92,7 +92,7 @@ module.exports = async (currentModel, data) => {
   else if (data.timeframe === 'year') {
     const startOfCurrentYear = moment().startOf('year');
     matchReq = {
-      [Op.gte]: new Date(startOfCurrentYear.subtract(8, 'year').startOf('year').format()),
+      [Op.gte]: new Date(startOfCurrentYear.clone().subtract(8, 'year').startOf('year').format()),
       [Op.lt]: new Date(startOfCurrentYear.format())
     };
   }
