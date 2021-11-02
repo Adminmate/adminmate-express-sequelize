@@ -19,3 +19,9 @@ require('./app.js');
 
 require('./tests/model-getall.test.js');
 require('./tests/model-query.test.js');
+
+// Close sequelize connection
+afterAll(async () => {
+  const db = require('../models/index');
+  await db.sequelize.close();
+});
