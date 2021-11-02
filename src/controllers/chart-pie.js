@@ -12,5 +12,11 @@ module.exports = async (currentModel, data) => {
     raw: true
   });
 
-  return [ true, repartitionData ];
+  return {
+    success: true,
+    data: {
+      config: null,
+      data: repartitionData
+    }
+  };
 };

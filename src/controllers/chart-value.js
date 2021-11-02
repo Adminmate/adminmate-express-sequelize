@@ -11,14 +11,30 @@ module.exports = async (currentModel, data) => {
     });
 
     if (!queryData || !queryData[0] || typeof queryData[0].queryResult !== 'number') {
-      return [ false, '' ];
+      return {
+        success: false,
+        message: ''
+      };
     }
 
-    return [ true, queryData[0].queryResult ];
+    return {
+      success: true,
+      data: {
+        config: null,
+        data: queryData[0].queryResult
+      }
+    };
   }
   else {
     // Query database
     const dataCount = await currentModel.count({});
-    return [ true, dataCount ];
+
+    return {
+      success: true,
+      data: {
+        config: null,
+        data: dataCount
+      }
+    };
   }
 };

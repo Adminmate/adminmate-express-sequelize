@@ -13,7 +13,10 @@ module.exports.customQuery = async (req, res) => {
     return res.status(403).json({ message: 'Invalid request' });
   }
 
-  let result = [ false, '' ];
+  let result = {
+    success: false,
+    message: ''
+  };
 
   switch(data.type) {
     case 'pie':
@@ -36,8 +39,13 @@ module.exports.customQuery = async (req, res) => {
   }
 
   // Response
-  if (result[0] === true) {
-    return res.json({ data: result[1] });
+  if (result.success === true) {
+    return res.json({
+      chart: result.data
+    });
   }
-  res.status(403).json({ message: result[1] || 'Invalid request' });
+
+  res.status(403).json({
+    message: result.message || 'Invalid request'
+  });
 };

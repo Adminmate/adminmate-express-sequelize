@@ -2,15 +2,18 @@
 
 exports[`Pie chart - Count 1`] = `
 Object {
-  "data": Array [
-    Object {
-      "key": 4,
-      "value": 1,
-    },
-    Object {
-      "key": 5,
-      "value": 15,
-    },
-  ],
+  "chart": Object {
+    "config": null,
+    "data": Array [
+      Object {
+        "key": 4,
+        "value": 1,
+      },
+      Object {
+        "key": 5,
+        "value": 15,
+      },
+    ],
+  },
 }
 `;

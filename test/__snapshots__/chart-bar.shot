@@ -2,7 +2,7 @@
 
 exports[`Bar/Lines chart - Simple day 1`] = `
 Object {
-  "data": Object {
+  "chart": Object {
     "config": Object {
       "xaxis": Array [
         Object {
@@ -17,123 +17,123 @@ Object {
     },
     "data": Array [
       Object {
-        "key": "08/07",
+        "key": "04/10",
         "value": 0,
       },
       Object {
-        "key": "09/07",
+        "key": "05/10",
         "value": 0,
       },
       Object {
-        "key": "10/07",
+        "key": "06/10",
         "value": 0,
       },
       Object {
-        "key": "11/07",
+        "key": "07/10",
         "value": 0,
       },
       Object {
-        "key": "12/07",
+        "key": "08/10",
         "value": 0,
       },
       Object {
-        "key": "13/07",
+        "key": "09/10",
         "value": 0,
       },
       Object {
-        "key": "14/07",
+        "key": "10/10",
         "value": 0,
       },
       Object {
-        "key": "15/07",
+        "key": "11/10",
         "value": 0,
       },
       Object {
-        "key": "16/07",
+        "key": "12/10",
         "value": 0,
       },
       Object {
-        "key": "17/07",
+        "key": "13/10",
         "value": 0,
       },
       Object {
-        "key": "18/07",
+        "key": "14/10",
         "value": 0,
       },
       Object {
-        "key": "19/07",
+        "key": "15/10",
         "value": 0,
       },
       Object {
-        "key": "20/07",
+        "key": "16/10",
         "value": 0,
       },
       Object {
-        "key": "21/07",
+        "key": "17/10",
         "value": 0,
       },
       Object {
-        "key": "22/07",
+        "key": "18/10",
         "value": 0,
       },
       Object {
-        "key": "23/07",
+        "key": "19/10",
         "value": 0,
       },
       Object {
-        "key": "24/07",
+        "key": "20/10",
         "value": 0,
       },
       Object {
-        "key": "25/07",
+        "key": "21/10",
         "value": 0,
       },
       Object {
-        "key": "26/07",
+        "key": "22/10",
         "value": 0,
       },
       Object {
-        "key": "27/07",
+        "key": "23/10",
         "value": 0,
       },
       Object {
-        "key": "28/07",
+        "key": "24/10",
         "value": 0,
       },
       Object {
-        "key": "29/07",
+        "key": "25/10",
         "value": 0,
       },
       Object {
-        "key": "30/07",
+        "key": "26/10",
         "value": 0,
       },
       Object {
-        "key": "31/07",
+        "key": "27/10",
         "value": 0,
       },
       Object {
-        "key": "01/08",
+        "key": "28/10",
         "value": 0,
       },
       Object {
-        "key": "02/08",
+        "key": "29/10",
         "value": 0,
       },
       Object {
-        "key": "03/08",
+        "key": "30/10",
         "value": 0,
       },
       Object {
-        "key": "04/08",
+        "key": "31/10",
         "value": 0,
       },
       Object {
-        "key": "05/08",
+        "key": "01/11",
         "value": 0,
       },
       Object {
-        "key": "06/08",
+        "key": "02/11",
         "value": 0,
       },
     ],
@@ -143,7 +143,7 @@ Object {
 
 exports[`Bar/Lines chart - Simple month 1`] = `
 Object {
-  "data": Object {
+  "chart": Object {
     "config": Object {
       "xaxis": Array [
         Object {
@@ -158,24 +158,12 @@ Object {
     },
     "data": Array [
       Object {
-        "key": "Sep",
-        "value": 0,
-      },
-      Object {
-        "key": "Oct",
-        "value": 0,
-      },
-      Object {
-        "key": "Nov",
-        "value": 0,
-      },
-      Object {
         "key": "Dec",
-        "value": 9,
+        "value": 0,
       },
       Object {
         "key": "Jan",
-        "value": 5,
+        "value": 0,
       },
       Object {
         "key": "Feb",
@@ -187,7 +175,7 @@ Object {
       },
       Object {
         "key": "Apr",
-        "value": 2,
+        "value": 0,
       },
       Object {
         "key": "May",
@@ -205,6 +193,18 @@ Object {
         "key": "Aug",
         "value": 0,
       },
+      Object {
+        "key": "Sep",
+        "value": 0,
+      },
+      Object {
+        "key": "Oct",
+        "value": 0,
+      },
+      Object {
+        "key": "Nov",
+        "value": 0,
+      },
     ],
   },
 }
@@ -212,7 +212,7 @@ Object {
 
 exports[`Bar/Lines chart - Simple week 1`] = `
 Object {
-  "data": Object {
+  "chart": Object {
     "config": Object {
       "xaxis": Array [
         Object {
@@ -226,58 +226,6 @@ Object {
       ],
     },
     "data": Array [
-      Object {
-        "key": "2021-02-08",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-02-15",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-02-22",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-03-01",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-03-08",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-03-15",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-03-22",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-03-29",
-        "value": 2,
-      },
-      Object {
-        "key": "2021-04-05",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-04-12",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-04-19",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-04-26",
-        "value": 0,
-      },
-      Object {
-        "key": "2021-05-03",
-        "value": 0,
-      },
       Object {
         "key": "2021-05-10",
         "value": 0,
@@ -330,6 +278,58 @@ Object {
         "key": "2021-08-02",
         "value": 0,
       },
+      Object {
+        "key": "2021-08-09",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-08-16",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-08-23",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-08-30",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-09-06",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-09-13",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-09-20",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-09-27",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-10-04",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-10-11",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-10-18",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-10-25",
+        "value": 0,
+      },
+      Object {
+        "key": "2021-11-01",
+        "value": 0,
+      },
     ],
   },
 }
@@ -337,7 +337,7 @@ Object {
 
 exports[`Bar/Lines chart - Simple year 1`] = `
 Object {
-  "data": Object {
+  "chart": Object {
     "config": Object {
       "xaxis": Array [
         Object {
@@ -377,11 +377,11 @@ Object {
       },
       Object {
         "key": "2020",
-        "value": 9,
+        "value": 0,
       },
       Object {
         "key": "2021",
-        "value": 7,
+        "value": 0,
       },
     ],
   },

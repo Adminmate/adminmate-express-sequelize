@@ -6,7 +6,10 @@ module.exports = async (currentModel, data) => {
 
   const relationshipModel = fnHelper.getModelObject(data.relationship_model);
   if (!relationshipModel) {
-    return [ false, 'Invalid request' ];
+    return {
+      success: false,
+      message: 'Invalid request'
+    };
   }
 
   const seqFnField = data.relationship_field ? sequelizeInstance.col(data.relationship_field) : 1;
@@ -52,5 +55,11 @@ module.exports = async (currentModel, data) => {
   // Order results
   const orderedData = _.orderBy(cleanData, 'value', 'desc');
 
-  return [ true, orderedData ];
+  return {
+    success: true,
+    data: {
+      config: null,
+      data: orderedData
+    }
+  };
 };

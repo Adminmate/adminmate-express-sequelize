@@ -56,37 +56,44 @@ const isSQLite = connection => {
 
 module.exports = async (currentModel, data) => {
   if (!['day', 'week', 'month', 'year'].includes(data.timeframe)) {
-    return [ false, '' ];
+    return {
+      success: false,
+      message: 'Invalid timeframe'
+    };
   }
 
   let matchReq = {};
 
   // Day timeframe
   if (data.timeframe === 'day') {
+    const startOfCurrentDay = moment().startOf('day');
     matchReq = {
-      [Op.gte]: new Date(moment().subtract(30, 'day').startOf('day').format()),
-      [Op.lte]: new Date(moment().endOf('day').format())
+      [Op.gte]: new Date(startOfCurrentDay.subtract(30, 'day').startOf('day').format()),
+      [Op.lt]: new Date(startOfCurrentDay.format())
     };
   }
   // Week timeframe
   else if (data.timeframe === 'week') {
+    const startOfCurrentWeek = moment().startOf('week');
     matchReq = {
-      [Op.gte]: new Date(moment().subtract(26, 'week').startOf('week').format()),
-      [Op.lte]: new Date(moment().endOf('week').format())
+      [Op.gte]: new Date(startOfCurrentWeek.subtract(26, 'week').startOf('week').format()),
+      [Op.lt]: new Date(startOfCurrentWeek.format())
     };
   }
   // Month timeframe
   else if (data.timeframe === 'month') {
+    const startOfCurrentMonth = moment().startOf('month');
     matchReq = {
-      [Op.gte]: new Date(moment().subtract(12, 'month').startOf('month').format()),
-      [Op.lte]: new Date(moment().endOf('month').format())
+      [Op.gte]: new Date(startOfCurrentMonth.subtract(12, 'month').startOf('month').format()),
+      [Op.lt]: new Date(startOfCurrentMonth.format())
     };
   }
   // Year timeframe
   else if (data.timeframe === 'year') {
+    const startOfCurrentYear = moment().startOf('year');
     matchReq = {
-      [Op.gte]: new Date(moment().subtract(8, 'year').startOf('year').format()),
-      [Op.lte]: new Date(moment().endOf('year').format())
+      [Op.gte]: new Date(startOfCurrentYear.subtract(8, 'year').startOf('year').format()),
+      [Op.lt]: new Date(startOfCurrentYear.format())
     };
   }
 
@@ -101,7 +108,10 @@ module.exports = async (currentModel, data) => {
     groupByElement = getGroupByFieldFormated_SQLite(currentModel.sequelize, data.timeframe, data.group_by);
   }
   else {
-    return [ false, 'Unmanaged database type' ];
+    return {
+      success: false,
+      message: 'Unmanaged database type'
+    };
   }
 
   // Query database
@@ -194,18 +204,21 @@ module.exports = async (currentModel, data) => {
 
   formattedDataOrdered = formattedData.reverse();
 
-  const finalData = {
-    config: {
-      xaxis: [
-        { dataKey: 'key' }
-      ],
-      yaxis: [
-        { dataKey: 'value' },
-        // { dataKey: 'test', orientation: 'right' }
-      ]
-    },
-    data: formattedDataOrdered
+  const chartConfig = {
+    xaxis: [
+      { dataKey: 'key' }
+    ],
+    yaxis: [
+      { dataKey: 'value' },
+      // { dataKey: 'test', orientation: 'right' }
+    ]
   };
 
-  return [ true, finalData ];
+  return {
+    success: true,
+    data: {
+      config: chartConfig,
+      data: formattedDataOrdered
+    }
+  };
 };
