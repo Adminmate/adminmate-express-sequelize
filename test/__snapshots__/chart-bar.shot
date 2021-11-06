@@ -17,18 +17,6 @@ Object {
     },
     "data": Array [
       Object {
-        "key": "04/10",
-        "value": 0,
-      },
-      Object {
-        "key": "05/10",
-        "value": 0,
-      },
-      Object {
-        "key": "06/10",
-        "value": 0,
-      },
-      Object {
         "key": "07/10",
         "value": 0,
       },
@@ -136,6 +124,18 @@ Object {
         "key": "02/11",
         "value": 0,
       },
+      Object {
+        "key": "03/11",
+        "value": 0,
+      },
+      Object {
+        "key": "04/11",
+        "value": 0,
+      },
+      Object {
+        "key": "05/11",
+        "value": 0,
+      },
     ],
   },
 }
@@ -158,12 +158,16 @@ Object {
     },
     "data": Array [
       Object {
-        "key": "Dec",
+        "key": "Nov",
         "value": 0,
       },
       Object {
+        "key": "Dec",
+        "value": 9,
+      },
+      Object {
         "key": "Jan",
-        "value": 0,
+        "value": 5,
       },
       Object {
         "key": "Feb",
@@ -175,7 +179,7 @@ Object {
       },
       Object {
         "key": "Apr",
-        "value": 0,
+        "value": 2,
       },
       Object {
         "key": "May",
@@ -201,10 +205,6 @@ Object {
         "key": "Oct",
         "value": 0,
       },
-      Object {
-        "key": "Nov",
-        "value": 0,
-      },
     ],
   },
 }
@@ -226,6 +226,10 @@ Object {
       ],
     },
     "data": Array [
+      Object {
+        "key": "2021-05-03",
+        "value": 0,
+      },
       Object {
         "key": "2021-05-10",
         "value": 0,
@@ -326,10 +330,6 @@ Object {
         "key": "2021-10-25",
         "value": 0,
       },
-      Object {
-        "key": "2021-11-01",
-        "value": 0,
-      },
     ],
   },
 }
@@ -351,6 +351,10 @@ Object {
       ],
     },
     "data": Array [
+      Object {
+        "key": "2013",
+        "value": 0,
+      },
       Object {
         "key": "2014",
         "value": 0,
@@ -377,11 +381,7 @@ Object {
       },
       Object {
         "key": "2020",
-        "value": 0,
-      },
-      Object {
-        "key": "2021",
-        "value": 0,
+        "value": 9,
       },
     ],
   },

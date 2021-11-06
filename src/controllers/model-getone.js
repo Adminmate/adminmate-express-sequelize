@@ -4,7 +4,8 @@ const fnHelper = require('../helpers/functions');
 module.exports.getOne = async (req, res) => {
   const modelName = req.params.model;
   const modelItemId = req.params.id;
-  const refFields = req.body.refFields || {};
+  const fieldsToFetch = req.headers['am-model-fields'] || [];
+  const refFields = req.headers['am-ref-fields'] || {};
 
   const currentModel = fnHelper.getModelObject(modelName);
   if (!currentModel) {
@@ -13,7 +14,7 @@ module.exports.getOne = async (req, res) => {
 
   const keys = fnHelper.getModelProperties(currentModel);
   const defaultFieldsToFetch = keys.map(key => key.path);
-  const fieldsToFetchSafe = Array.isArray(req.body.fields) && req.body.fields.length ? req.body.fields : defaultFieldsToFetch;
+  const fieldsToFetchSafe = Array.isArray(fieldsToFetch) && fieldsToFetch.length ? fieldsToFetch : defaultFieldsToFetch;
 
   // Build ref fields for the model (for sequelize include purpose)
   const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
