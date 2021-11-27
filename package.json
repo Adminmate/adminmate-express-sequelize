@@ -3,6 +3,18 @@
   "version": "1.0.2",
   "description": "Adminmate Express/Sequelize connector",
   "author": "Marc Delalonde",
+  "homepage": "http://adminmate.io",
+  "license": "GPL-3.0",
+  "keywords": [
+    "adminmate",
+    "admin",
+    "panel",
+    "interface",
+    "back-office",
+    "mysql",
+    "postgresql",
+    "sequelize"
+  ],
   "scripts": {
     "start": "node ./index",
     "test": "jest --runInBand",
@@ -17,7 +29,7 @@
     "url": "https://github.com/Adminmate/adminmate-express-sequelize.git"
   },
   "dependencies": {
-    "adminmate-express-core": "^1.1.4",
+    "adminmate-express-core": "^1.1.5",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "sequelize": "^6.5.0",
