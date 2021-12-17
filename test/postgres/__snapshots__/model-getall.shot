@@ -2,12 +2,113 @@
 
 exports[`Cars with "fields" parameter (name & manufacturer only) 1`] = `
 Object {
-  "count": 1,
+  "count": 12,
   "data": Array [
     Object {
+      "id": 12,
+      "manufacturer": "Manufacturer4",
+      "name": "Car12",
+    },
+    Object {
+      "id": 11,
+      "manufacturer": "Manufacturer1",
+      "name": "Car11",
+    },
+    Object {
+      "id": 10,
+      "manufacturer": "Manufacturer1",
+      "name": "Car10",
+    },
+    Object {
+      "id": 9,
+      "manufacturer": "Manufacturer1",
+      "name": "Car9",
+    },
+    Object {
+      "id": 8,
+      "manufacturer": "Manufacturer1",
+      "name": "Car8",
+    },
+    Object {
+      "id": 7,
+      "manufacturer": "Manufacturer1",
+      "name": "Car7",
+    },
+    Object {
+      "id": 6,
+      "manufacturer": "Manufacturer3",
+      "name": "Car6",
+    },
+    Object {
+      "id": 5,
+      "manufacturer": "Manufacturer3",
+      "name": "Car5",
+    },
+    Object {
+      "id": 4,
+      "manufacturer": "Manufacturer4",
+      "name": "Car4",
+    },
+    Object {
+      "id": 3,
+      "manufacturer": "Manufacturer2",
+      "name": "Car3",
+    },
+  ],
+  "pagination": Object {
+    "count": 2,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars with "page" parameter set to 2 1`] = `
+Object {
+  "count": 12,
+  "data": Array [
+    Object {
+      "id": 2,
+      "manufacturer": "Manufacturer1",
+      "name": "Car2",
+      "userId": Object {
+        "id": 1,
+        "label": 1,
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+    Object {
       "id": 1,
-      "manufacturer": "ford",
-      "name": "ford focus",
+      "manufacturer": "Manufacturer1",
+      "name": "Car1",
+      "userId": Object {
+        "id": 1,
+        "label": 1,
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+  ],
+  "pagination": Object {
+    "count": 2,
+    "current": 2,
+  },
+}
+`;
+
+exports[`Cars with a "filters" parameter 1`] = `
+Object {
+  "count": 2,
+  "data": Array [
+    Object {
+      "id": 7,
+      "name": "Car7",
+      "year": 1969,
+    },
+    Object {
+      "id": 6,
+      "name": "Car6",
+      "year": 1968,
     },
   ],
   "pagination": Object {
@@ -17,34 +118,29 @@ Object {
 }
 `;
 
-exports[`Cars with "page" parameter set to 2 1`] = `
-Object {
-  "count": 1,
-  "data": Array [],
-  "pagination": Object {
-    "count": 1,
-    "current": 2,
-  },
-}
-`;
-
-exports[`Cars with a "filters" parameter 1`] = `
-Object {
-  "count": 0,
-  "data": Array [],
-  "pagination": Object {
-    "count": 0,
-    "current": 1,
-  },
-}
-`;
-
 exports[`Cars with a "order" parameter 1`] = `
 Object {
-  "count": 0,
-  "data": Array [],
+  "count": 4,
+  "data": Array [
+    Object {
+      "id": 1,
+      "name": "Car1",
+    },
+    Object {
+      "id": 10,
+      "name": "Car10",
+    },
+    Object {
+      "id": 11,
+      "name": "Car11",
+    },
+    Object {
+      "id": 12,
+      "name": "Car12",
+    },
+  ],
   "pagination": Object {
-    "count": 0,
+    "count": 1,
     "current": 1,
   },
 }
@@ -52,10 +148,15 @@ Object {
 
 exports[`Cars with a "search" parameter 1`] = `
 Object {
-  "count": 0,
-  "data": Array [],
+  "count": 1,
+  "data": Array [
+    Object {
+      "id": 6,
+      "name": "Car6",
+    },
+  ],
   "pagination": Object {
-    "count": 0,
+    "count": 1,
     "current": 1,
   },
 }
@@ -63,28 +164,26 @@ Object {
 
 exports[`Cars with a "segment" parameter 1`] = `
 Object {
-  "count": 0,
-  "data": Array [],
-  "pagination": Object {
-    "count": 0,
-    "current": 1,
-  },
-}
-`;
-
-exports[`Cars with refFields params 1`] = `
-Object {
-  "count": 1,
+  "count": 4,
   "data": Array [
     Object {
+      "id": 12,
+      "name": "Car12",
+      "year": 1995,
+    },
+    Object {
+      "id": 11,
+      "name": "Car11",
+      "year": 1995,
+    },
+    Object {
+      "id": 10,
+      "name": "Car10",
+      "year": 1995,
+    },
+    Object {
       "id": 1,
-      "manufacturer": "ford",
-      "name": "ford focus",
-      "userId": Object {
-        "id": 1,
-        "label": "marc reese",
-        "type": "ref",
-      },
+      "name": "Car1",
       "year": 1995,
     },
   ],
@@ -95,16 +194,187 @@ Object {
 }
 `;
 
-exports[`Users simple request 1`] = `
+exports[`Cars with refFields params 1`] = `
 Object {
-  "count": 1,
+  "count": 12,
   "data": Array [
     Object {
+      "id": 12,
+      "manufacturer": "Manufacturer4",
+      "name": "Car12",
+      "userId": Object {
+        "id": 2,
+        "label": "Firstname 2 Lastname 2",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+    Object {
+      "id": 11,
+      "manufacturer": "Manufacturer1",
+      "name": "Car11",
+      "userId": Object {
+        "id": 1,
+        "label": "Firstname 1 Lastname 1",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+    Object {
+      "id": 10,
+      "manufacturer": "Manufacturer1",
+      "name": "Car10",
+      "userId": Object {
+        "id": 1,
+        "label": "Firstname 1 Lastname 1",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+    Object {
+      "id": 9,
+      "manufacturer": "Manufacturer1",
+      "name": "Car9",
+      "userId": Object {
+        "id": 1,
+        "label": "Firstname 1 Lastname 1",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+    Object {
+      "id": 8,
+      "manufacturer": "Manufacturer1",
+      "name": "Car8",
+      "userId": Object {
+        "id": 5,
+        "label": "Firstname 5 Lastname 5",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+    Object {
+      "id": 7,
+      "manufacturer": "Manufacturer1",
+      "name": "Car7",
+      "userId": Object {
+        "id": 4,
+        "label": "Firstname 4 Lastname 4",
+        "type": "ref",
+      },
+      "year": 1969,
+    },
+    Object {
+      "id": 6,
+      "manufacturer": "Manufacturer3",
+      "name": "Car6",
+      "userId": Object {
+        "id": 3,
+        "label": "Firstname 3 Lastname 3",
+        "type": "ref",
+      },
+      "year": 1968,
+    },
+    Object {
+      "id": 5,
+      "manufacturer": "Manufacturer3",
+      "name": "Car5",
+      "userId": Object {
+        "id": 3,
+        "label": "Firstname 3 Lastname 3",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+    Object {
+      "id": 4,
+      "manufacturer": "Manufacturer4",
+      "name": "Car4",
+      "userId": Object {
+        "id": 3,
+        "label": "Firstname 3 Lastname 3",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+    Object {
+      "id": 3,
+      "manufacturer": "Manufacturer2",
+      "name": "Car3",
+      "userId": Object {
+        "id": 3,
+        "label": "Firstname 3 Lastname 3",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+  ],
+  "pagination": Object {
+    "count": 2,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Users simple request 1`] = `
+Object {
+  "count": 8,
+  "data": Array [
+    Object {
+      "birthdate": "2021-11-08T00:00:00.000Z",
+      "firstname": "Firstname 8",
+      "id": 8,
+      "lastname": "Lastname 8",
+      "rating": 3,
+    },
+    Object {
+      "birthdate": "2021-11-07T00:00:00.000Z",
+      "firstname": "Firstname 7",
+      "id": 7,
+      "lastname": "Lastname 7",
+      "rating": 9,
+    },
+    Object {
+      "birthdate": "2021-11-06T00:00:00.000Z",
+      "firstname": "Firstname 6",
+      "id": 6,
+      "lastname": "Lastname 6",
+      "rating": 6,
+    },
+    Object {
+      "birthdate": "2021-11-05T00:00:00.000Z",
+      "firstname": "Firstname 5",
+      "id": 5,
+      "lastname": "Lastname 5",
+      "rating": 2,
+    },
+    Object {
+      "birthdate": "2021-11-04T00:00:00.000Z",
+      "firstname": "Firstname 4",
+      "id": 4,
+      "lastname": "Lastname 4",
+      "rating": 7,
+    },
+    Object {
+      "birthdate": "2021-11-03T00:00:00.000Z",
+      "firstname": "Firstname 3",
+      "id": 3,
+      "lastname": "Lastname 3",
+      "rating": 6,
+    },
+    Object {
+      "birthdate": "2021-11-02T00:00:00.000Z",
+      "firstname": "Firstname 2",
+      "id": 2,
+      "lastname": "Lastname 2",
+      "rating": 8,
+    },
+    Object {
       "birthdate": "2021-11-01T00:00:00.000Z",
-      "firstname": "marc",
+      "firstname": "Firstname 1",
       "id": 1,
-      "lastname": "reese",
-      "rating": 1,
+      "lastname": "Lastname 1",
+      "rating": 10,
     },
   ],
   "pagination": Object {

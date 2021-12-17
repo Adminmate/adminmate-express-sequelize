@@ -38,7 +38,7 @@ const amConfig = {
           label: 'Ferrari',
           code: 'ferrari',
           query: {
-            name: { [Op.like]: '%erra%' }
+            name: { [Op.like]: '%ar1%' } // car10 car11 car12
           }
         }
       ]
