@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cars with "fields" parameter (name & manufacturer only) 1`] = `
+Object {
+  "count": 1,
+  "data": Array [
+    Object {
+      "id": 1,
+      "manufacturer": "ford",
+      "name": "ford focus",
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars with "page" parameter set to 2 1`] = `
+Object {
+  "count": 1,
+  "data": Array [],
+  "pagination": Object {
+    "count": 1,
+    "current": 2,
+  },
+}
+`;
+
+exports[`Cars with a "filters" parameter 1`] = `
+Object {
+  "count": 0,
+  "data": Array [],
+  "pagination": Object {
+    "count": 0,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars with a "order" parameter 1`] = `
+Object {
+  "count": 0,
+  "data": Array [],
+  "pagination": Object {
+    "count": 0,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars with a "search" parameter 1`] = `
+Object {
+  "count": 0,
+  "data": Array [],
+  "pagination": Object {
+    "count": 0,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars with a "segment" parameter 1`] = `
+Object {
+  "count": 0,
+  "data": Array [],
+  "pagination": Object {
+    "count": 0,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars with refFields params 1`] = `
+Object {
+  "count": 1,
+  "data": Array [
+    Object {
+      "id": 1,
+      "manufacturer": "ford",
+      "name": "ford focus",
+      "userId": Object {
+        "id": 1,
+        "label": "marc reese",
+        "type": "ref",
+      },
+      "year": 1995,
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Users simple request 1`] = `
+Object {
+  "count": 1,
+  "data": Array [
+    Object {
+      "birthdate": "2021-11-01T00:00:00.000Z",
+      "firstname": "marc",
+      "id": 1,
+      "lastname": "reese",
+      "rating": 1,
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;

@@ -33,6 +33,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
+    "pg": "^8.7.1",
     "sequelize": "^6.5.0",
     "serialize-error": "^7.0.1",
     "sqlite3": "^5.0.2",
