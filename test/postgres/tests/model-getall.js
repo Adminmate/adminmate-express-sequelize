@@ -63,7 +63,7 @@ it('Cars with "page" parameter set to 2', async () => {
 
 it('Cars with a "search" parameter', async () => {
   const { responseData } = await makeReq('cars', 'GET', {
-    search: 'Car6'
+    search: 'Ferrari'
   }, {
     'am-model-fields': ['name']
   });
@@ -75,7 +75,7 @@ it('Cars with a "search" parameter', async () => {
 
 it('Cars with a "order" parameter', async () => {
   const { responseData } = await makeReq('cars', 'GET', {
-    search: 'Car1',
+    search: 'Ferrari',
     order: [['name', 'ASC']]
   }, {
     'am-model-fields': ['name']
@@ -88,7 +88,7 @@ it('Cars with a "order" parameter', async () => {
 
 it('Cars with a "filters" parameter', async () => {
   const { responseData } = await makeReq('cars', 'GET', {
-    search: 'Car',
+    search: 'Ferrari',
     filters: {
       operator: 'or',
       list: [
