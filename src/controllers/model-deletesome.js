@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const compositeHelper = require('../helpers/composite');
 const fnHelper = require('../helpers/functions');
 
 module.exports.deleteSome = async (req, res) => {
@@ -14,9 +14,13 @@ module.exports.deleteSome = async (req, res) => {
     return res.status(403).json({ message: 'Invalid request' });
   }
 
+  // Get model primary keys
+  const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
+  const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, itemIds);
+
   const deleteReq = await currentModel
     .destroy({
-      where: { id: itemIds }
+      where: whereClause
     })
     .catch(e => {
       res.status(403).json({ message: 'Unable to delete the model items' });

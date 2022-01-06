@@ -1,4 +1,6 @@
+const _ = require('lodash');
 const { Op } = require('sequelize');
+const compositeHelper = require('../helpers/composite');
 const fnHelper = require('../helpers/functions');
 
 module.exports.getOne = async (req, res) => {
@@ -12,6 +14,10 @@ module.exports.getOne = async (req, res) => {
     return res.status(403).json({ message: 'Invalid request' });
   }
 
+  // Get model primary keys
+  const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
+  const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, [modelItemId]);
+
   const keys = fnHelper.getModelProperties(currentModel);
   const defaultFieldsToFetch = keys.map(key => key.path);
   const fieldsToFetchSafe = Array.isArray(fieldsToFetch) && fieldsToFetch.length ? fieldsToFetch : defaultFieldsToFetch;
@@ -19,12 +25,13 @@ module.exports.getOne = async (req, res) => {
   // Build ref fields for the model (for sequelize include purpose)
   const includeConfig = fnHelper.getIncludeParams(currentModel, keys, fieldsToFetchSafe, refFields);
 
+  // Attributes to fetch (just to be sure primary keys are in)
+  const attributes = _.uniq([...fieldsToFetchSafe, ...primaryKeys]);
+
   let data = await currentModel
     .findOne({
-      where: {
-        id: modelItemId
-      },
-      attributes: [...fieldsToFetchSafe, 'id'], // just to be sure id is in
+      where: whereClause,
+      attributes,
       include: includeConfig
     })
     .catch(e => {
@@ -44,6 +51,9 @@ module.exports.getOne = async (req, res) => {
   });
 
   data = fnHelper.refFields(data, includeConfig);
+
+  // Annotate items
+  compositeHelper.annotateItems(primaryKeys, [data]);
 
   res.json({
     data

@@ -1,3 +1,4 @@
+const compositeHelper = require('../helpers/composite');
 const fnHelper = require('../helpers/functions');
 
 module.exports.getIn = async (modelName, ids) => {
@@ -6,16 +7,15 @@ module.exports.getIn = async (modelName, ids) => {
     return null;
   }
 
+  // Get model primary keys
+  const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
+  const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, ids);
+
   // Get corresponding items
   const items = await currentModel
     .findAll({
-      where: {
-        id: ids
-      }
+      where: whereClause
     });
-    // .catch(e => {
-    //   res.status(403).json({ message: e.message });
-    // });
 
   return items;
 };

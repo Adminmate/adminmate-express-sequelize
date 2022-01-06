@@ -1,5 +1,7 @@
+const _ = require('lodash');
 const { Op } = require('sequelize');
 const fnHelper = require('../helpers/functions');
+const compositeHelper = require('../helpers/composite');
 
 module.exports.getAll = async (req, res) => {
   const modelName = req.params.model;
@@ -11,12 +13,18 @@ module.exports.getAll = async (req, res) => {
   const fieldsToSearchIn = req.query.fieldsToSearchIn || [];
   const page = parseInt(req.query.page || 1);
   const nbItemPerPage = 10;
-  const defaultOrdering = [ ['id', 'DESC'] ];
   const order = req.query.order || null;
+  let defaultOrdering = [ ['id', 'DESC'] ];
 
   const currentModel = fnHelper.getModelObject(modelName);
   if (!currentModel) {
     return res.status(403).json({ message: 'Invalid request' });
+  }
+
+  // Get model primary keys
+  const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
+  if (primaryKeys && primaryKeys.length) {
+    defaultOrdering = [ [primaryKeys[0], 'DESC'] ];
   }
 
   // Get model properties
@@ -69,11 +77,14 @@ module.exports.getAll = async (req, res) => {
 
   const findParams = queriesArray.length ? { [Op.and]: queriesArray } : {};
 
+  // Attributes to fetch (just to be sure primary keys are in)
+  const attributes = _.uniq([...fieldsToFetchSafe, ...primaryKeys]);
+
   // Fetch data
   const data = await currentModel
     .findAndCountAll({
       where: findParams,
-      attributes: [...fieldsToFetchSafe, 'id'], // just to be sure id is in
+      attributes,
       include: includeConfig,
       order: orderSafe,
       // Pagination
@@ -104,6 +115,9 @@ module.exports.getAll = async (req, res) => {
     .map(item => {
       return fnHelper.refFields(item, includeConfig);
     });
+
+  // Annotate items
+  compositeHelper.annotateItems(primaryKeys, formattedData);
 
   // Total result - not taking pagination in account
   const dataCount = data.count;

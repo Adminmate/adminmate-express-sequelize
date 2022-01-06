@@ -19,6 +19,7 @@ require('./postgres/app.js');
 
 // Tests
 require('./postgres/tests/model-getall.js');
+require('./postgres/tests/model-pk.js');
 
 // Close sequelize connection
 afterAll(async () => {

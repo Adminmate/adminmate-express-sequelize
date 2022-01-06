@@ -9,7 +9,8 @@ const sequelizeDatatypes = {
   'FLOAT': 'Number',
   'DATE': 'Date',
   'ENUM': 'String',
-  'BOOLEAN': 'Boolean'
+  'BOOLEAN': 'Boolean',
+  'JSON': 'JSON'
 };
 
 const getModelProperties = model => {
@@ -239,6 +240,17 @@ module.exports.constructSearch = (search, fieldsToSearchIn) => {
   return params;
 };
 
+const getModelPrimaryKeys = model => {
+  return model.primaryKeyAttributes || ['id'];
+};
+
+module.exports.getModelPrimaryKeys = getModelPrimaryKeys;
+
+module.exports.getModelIdField = model => {
+  const primaryKeys = getModelPrimaryKeys(model);
+  return primaryKeys.length > 1 ? 'amCompositeId' : primaryKeys[0];
+};
+
 module.exports.getModelAssociations = model => {
   // Get current model mongoose realname
   const currentModelRealName = getModelRealname(model);
@@ -280,7 +292,7 @@ const getModel = modelCode => {
   return currentModel;
 };
 
-module.exports.getModelObject = modelCode => {
+const getModelObject = modelCode => {
   const currentModel = getModel(modelCode);
   if (!currentModel) {
     return null;
@@ -288,6 +300,8 @@ module.exports.getModelObject = modelCode => {
 
   return currentModel.model;
 };
+
+module.exports.getModelObject = getModelObject;
 
 module.exports.getModelSegment = (modelCode, segmentCode) => {
   const currentModel = getModel(modelCode);

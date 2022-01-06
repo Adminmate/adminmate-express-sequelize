@@ -2,16 +2,6 @@
 require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 require('jest-specific-snapshot');
 
-// Hide console.log
-// global.console = {
-//   log: jest.fn(),
-//   // Keep native behaviour for other methods
-//   error: console.error,
-//   warn: console.warn,
-//   info: console.info,
-//   debug: console.debug,
-// };
-
 process.env.DIALECT = 'sqlite';
 
 // Init app
