@@ -2,6 +2,8 @@ const { Op } = require('sequelize');
 const { serializeError } = require('serialize-error');
 const _ = require('lodash');
 
+const pjson = require('../../package.json');
+
 const sequelizeDatatypes = {
   'STRING': 'String',
   'TEXT': 'String',
@@ -344,4 +346,11 @@ module.exports.buildError = (e, defaultMessage) => {
     return { message: defaultMessage, error_details: arr };
   }
   return { message: defaultMessage };
+};
+
+module.exports.getAppConfig = () => {
+  return {
+    package: pjson.name,
+    version: pjson.version
+  };
 };

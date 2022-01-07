@@ -17,5 +17,7 @@ module.exports.getIn = async (modelName, ids) => {
       where: whereClause
     });
 
-  return items;
+  const cleanItems = items.map(item => item.toJSON())
+
+  return cleanItems;
 };

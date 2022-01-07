@@ -1,5 +1,5 @@
-const { Op } = require('sequelize');
 const _ = require('lodash');
+const compositeHelper = require('../helpers/composite');
 const fnHelper = require('../helpers/functions');
 
 module.exports.putOne = async (req, res) => {
@@ -11,6 +11,10 @@ module.exports.putOne = async (req, res) => {
   if (!currentModel) {
     return res.status(403).json({ message: 'Invalid request' });
   }
+
+  // Get model primary keys
+  const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
+  const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, [modelItemId]);
 
   // const { model, itemEditableKeys } = models[modelName];
 
@@ -27,7 +31,7 @@ module.exports.putOne = async (req, res) => {
 
   if (Object.keys(cleanData).length) {
     try {
-      await currentModel.update(cleanData, { where: { id: modelItemId } });
+      await currentModel.update(cleanData, { where: whereClause });
       res.json({ data: cleanData });
     }
     catch(e) {
