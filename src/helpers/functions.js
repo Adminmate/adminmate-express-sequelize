@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const { serializeError } = require('serialize-error');
 const _ = require('lodash');
 
+const compositeHelper = require('./composite');
 const pjson = require('../../package.json');
 
 const sequelizeDatatypes = {
@@ -240,6 +241,14 @@ module.exports.constructSearch = (search, fieldsToSearchIn) => {
   }
 
   return params;
+};
+
+module.exports.getModelWhereClause = (model, idsArray) => {
+  // Get model primary keys
+  const primaryKeys = getModelPrimaryKeys(model);
+  const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, idsArray);
+
+  return whereClause;
 };
 
 const getModelPrimaryKeys = model => {

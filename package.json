@@ -29,7 +29,7 @@
     "url": "https://github.com/Adminmate/adminmate-express-sequelize.git"
   },
   "dependencies": {
-    "adminmate-express-core": "^1.1.5",
+    "adminmate-express-core": "^1.1.6",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
