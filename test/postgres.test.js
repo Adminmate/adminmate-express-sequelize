@@ -2,15 +2,13 @@
 require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 require('jest-specific-snapshot');
 
-process.env.DIALECT = 'postgres';
-
 const db = require('./postgres/models-init.js');
 
 beforeAll(async () => {
   await db.sequelize.sync({ force: true })
     .then(async () => {
-      await db.users.bulkCreate(require('./postgres/data/users.js'));
-      await db.cars.bulkCreate(require('./postgres/data/cars.js'));
+      await db.users.bulkCreate(require('./common/data/users.js'));
+      await db.cars.bulkCreate(require('./common/data/cars.js'));
     });
 });
 
@@ -18,8 +16,9 @@ beforeAll(async () => {
 require('./postgres/app.js');
 
 // Tests
-require('./postgres/tests/model-getall.js');
-require('./postgres/tests/model-pk.js');
+require('./common/tests/model-getall.js');
+require('./common/tests/model-pk.js');
+require('./common/tests/model-query.js');
 
 // Close sequelize connection
 afterAll(async () => {

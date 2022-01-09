@@ -40,7 +40,16 @@ const getGroupByFieldFormated_MySQL = (sequelizeObject, timerange, groupByDateFi
     default:
       return null;
   }
-}
+};
+
+const getGroupByFieldFormated_PostgreSQL = (sequelizeObject, timerange, groupByDateField) => {
+  const groupBy = groupByDateField.replace('.', '"."');
+  return sequelizeObject.fn('to_char', sequelizeObject.fn(
+    'date_trunc',
+    timerange,
+    sequelizeObject.literal(`"${groupBy}" at time zone 'Europe/Paris'`),
+  ), 'YYYY-MM-DD 00:00:00');
+};
 
 const getSequelizeDialect = connection => {
   return connection.options.dialect;
@@ -48,6 +57,10 @@ const getSequelizeDialect = connection => {
 
 const isMySQL = connection => {
   return ['mysql', 'mariadb'].includes(getSequelizeDialect(connection));
+};
+
+const isPostgres = connection => {
+  return ['postgres'].includes(getSequelizeDialect(connection));
 };
 
 const isSQLite = connection => {
@@ -62,11 +75,14 @@ module.exports = async (currentModel, data) => {
     };
   }
 
+  // To set the max date
+  const toDate = data.to ? moment(data.to) : moment();
+
   let matchReq = {};
 
   // Day timeframe
   if (data.timeframe === 'day') {
-    const startOfCurrentDay = moment().startOf('day');
+    const startOfCurrentDay = toDate.startOf('day');
     matchReq = {
       [Op.gte]: new Date(startOfCurrentDay.clone().subtract(30, 'day').startOf('day').format()),
       [Op.lt]: new Date(startOfCurrentDay.format())
@@ -74,7 +90,7 @@ module.exports = async (currentModel, data) => {
   }
   // Week timeframe
   else if (data.timeframe === 'week') {
-    const startOfCurrentWeek = moment().startOf('week');
+    const startOfCurrentWeek = toDate.startOf('week');
     matchReq = {
       [Op.gte]: new Date(startOfCurrentWeek.clone().subtract(26, 'week').startOf('week').format()),
       [Op.lt]: new Date(startOfCurrentWeek.format())
@@ -82,7 +98,7 @@ module.exports = async (currentModel, data) => {
   }
   // Month timeframe
   else if (data.timeframe === 'month') {
-    const startOfCurrentMonth = moment().startOf('month');
+    const startOfCurrentMonth = toDate.startOf('month');
     matchReq = {
       [Op.gte]: new Date(startOfCurrentMonth.clone().subtract(12, 'month').startOf('month').format()),
       [Op.lt]: new Date(startOfCurrentMonth.format())
@@ -90,7 +106,7 @@ module.exports = async (currentModel, data) => {
   }
   // Year timeframe
   else if (data.timeframe === 'year') {
-    const startOfCurrentYear = moment().startOf('year');
+    const startOfCurrentYear = toDate.startOf('year');
     matchReq = {
       [Op.gte]: new Date(startOfCurrentYear.clone().subtract(8, 'year').startOf('year').format()),
       [Op.lt]: new Date(startOfCurrentYear.format())
@@ -102,6 +118,9 @@ module.exports = async (currentModel, data) => {
   // MySQL
   if (isMySQL(currentModel.sequelize)) {
     groupByElement = getGroupByFieldFormated_MySQL(currentModel.sequelize, data.timeframe, data.group_by);
+  }
+  else if (isPostgres(currentModel.sequelize)) {
+    groupByElement = getGroupByFieldFormated_PostgreSQL(currentModel.sequelize, data.timeframe, data.group_by);
   }
   // SQLite
   else if (isSQLite(currentModel.sequelize)) {
@@ -115,7 +134,7 @@ module.exports = async (currentModel, data) => {
   }
 
   // Query database
-  const repartitionData = await currentModel
+  let repartitionData = await currentModel
     .findAll({
       attributes: [
         [ groupByElement, 'key' ],
@@ -128,12 +147,44 @@ module.exports = async (currentModel, data) => {
       raw: true
     });
 
+  // Special parsing for PostgreSQL
+  if (isPostgres(currentModel.sequelize)) {
+    if (data.timeframe === 'day') {
+      repartitionData = repartitionData.map(d => ({
+        key: d.key.substring(0, 10),
+        value: parseFloat(d.value)
+      }));
+    }
+    else if (data.timeframe === 'week') {
+      repartitionData = repartitionData.map(d => {
+        const isoWeek = moment(d.key).isoWeek();
+        const year = moment(d.key).format('YYYY');
+        return {
+          key: `${year}-${isoWeek}`,
+          value: parseFloat(d.value)
+        };
+      });
+    }
+    else if (data.timeframe === 'month') {
+      repartitionData = repartitionData.map(d => ({
+        key: d.key.substring(0, 7),
+        value: parseFloat(d.value)
+      }));
+    }
+    else if (data.timeframe === 'year') {
+      repartitionData = repartitionData.map(d => ({
+        key: d.key.substring(0, 4),
+        value: parseFloat(d.value)
+      }));
+    }
+  }
+
   const formattedData = [];
 
   // Day timeframe
   if (data.timeframe === 'day') {
     for (let i = 1; i <= 30; i++) {
-      const currentDate = moment().subtract(i, 'day').startOf('day');
+      const currentDate = toDate.clone().subtract(i, 'day').startOf('day');
       const countForTheTimeframe = _.find(repartitionData, { key: currentDate.format('YYYY-MM-DD') });
       formattedData.push({
         key: currentDate.format('DD/MM'),
@@ -148,7 +199,7 @@ module.exports = async (currentModel, data) => {
     // Special treatment for sqlite
     // %W for strftime can be 00 and have no unix week equivalent
     if (isSQLite(currentModel.sequelize)) {
-      const currentYear = moment().format('YYYY');
+      const currentYear = toDate.format('YYYY');
       const previousYear = currentYear - 1;
       const findWeek0 = chartData.find(d => d.key === currentYear + '-00');
       const findWeek52 = chartData.find(d => d.key === previousYear + '-52');
@@ -163,7 +214,7 @@ module.exports = async (currentModel, data) => {
     }
 
     for (let i = 1; i <= 26; i++) {
-      const currentWeek = moment().subtract(i, 'week').startOf('isoWeek');
+      const currentWeek = toDate.clone().subtract(i, 'week').startOf('isoWeek');
       const strftimeFormat = strftime('%Y-%W', currentWeek.toDate());
       const momentFormat = currentWeek.format('YYYY-WW');
       const keyValueToCheck = isSQLite(currentModel.sequelize) ? strftimeFormat : momentFormat;
@@ -178,7 +229,7 @@ module.exports = async (currentModel, data) => {
   // Month timeframe
   else if (data.timeframe === 'month') {
     for (let i = 1; i <= 12; i++) {
-      const currentMonth = moment().subtract(i, 'month').startOf('month');
+      const currentMonth = toDate.clone().subtract(i, 'month').startOf('month');
       const countForTheTimeframe = _.find(repartitionData, { key: currentMonth.format('YYYY-MM') });
       formattedData.push({
         key: currentMonth.startOf('month').format('MMM'),
@@ -189,7 +240,7 @@ module.exports = async (currentModel, data) => {
   // Year timeframe
   else if (data.timeframe === 'year') {
     for (let i = 1; i <= 8; i++) {
-      const currentYear = moment().subtract(i, 'year').startOf('year');
+      const currentYear = toDate.clone().subtract(i, 'year').startOf('year');
       const countForTheTimeframe = _.find(repartitionData, { key: currentYear.format('YYYY') });
       formattedData.push({
         key: currentYear.startOf('year').format('YYYY'),

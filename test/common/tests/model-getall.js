@@ -26,7 +26,7 @@ const makeReq = async (model, method, data, headers = {}) => {
 
 it('Users simple request', async () => {
   const { responseData } = await makeReq('users', 'GET', {});
-  expect(responseData).toMatchSpecificSnapshot('./postgres/__snapshots__/model-getall.shot');
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });
 
 // refFields ----------------------------------------------------------------------------
@@ -38,7 +38,7 @@ it('Cars with refFields params', async () => {
     }
   });
 
-  expect(responseData).toMatchSpecificSnapshot('./postgres/__snapshots__/model-getall.shot');
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });
 
 // fields -------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ it('Cars with "fields" parameter (name & manufacturer only)', async () => {
     'am-model-fields': ['name', 'manufacturer']
   });
 
-  expect(responseData).toMatchSpecificSnapshot('./postgres/__snapshots__/model-getall.shot');
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });
 
 // page ---------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ it('Cars with "page" parameter set to 2', async () => {
     page: 2
   });
 
-  expect(responseData).toMatchSpecificSnapshot('./postgres/__snapshots__/model-getall.shot');
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });
 
 it('Cars with a "search" parameter', async () => {
@@ -68,7 +68,7 @@ it('Cars with a "search" parameter', async () => {
     'am-model-fields': ['name']
   });
 
-  expect(responseData).toMatchSpecificSnapshot('./postgres/__snapshots__/model-getall.shot');
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });
 
 // order --------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ it('Cars with a "order" parameter', async () => {
     'am-model-fields': ['name']
   });
 
-  expect(responseData).toMatchSpecificSnapshot('./postgres/__snapshots__/model-getall.shot');
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });
 
 // filters ------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ it('Cars with a "filters" parameter', async () => {
     'am-model-fields': ['name', 'year']
   });
 
-  expect(responseData).toMatchSpecificSnapshot('./postgres/__snapshots__/model-getall.shot');
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });
 
 // segment ------------------------------------------------------------------------------
@@ -115,5 +115,5 @@ it('Cars with a "segment" parameter', async () => {
     'am-model-fields': ['name', 'year']
   });
 
-  expect(responseData).toMatchSpecificSnapshot('./postgres/__snapshots__/model-getall.shot');
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });

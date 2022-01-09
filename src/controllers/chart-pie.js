@@ -12,11 +12,14 @@ module.exports = async (currentModel, data) => {
     raw: true
   });
 
+  // To make sure value attribute is an integer/float
+  const cleanData = repartitionData.map(data => ({ ...data, value: parseFloat(data.value) }));
+
   return {
     success: true,
     data: {
       config: null,
-      data: repartitionData
+      data: cleanData
     }
   };
 };

@@ -1,148 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Cars request - No parameter 1`] = `
-Object {
-  "count": 20,
-  "data": Array [
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 20,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 250 LM",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 2,
-        "label": 2,
-        "type": "ref",
-      },
-      "year": 1964,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 19,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 275",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 2,
-        "label": 2,
-        "type": "ref",
-      },
-      "year": 1964,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 18,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 488",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 2,
-        "label": 2,
-        "type": "ref",
-      },
-      "year": 1969,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 17,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 250 GT Lusso",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 1,
-        "label": 1,
-        "type": "ref",
-      },
-      "year": 1962,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 16,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 250 GTO",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 2,
-        "label": 2,
-        "type": "ref",
-      },
-      "year": 1962,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 15,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 250 GT 2+2",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 1,
-        "label": 1,
-        "type": "ref",
-      },
-      "year": 1960,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 14,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 250 GT Berlinetta SWB",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 2,
-        "label": 2,
-        "type": "ref",
-      },
-      "year": 1959,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 13,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 250 GT Coupé",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 1,
-        "label": 1,
-        "type": "ref",
-      },
-      "year": 1954,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 12,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 250 MM",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 2,
-        "label": 2,
-        "type": "ref",
-      },
-      "year": 1952,
-    },
-    Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
-      "id": 11,
-      "manufacturer": "Ferrari",
-      "name": "Ferrari 212 Inter",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
-      "userId": Object {
-        "id": 1,
-        "label": 1,
-        "type": "ref",
-      },
-      "year": 1951,
-    },
-  ],
-  "pagination": Object {
-    "count": 2,
-    "current": 1,
-  },
-}
-`;
-
-exports[`Cars request - With "fields" parameter (name & manufacturer only) 1`] = `
+exports[`Cars with "fields" parameter (name & manufacturer only) 1`] = `
 Object {
   "count": 20,
   "data": Array [
@@ -204,16 +62,14 @@ Object {
 }
 `;
 
-exports[`Cars request - With "page" parameter set to 2 1`] = `
+exports[`Cars with "page" parameter set to 2 1`] = `
 Object {
   "count": 20,
   "data": Array [
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 10,
       "manufacturer": "Porsche",
       "name": "Porsche Macan",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -222,11 +78,9 @@ Object {
       "year": 2014,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 9,
       "manufacturer": "Porsche",
       "name": "Porsche 924",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -235,11 +89,9 @@ Object {
       "year": 1976,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 8,
       "manufacturer": "Porsche",
       "name": "Porsche 917",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -248,11 +100,9 @@ Object {
       "year": 1969,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 7,
       "manufacturer": "Porsche",
       "name": "Porsche 914",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 1,
         "label": 1,
@@ -261,11 +111,9 @@ Object {
       "year": 1969,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 6,
       "manufacturer": "Porsche",
       "name": "Porsche 908",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -274,11 +122,9 @@ Object {
       "year": 1968,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 5,
       "manufacturer": "Porsche",
       "name": "Porsche 906",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 1,
         "label": 1,
@@ -287,11 +133,9 @@ Object {
       "year": 1966,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 4,
       "manufacturer": "Porsche",
       "name": "Porsche 904",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -300,11 +144,9 @@ Object {
       "year": 1964,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 3,
       "manufacturer": "Porsche",
       "name": "Porsche 911",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 1,
         "label": 1,
@@ -313,11 +155,9 @@ Object {
       "year": 1963,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 2,
       "manufacturer": "Porsche",
       "name": "Porsche 550",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -326,11 +166,9 @@ Object {
       "year": 1953,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 1,
       "manufacturer": "Porsche",
       "name": "Porsche 356",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 1,
         "label": 1,
@@ -346,25 +184,15 @@ Object {
 }
 `;
 
-exports[`Cars request - With a "filters" parameter 1`] = `
+exports[`Cars with a "filters" parameter 1`] = `
 Object {
-  "count": 3,
+  "count": 1,
   "data": Array [
     Object {
-      "id": 8,
-      "name": "Porsche 917",
+      "id": 18,
+      "name": "Ferrari 488",
       "year": 1969,
     },
-    Object {
-      "id": 7,
-      "name": "Porsche 914",
-      "year": 1969,
-    },
-    Object {
-      "id": 6,
-      "name": "Porsche 908",
-      "year": 1968,
-    },
   ],
   "pagination": Object {
     "count": 1,
@@ -373,21 +201,49 @@ Object {
 }
 `;
 
-exports[`Cars request - With a "order" parameter 1`] = `
+exports[`Cars with a "order" parameter 1`] = `
 Object {
-  "count": 3,
+  "count": 10,
   "data": Array [
     Object {
-      "id": 3,
-      "name": "Porsche 911",
+      "id": 11,
+      "name": "Ferrari 212 Inter",
     },
     Object {
-      "id": 7,
-      "name": "Porsche 914",
+      "id": 15,
+      "name": "Ferrari 250 GT 2+2",
     },
     Object {
-      "id": 8,
-      "name": "Porsche 917",
+      "id": 14,
+      "name": "Ferrari 250 GT Berlinetta SWB",
+    },
+    Object {
+      "id": 13,
+      "name": "Ferrari 250 GT Coupé",
+    },
+    Object {
+      "id": 17,
+      "name": "Ferrari 250 GT Lusso",
+    },
+    Object {
+      "id": 16,
+      "name": "Ferrari 250 GTO",
+    },
+    Object {
+      "id": 20,
+      "name": "Ferrari 250 LM",
+    },
+    Object {
+      "id": 12,
+      "name": "Ferrari 250 MM",
+    },
+    Object {
+      "id": 19,
+      "name": "Ferrari 275",
+    },
+    Object {
+      "id": 18,
+      "name": "Ferrari 488",
     },
   ],
   "pagination": Object {
@@ -397,83 +253,49 @@ Object {
 }
 `;
 
-exports[`Cars request - With a "search" parameter 1`] = `
-Object {
-  "count": 3,
-  "data": Array [
-    Object {
-      "id": 8,
-      "name": "Porsche 917",
-    },
-    Object {
-      "id": 7,
-      "name": "Porsche 914",
-    },
-    Object {
-      "id": 3,
-      "name": "Porsche 911",
-    },
-  ],
-  "pagination": Object {
-    "count": 1,
-    "current": 1,
-  },
-}
-`;
-
-exports[`Cars request - With a "segment" parameter 1`] = `
+exports[`Cars with a "search" parameter 1`] = `
 Object {
   "count": 10,
   "data": Array [
     Object {
       "id": 20,
       "name": "Ferrari 250 LM",
-      "year": 1964,
     },
     Object {
       "id": 19,
       "name": "Ferrari 275",
-      "year": 1964,
     },
     Object {
       "id": 18,
       "name": "Ferrari 488",
-      "year": 1969,
     },
     Object {
       "id": 17,
       "name": "Ferrari 250 GT Lusso",
-      "year": 1962,
     },
     Object {
       "id": 16,
       "name": "Ferrari 250 GTO",
-      "year": 1962,
     },
     Object {
       "id": 15,
       "name": "Ferrari 250 GT 2+2",
-      "year": 1960,
     },
     Object {
       "id": 14,
       "name": "Ferrari 250 GT Berlinetta SWB",
-      "year": 1959,
     },
     Object {
       "id": 13,
       "name": "Ferrari 250 GT Coupé",
-      "year": 1954,
     },
     Object {
       "id": 12,
       "name": "Ferrari 250 MM",
-      "year": 1952,
     },
     Object {
       "id": 11,
       "name": "Ferrari 212 Inter",
-      "year": 1951,
     },
   ],
   "pagination": Object {
@@ -483,16 +305,51 @@ Object {
 }
 `;
 
-exports[`Cars request - With refFields params 1`] = `
+exports[`Cars with a "segment" parameter 1`] = `
+Object {
+  "count": 5,
+  "data": Array [
+    Object {
+      "id": 17,
+      "name": "Ferrari 250 GT Lusso",
+      "year": 1962,
+    },
+    Object {
+      "id": 16,
+      "name": "Ferrari 250 GTO",
+      "year": 1962,
+    },
+    Object {
+      "id": 15,
+      "name": "Ferrari 250 GT 2+2",
+      "year": 1960,
+    },
+    Object {
+      "id": 14,
+      "name": "Ferrari 250 GT Berlinetta SWB",
+      "year": 1959,
+    },
+    Object {
+      "id": 13,
+      "name": "Ferrari 250 GT Coupé",
+      "year": 1954,
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars with refFields params 1`] = `
 Object {
   "count": 20,
   "data": Array [
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 20,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 LM",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -501,11 +358,9 @@ Object {
       "year": 1964,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 19,
       "manufacturer": "Ferrari",
       "name": "Ferrari 275",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -514,11 +369,9 @@ Object {
       "year": 1964,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 18,
       "manufacturer": "Ferrari",
       "name": "Ferrari 488",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -527,11 +380,9 @@ Object {
       "year": 1969,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 17,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GT Lusso",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 1,
         "label": "Firstname 1 Lastname 1",
@@ -540,11 +391,9 @@ Object {
       "year": 1962,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 16,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GTO",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -553,11 +402,9 @@ Object {
       "year": 1962,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 15,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GT 2+2",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 1,
         "label": "Firstname 1 Lastname 1",
@@ -566,11 +413,9 @@ Object {
       "year": 1960,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 14,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GT Berlinetta SWB",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -579,11 +424,9 @@ Object {
       "year": 1959,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 13,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GT Coupé",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 1,
         "label": "Firstname 1 Lastname 1",
@@ -592,11 +435,9 @@ Object {
       "year": 1954,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 12,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 MM",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -605,11 +446,9 @@ Object {
       "year": 1952,
     },
     Object {
-      "createdAt": "2021-04-02T00:00:00.000Z",
       "id": 11,
       "manufacturer": "Ferrari",
       "name": "Ferrari 212 Inter",
-      "updatedAt": "2021-04-02T00:00:00.000Z",
       "userId": Object {
         "id": 1,
         "label": "Firstname 1 Lastname 1",
@@ -625,99 +464,89 @@ Object {
 }
 `;
 
-exports[`Users request - No parameter 1`] = `
+exports[`Users simple request 1`] = `
 Object {
   "count": 16,
   "data": Array [
     Object {
-      "birthdate": "2021-01-01T00:00:00.000Z",
-      "createdAt": "2021-01-05T00:00:00.000Z",
+      "birthdate": "2020-12-31T23:00:00.000Z",
       "firstname": "Firstname 16",
       "id": 16,
       "lastname": "Lastname 16",
       "rating": 5,
-      "updatedAt": "2021-01-05T00:00:00.000Z",
+      "signup_date": "2021-01-04T23:00:00.000Z",
     },
     Object {
-      "birthdate": "2021-01-01T00:00:00.000Z",
-      "createdAt": "2021-01-04T00:00:00.000Z",
+      "birthdate": "2020-12-31T23:00:00.000Z",
       "firstname": "Firstname 15",
       "id": 15,
       "lastname": "Lastname 15",
       "rating": 5,
-      "updatedAt": "2021-01-04T00:00:00.000Z",
+      "signup_date": "2021-01-03T23:00:00.000Z",
     },
     Object {
-      "birthdate": "2021-01-01T00:00:00.000Z",
-      "createdAt": "2021-01-03T00:00:00.000Z",
+      "birthdate": "2020-12-31T23:00:00.000Z",
       "firstname": "Firstname 14",
       "id": 14,
       "lastname": "Lastname 14",
       "rating": 5,
-      "updatedAt": "2021-01-03T00:00:00.000Z",
+      "signup_date": "2021-01-02T23:00:00.000Z",
     },
     Object {
-      "birthdate": "2021-01-01T00:00:00.000Z",
-      "createdAt": "2021-01-02T00:00:00.000Z",
+      "birthdate": "2020-12-31T23:00:00.000Z",
       "firstname": "Firstname 13",
       "id": 13,
       "lastname": "Lastname 13",
       "rating": 5,
-      "updatedAt": "2021-01-02T00:00:00.000Z",
+      "signup_date": "2021-01-01T23:00:00.000Z",
     },
     Object {
-      "birthdate": "2020-04-02T00:00:00.000Z",
-      "createdAt": "2021-01-01T00:00:00.000Z",
+      "birthdate": "2020-04-01T22:00:00.000Z",
       "firstname": "Firstname 12",
       "id": 12,
       "lastname": "Lastname 12",
       "rating": 5,
-      "updatedAt": "2021-01-01T00:00:00.000Z",
+      "signup_date": "2021-01-01T00:00:00.000Z",
     },
     Object {
-      "birthdate": "2020-04-02T00:00:00.000Z",
-      "createdAt": "2020-12-31T00:00:00.000Z",
+      "birthdate": "2020-04-01T22:00:00.000Z",
       "firstname": "Firstname 11",
       "id": 11,
       "lastname": "Lastname 11",
       "rating": 5,
-      "updatedAt": "2020-12-31T00:00:00.000Z",
+      "signup_date": "2020-12-30T23:00:00.000Z",
     },
     Object {
-      "birthdate": "2020-04-02T00:00:00.000Z",
-      "createdAt": "2020-12-30T00:00:00.000Z",
+      "birthdate": "2020-04-01T22:00:00.000Z",
       "firstname": "Firstname 10",
       "id": 10,
       "lastname": "Lastname 10",
       "rating": 5,
-      "updatedAt": "2020-12-30T00:00:00.000Z",
+      "signup_date": "2020-12-29T23:00:00.000Z",
     },
     Object {
-      "birthdate": "2020-04-02T00:00:00.000Z",
-      "createdAt": "2020-12-29T00:00:00.000Z",
+      "birthdate": "2020-04-01T22:00:00.000Z",
       "firstname": "Firstname 9",
       "id": 9,
       "lastname": "Lastname 9",
       "rating": 5,
-      "updatedAt": "2020-12-29T00:00:00.000Z",
+      "signup_date": "2020-12-28T23:00:00.000Z",
     },
     Object {
-      "birthdate": "2020-04-02T00:00:00.000Z",
-      "createdAt": "2020-12-28T00:00:00.000Z",
+      "birthdate": "2020-04-01T22:00:00.000Z",
       "firstname": "Firstname 8",
       "id": 8,
       "lastname": "Lastname 8",
       "rating": 5,
-      "updatedAt": "2020-12-28T00:00:00.000Z",
+      "signup_date": "2020-12-27T23:00:00.000Z",
     },
     Object {
-      "birthdate": "2020-04-02T00:00:00.000Z",
-      "createdAt": "2020-12-27T00:00:00.000Z",
+      "birthdate": "2020-04-01T22:00:00.000Z",
       "firstname": "Firstname 7",
       "id": 7,
       "lastname": "Lastname 7",
       "rating": 5,
-      "updatedAt": "2020-12-27T00:00:00.000Z",
+      "signup_date": "2020-12-26T23:00:00.000Z",
     },
   ],
   "pagination": Object {
