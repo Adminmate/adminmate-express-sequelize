@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 global.AM_DEV_MODE = true;
 
 // Connect to database
-const db = require('../models/index.js');
+const db = require('./models-init.js');
 
 // Init
 const amConfig = {
@@ -38,7 +38,7 @@ const amConfig = {
           label: 'Ferrari',
           code: 'ferrari',
           query: {
-            name: { [Op.like]: '%erra%' }
+            name: { [Op.like]: '%errari 250 GT%' }
           }
         }
       ]
@@ -46,4 +46,4 @@ const amConfig = {
   ]
 };
 
-require('../index.js').init(amConfig);
+require('../../index.js').init(amConfig);

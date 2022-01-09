@@ -17,12 +17,7 @@
   ],
   "scripts": {
     "start": "node ./index",
-    "test": "jest --runInBand",
-    "reset-db": "npm run reset-mysql && npm run reset-sqlite",
-    "reset-mysql": "NODE_ENV=mysql npm run migrate",
-    "reset-sqlite": "NODE_ENV=sqlite npm run migrate",
-    "migrate": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npm run seed",
-    "seed": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:seed:all"
+    "test": "jest --runInBand"
   },
   "repository": {
     "type": "git",

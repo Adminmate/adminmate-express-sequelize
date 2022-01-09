@@ -11,9 +11,15 @@ module.exports = (sequelize, Sequelize) => {
     },
     rating: {
       type: Sequelize.INTEGER
+    },
+    signup_date: {
+      type: Sequelize.DATE
     }
   }, {
-    tableName: 'users'
+    tableName: 'users',
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
   });
 
   Users.associate = function(models) {

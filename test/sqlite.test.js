@@ -2,10 +2,25 @@
 require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 require('jest-specific-snapshot');
 
-process.env.DIALECT = 'sqlite';
+const db = require('./sqlite/models-init.js');
+
+beforeAll(async () => {
+  await db.sequelize.sync({ force: true })
+    .then(async () => {
+      await db.users.bulkCreate(require('./common/data/users.js'));
+      await db.cars.bulkCreate(require('./common/data/cars.js'));
+    });
+});
 
 // Init app
-require('./app.js');
+require('./sqlite/app.js');
 
-require('./tests/model-getall.test.js');
-require('./tests/model-query.test.js');
+// Tests
+require('./common/tests/model-getall.js');
+require('./common/tests/model-pk.js');
+require('./common/tests/model-query.js');
+
+// Close sequelize connection
+afterAll(async () => {
+  await db.sequelize.close();
+});

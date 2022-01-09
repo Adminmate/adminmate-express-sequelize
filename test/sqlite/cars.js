@@ -10,7 +10,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER
     }
   }, {
-    tableName: 'cars'
+    tableName: 'cars',
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
   });
 
   Cars.associate = function(models) {
