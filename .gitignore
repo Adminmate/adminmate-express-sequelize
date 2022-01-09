@@ -1,2 +1,2 @@
 node_modules/
-test/database.sqlite
+test/sqlite/database.sqlite
