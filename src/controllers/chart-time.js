@@ -53,7 +53,7 @@ const getGroupByFieldFormated_PostgreSQL = (sequelizeObject, timerange, groupByD
 
 const getSequelizeDialect = connection => {
   return connection.options.dialect;
-}
+};
 
 const isMySQL = connection => {
   return ['mysql', 'mariadb'].includes(getSequelizeDialect(connection));
