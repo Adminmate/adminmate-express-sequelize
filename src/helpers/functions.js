@@ -7,10 +7,18 @@ const pjson = require('../../package.json');
 
 const sequelizeDatatypes = {
   'STRING': 'String',
+  'CHAR': 'String',
   'TEXT': 'String',
   'INTEGER': 'Number',
+  'BIGINT': 'Number',
   'FLOAT': 'Number',
+  'REAL': 'Number',
+  'DOUBLE': 'Number',
+  'DECIMAL': 'Number',
+  'SMALLINT': 'Number',
+  'TIME': 'Time',
   'DATE': 'Date',
+  'DATEONLY': 'Date',
   'ENUM': 'String',
   'BOOLEAN': 'Boolean',
   'JSON': 'JSON'
@@ -21,7 +29,10 @@ const getModelProperties = model => {
   const modelProps = model.rawAttributes;
 
   for (let key in modelProps) {
-    const type = modelProps[key].type.key;
+    // Type can be a string or an object
+    const type = typeof modelProps[key].type === 'string' ?
+      modelProps[key].type :
+      modelProps[key].type.key;
 
     let property = {
       path: key,
@@ -40,7 +51,12 @@ const getModelProperties = model => {
 
     // Ref option
     if (modelProps[key].references && modelProps[key].references.model) {
-      property.ref = modelProps[key].references.model;
+      if (typeof modelProps[key].references.model === 'object') {
+        property.ref = modelProps[key].references.model.tableName;
+      }
+      else {
+        property.ref = modelProps[key].references.model;
+      }
     }
 
     // Enum option
@@ -208,7 +224,7 @@ module.exports.getIncludeParams = (model, keys, fieldsToFetch, refFields = {}) =
     .map(ass => getSchemaAssociationDetails(ass))
     .filter(ass => fieldsToFetch.includes(ass.identifierField) && ass.relationship === 'BelongsTo')
     .map(ass => {
-      const attributes = refFieldsForModel[ass.identifierField] ? refFieldsForModel[ass.identifierField].split(' ') : ['id'];
+      const attributes = refFieldsForModel[ass.identifierField] ? refFieldsForModel[ass.identifierField].split(' ') : [ass.identifierField];
       return {
         path: ass.identifierField,
         as: ass.as,

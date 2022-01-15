@@ -40,7 +40,14 @@ const composite = {
 
   _compositeKey: (keys, item) => {
     return keys
-      .map(field => encodeURIComponent(item[field] === null ? 'null' : item[field]))
+      .map(field => {
+        let idValue = item[field];
+        // If this is a relationship
+        if (typeof item[field] === 'object' && typeof item[field].id !== 'undefined') {
+          idValue = item[field].id;
+        }
+        return encodeURIComponent(idValue === null ? 'null' : idValue);
+      })
       .join(_SEP);
   }
 };
