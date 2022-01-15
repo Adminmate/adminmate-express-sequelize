@@ -224,7 +224,11 @@ module.exports.getIncludeParams = (model, keys, fieldsToFetch, refFields = {}) =
     .map(ass => getSchemaAssociationDetails(ass))
     .filter(ass => fieldsToFetch.includes(ass.identifierField) && ass.relationship === 'BelongsTo')
     .map(ass => {
-      const attributes = refFieldsForModel[ass.identifierField] ? refFieldsForModel[ass.identifierField].split(' ') : [ass.identifierField];
+      const modelPrimaryKeys = getModelPrimaryKeys(ass.model);
+      const attributes = refFieldsForModel[ass.identifierField] ?
+                         refFieldsForModel[ass.identifierField].split(' ') :
+                         modelPrimaryKeys;
+
       return {
         path: ass.identifierField,
         as: ass.as,

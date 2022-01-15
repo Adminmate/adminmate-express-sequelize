@@ -18,13 +18,14 @@ module.exports.deleteSome = async (req, res) => {
   const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
   const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, itemIds);
 
-  const deleteReq = await currentModel
+  await currentModel
     .destroy({
       where: whereClause
     })
+    .then(() => {
+      res.json({ deletedCount: itemIds.length });
+    })
     .catch(e => {
-      res.status(403).json({ message: 'Unable to delete the model items' });
+      res.status(403).json({ message: e.message || 'Unable to delete the model items' });
     });
-
-  res.json({ deletedCount: itemIds.length });
 };
