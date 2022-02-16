@@ -271,6 +271,12 @@ module.exports.getModelWhereClause = (model, idsArray) => {
   return whereClause;
 };
 
+module.exports.fieldsToValues = (string, values) => {
+  return string.replace(/[a-z._]+/gi, word => {
+    return _.get(values, word);
+  });
+};
+
 const getModelPrimaryKeys = model => {
   return model.primaryKeyAttributes || ['id'];
 };
