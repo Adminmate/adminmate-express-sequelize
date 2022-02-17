@@ -24,12 +24,12 @@
     "url": "https://github.com/Adminmate/adminmate-express-sequelize.git"
   },
   "dependencies": {
-    "adminmate-express-core": "^1.1.6",
+    "adminmate-express-core": "^1.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
-    "mysql2": "^2.2.5",
-    "pg": "^8.7.1",
+    "mysql2": "~2.2.5",
+    "pg": "~8.7.1",
     "sequelize": "^6.16.1",
     "serialize-error": "^7.0.1",
     "sqlite3": "^5.0.2",
