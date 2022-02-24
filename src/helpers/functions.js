@@ -259,7 +259,7 @@ module.exports.constructSearch = (search, fieldsToSearchIn) => {
   fieldsToSearchIn.map(field => {
     params[Op.or].push({
       [field]: {
-        [Op.like]: `%${search}%`
+        [Op.iLike]: `%${search}%`
       }
     });
   });

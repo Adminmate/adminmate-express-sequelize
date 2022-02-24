@@ -92,7 +92,6 @@ module.exports.getAll = async (req, res) => {
       limit: nbItemPerPage
     })
     .catch(e => {
-      console.log('===err', e);
       res.status(403).json({ message: e.message });
     });
 

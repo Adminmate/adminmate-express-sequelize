@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const _ = require('lodash');
 const fnHelper = require('../helpers/functions');
 
@@ -13,24 +12,24 @@ module.exports.getAutocomplete = async (req, res) => {
     return res.status(403).json({ message: 'Invalid request' });
   }
 
+  // Get model primary keys
+  const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
   const keys = fnHelper.getModelProperties(currentModel);
   const defaultFieldsToSearchIn = keys.filter(key => ['String'].includes(key.type)).map(key => key.path);
   const defaultFieldsToFetch = keys.filter(key => !key.path.includes('.')).map(key => key.path);
 
-  const modelNameSafe = currentModel.collection.collectionName;
+  const modelNameSafe = fnHelper.getModelRealname(currentModel);
   const fieldsToSearchIn = refFields[modelNameSafe] ? refFields[modelNameSafe].split(' ') : defaultFieldsToSearchIn;
   const fieldsToFetch = refFields[modelNameSafe] ? refFields[modelNameSafe].split(' ') : defaultFieldsToFetch;
-  const params = fnHelper.constructSearch(search, fieldsToSearchIn);
+  const findParams = fnHelper.constructSearch(search, fieldsToSearchIn);
 
-  console.log('====getAutocomplete', params['$or'], fieldsToFetch);
-
+  // Fetch data
   const data = await currentModel
-    .find(params)
-    .select(fieldsToFetch)
-    // .populate(fieldsToPopulate)
-    // .sort(sortingFields)
-    .limit(maxItem)
-    .lean()
+    .findAndCountAll({
+      where: findParams,
+      attributes: [...fieldsToFetch, ...primaryKeys],
+      limit: maxItem
+    })
     .catch(e => {
       res.status(403).json({ message: e.message });
     });
@@ -39,14 +38,27 @@ module.exports.getAutocomplete = async (req, res) => {
     return res.status(403).json();
   }
 
-  // Field to be used as the item's label
-  const fieldsToDisplay = refFields[modelNameSafe] ? refFields[modelNameSafe] : '_id';
+  // Format data for the admin dashboard
+  let formattedData = data.rows
+    .map(item => item.toJSON());
 
-  let formattedData = [];
-  if (data.length) {
-    formattedData = data.map(d => {
+  // Field to be used as the item's label
+  let fieldsToDisplay;
+  if (refFields[modelNameSafe]) {
+    fieldsToDisplay = refFields[modelNameSafe];
+  }
+  else if (primaryKeys.length > 0) {
+    fieldsToDisplay = primaryKeys[0];
+  }
+  else {
+    fieldsToDisplay = keys[0].path;
+  }
+
+  const mainPrimaryKey = primaryKeys[0];
+  if (formattedData.length) {
+    formattedData = formattedData.map(d => {
       const label = fieldsToDisplay.replace(/[a-z._]+/gi, word => _.get(d, word));
-      return { label, value: d._id };
+      return { label, value: d[mainPrimaryKey] };
     });
   }
 
