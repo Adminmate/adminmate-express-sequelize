@@ -14,7 +14,7 @@ module.exports.getAll = async (req, res) => {
   const page = parseInt(req.query.page || 1);
   const nbItemPerPage = 10;
   const order = req.query.order || null;
-  let defaultOrdering = [ ['id', 'DESC'] ];
+  let defaultOrdering = [];
 
   const currentModel = fnHelper.getModelObject(modelName);
   if (!currentModel) {

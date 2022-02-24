@@ -208,14 +208,23 @@ const getSchemaAssociationDetails = association => {
   return schema;
 };
 
+const toLowerKeys = (obj) => {
+  return Object.keys(obj).reduce((accumulator, key) => {
+    accumulator[key.toLowerCase()] = obj[key];
+    return accumulator;
+  }, {});
+};
+
 module.exports.getIncludeParams = (model, keys, fieldsToFetch, refFields = {}) => {
+  // Lowercase all object keys
+  const cleanRefs = toLowerKeys(refFields);
   // Build ref fields for the model (for sequelize include purpose)
   const refFieldsForModel = {};
   keys.forEach(prop => {
     if (prop.ref) {
       const currentRefModelName = prop.ref.toLowerCase();
-      if (refFields[currentRefModelName]) {
-        refFieldsForModel[prop.path] = refFields[currentRefModelName];
+      if (cleanRefs[currentRefModelName]) {
+        refFieldsForModel[prop.path] = cleanRefs[currentRefModelName];
       }
     }
   });
@@ -278,7 +287,13 @@ module.exports.fieldsToValues = (string, values) => {
 };
 
 const getModelPrimaryKeys = model => {
-  return model.primaryKeyAttributes || ['id'];
+  if (model.primaryKeyAttributes) {
+    return model.primaryKeyAttributes;
+  }
+  else if (model.rawAttributes['id']) {
+    return ['id'];
+  }
+  return [];
 };
 
 module.exports.getModelPrimaryKeys = getModelPrimaryKeys;
