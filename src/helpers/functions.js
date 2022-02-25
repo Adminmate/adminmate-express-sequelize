@@ -107,6 +107,10 @@ const permutations = list => {
   return result;
 };
 
+module.exports.toFixedIfNecessary = (value, dp) => {
+  return +parseFloat(value).toFixed(dp);
+};
+
 module.exports.permutations = permutations;
 
 // To be used in this file
