@@ -1,8 +1,36 @@
+const Joi = require('@hapi/joi');
 const _ = require('lodash');
 const fnHelper = require('../helpers/functions');
 
 module.exports = async (currentModel, data) => {
   const sequelizeInstance = currentModel.sequelize;
+
+  const paramsSchema = Joi.object({
+    type: Joi.string().required(),
+    model: Joi.string().required(),
+    field: Joi.string().required(),
+    relationship_model: Joi.string().required(),
+    relationship_model_ref_field: Joi.string().required(),
+    relationship_operation: Joi.string().required(),
+    relationship_field: Joi.alternatives().conditional('relationship_operation', {
+      not: 'count',
+      then: Joi.string().required(),
+      otherwise: Joi.string()
+    }),
+    limit: Joi.number().optional(),
+  });
+
+  // Validate params
+  const { error } = paramsSchema.validate(data);
+  if (error) {
+    return {
+      success: false,
+      message: error.details[0].message
+    };
+  }
+
+  // Apply a default limit of 5 results
+  const limit = data.limit || 5;
 
   const relationshipModel = fnHelper.getModelObject(data.relationship_model);
   if (!relationshipModel) {
@@ -18,48 +46,50 @@ module.exports = async (currentModel, data) => {
   const joinField = data.relationship_model_ref_field;
 
   // Get model properties
-  const keys = fnHelper.getModelProperties(relationshipModel);
+  const keys = fnHelper.getModelPrimaryKeys(currentModel);
+  const primaryKey = keys[0];
+  const relationKeys = fnHelper.getModelProperties(relationshipModel);
 
   // Construct default fields to fetch
   const defaultFieldsToFetch = [ joinField ];
 
-  console.log('===defaultFieldsToFetch', defaultFieldsToFetch);
-
   // Build ref fields for the model (for sequelize include purpose)
-  const includeConfig = fnHelper.getIncludeParams(relationshipModel, keys, defaultFieldsToFetch, {});
-  console.log('=====includeConfig', includeConfig);
-
+  const includeConfig = fnHelper.getIncludeParams(relationshipModel, relationKeys, defaultFieldsToFetch, {});
   const refModel = includeConfig.find(ic => ic.path === joinField);
-  console.log('========refModel', refModel);
 
-  // Query database
-  const repartitionData = await relationshipModel.findAll({
-    attributes: [
-      [ sequelizeInstance.col(`${refModel.as}.id`), 'item_id' ],
-      [ sequelizeInstance.col(`${refModel.as}.firstname`), 'key' ],
-      [ sequelizeInstance.fn(data.relationship_operation, seqFnField), 'value' ]
-    ],
-    include: includeConfig,
-    group: [`${refModel.as}.id`],
-    limit: data.limit,
-    raw: true
-  });
+  try {
+    const repartitionData = await relationshipModel.findAll({
+      attributes: [
+        [ sequelizeInstance.col(`${refModel.as}.${primaryKey}`), 'item_id' ],
+        [ sequelizeInstance.col(`${refModel.as}.${data.field}`), 'key' ],
+        [ sequelizeInstance.fn(data.relationship_operation, seqFnField), 'value' ]
+      ],
+      include: includeConfig,
+      group: [`${refModel.as}.${primaryKey}`],
+      order: sequelizeInstance.literal('value DESC'),
+      limit,
+      raw: true
+    });
 
-  const cleanData = repartitionData.map(d => ({
-    key: d.key,
-    value: d.value,
-    item_id: d.item_id,
-    item_model: data.model
-  }));
+    const cleanData = repartitionData.map(d => ({
+      key: d.key,
+      value: d.value,
+      item_id: d.item_id,
+      item_model: data.model
+    }));
 
-  // Order results
-  const orderedData = _.orderBy(cleanData, 'value', 'desc');
-
-  return {
-    success: true,
-    data: {
-      config: null,
-      data: orderedData
-    }
-  };
+    return {
+      success: true,
+      data: {
+        config: null,
+        data: cleanData
+      }
+    };
+  }
+  catch(e) {
+    return {
+      success: false,
+      message: e.message
+    };
+  }
 };
