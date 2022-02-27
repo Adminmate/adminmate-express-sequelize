@@ -120,7 +120,7 @@ const cleanString = string => {
 
 module.exports.cleanString = cleanString;
 
-module.exports.constructQuery = (criterias, operator = 'and') => {
+const constructQuery = (criterias, operator = 'and') => {
   if (!['and', 'or'].includes(operator)) {
     return {};
   }
@@ -128,40 +128,48 @@ module.exports.constructQuery = (criterias, operator = 'and') => {
   const query = [];
   criterias.forEach(criteria => {
     let q = {};
-    if (criteria.operator === 'is') {
-      q[criteria.field] = { [Op.eq]: criteria.value };
+    if (criteria.type === 'group') {
+      q = constructQuery(criteria.list, criteria.operator);
     }
-    else if (criteria.operator === 'is_not') {
-      q[criteria.field] = { [Op.neq]: criteria.value };
-    }
-    else if (criteria.operator === 'is_true') {
-      q[criteria.field] = { [Op.eq]: true };
-    }
-    else if (criteria.operator === 'is_false') {
-      q[criteria.field] = { [Op.eq]: false };
-    }
-    else if (criteria.operator === 'is_present') {
-      q[criteria.field] = { [Op.not]: null };
-    }
-    else if (criteria.operator === 'is_blank') {
-      q[criteria.field] = { [Op.not]: null };
-    }
-    else if (criteria.operator === 'starts_with') {
-      q[criteria.field] = { [Op.startsWith]: criteria.value };
-    }
-    else if (criteria.operator === 'ends_with') {
-      q[criteria.field] = { [Op.endsWith]: criteria.value };
-    }
-    else if (criteria.operator === 'contains') {
-      q[criteria.field] = { [Op.like]: `%${criteria.value}%` };
-    }
-    else if (criteria.operator === 'not_contains') {
-      q[criteria.field] = { [Op.notLike]: `%${criteria.value}%` };
+    else {
+      if (criteria.operator === 'is') {
+        q[criteria.field] = { [Op.eq]: criteria.value };
+      }
+      else if (criteria.operator === 'is_not') {
+        q[criteria.field] = { [Op.neq]: criteria.value };
+      }
+      else if (criteria.operator === 'is_true') {
+        q[criteria.field] = { [Op.eq]: true };
+      }
+      else if (criteria.operator === 'is_false') {
+        q[criteria.field] = { [Op.eq]: false };
+      }
+      else if (criteria.operator === 'is_present') {
+        q[criteria.field] = { [Op.not]: null };
+      }
+      else if (criteria.operator === 'is_blank') {
+        q[criteria.field] = { [Op.not]: null };
+      }
+      else if (criteria.operator === 'starts_with') {
+        q[criteria.field] = { [Op.startsWith]: criteria.value };
+      }
+      else if (criteria.operator === 'ends_with') {
+        q[criteria.field] = { [Op.endsWith]: criteria.value };
+      }
+      else if (criteria.operator === 'contains') {
+        q[criteria.field] = { [Op.iLike]: `%${criteria.value}%` };
+      }
+      else if (criteria.operator === 'not_contains') {
+        q[criteria.field] = { [Op.notILike]: `%${criteria.value}%` };
+      }
     }
     query.push(q);
   });
+
   return query.length ? { [eval(`Op.${operator}`)]: query } : {};
 };
+
+module.exports.constructQuery = constructQuery;
 
 module.exports.refFields = (item, fieldsToPopulate) => {
   const attributes = Object.keys(item);
