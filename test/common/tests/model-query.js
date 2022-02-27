@@ -14,7 +14,6 @@ it('Pie chart - Count', async () => {
   const request = makeChartReq({
     type: 'pie',
     model: 'users',
-    field: '',
     group_by: 'rating',
     operation: 'count'
   });
@@ -35,8 +34,7 @@ it('Pie chart - Count', async () => {
       field: 'signup_date',
       group_by: 'signup_date',
       timeframe: timeframe,
-      operation: 'count',
-      to: '2021-12-12'
+      operation: 'count'
     });
 
     const response = httpMocks.createResponse();

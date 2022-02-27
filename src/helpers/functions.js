@@ -120,7 +120,26 @@ const cleanString = string => {
 
 module.exports.cleanString = cleanString;
 
-const constructQuery = (criterias, operator = 'and') => {
+const getSequelizeDialect = connection => {
+  return connection.options.dialect;
+};
+
+const isMySQL = connection => {
+  return ['mysql', 'mariadb'].includes(getSequelizeDialect(connection));
+};
+module.exports.isMySQL = isMySQL;
+
+const isPostgres = connection => {
+  return ['postgres'].includes(getSequelizeDialect(connection));
+};
+module.exports.isPostgres = isPostgres;
+
+const isSQLite = connection => {
+  return getSequelizeDialect(connection) === 'sqlite';
+};
+module.exports.isSQLite = isSQLite;
+
+const constructQuery = (criterias, operator = 'and', sequelizeInstance) => {
   if (!['and', 'or'].includes(operator)) {
     return {};
   }
@@ -129,7 +148,7 @@ const constructQuery = (criterias, operator = 'and') => {
   criterias.forEach(criteria => {
     let q = {};
     if (criteria.type === 'group') {
-      q = constructQuery(criteria.list, criteria.operator);
+      q = constructQuery(criteria.list, criteria.operator, sequelizeInstance);
     }
     else {
       if (criteria.operator === 'is') {
@@ -157,10 +176,12 @@ const constructQuery = (criterias, operator = 'and') => {
         q[criteria.field] = { [Op.endsWith]: criteria.value };
       }
       else if (criteria.operator === 'contains') {
-        q[criteria.field] = { [Op.iLike]: `%${criteria.value}%` };
+        const cond = getLikeRule(criteria.field, criteria.value, sequelizeInstance);
+        q[criteria.field] = cond[criteria.field];
       }
       else if (criteria.operator === 'not_contains') {
-        q[criteria.field] = { [Op.notILike]: `%${criteria.value}%` };
+        const cond = getNotLikeRule(criteria.field, criteria.value, sequelizeInstance);
+        q[criteria.field] = cond[criteria.field];
       }
     }
     query.push(q);
@@ -265,15 +286,41 @@ const isPositiveInteger = n => {
   return n >>> 0 === parseFloat(n);
 };
 
-module.exports.constructSearch = (search, fieldsToSearchIn) => {
-  params = { [Op.or]: [] };
-
-  fieldsToSearchIn.map(field => {
-    params[Op.or].push({
+const getLikeRule = (field, search, sequelizeInstance) => {
+  if (isPostgres(sequelizeInstance)) {
+    return {
       [field]: {
         [Op.iLike]: `%${search}%`
       }
-    });
+    };
+  }
+  return {
+    [field]: sequelizeInstance.where(
+      sequelizeInstance.fn('LOWER', sequelizeInstance.col(field)), 'LIKE', `%${search.toLowerCase()}%`
+    )
+  };
+};
+
+const getNotLikeRule = (field, search, sequelizeInstance) => {
+  if (isPostgres(sequelizeInstance)) {
+    return {
+      [field]: {
+        [Op.notILike]: `%${search}%`
+      }
+    };
+  }
+  return {
+    [field]: sequelizeInstance.where(
+      sequelizeInstance.fn('LOWER', sequelizeInstance.col(field)), 'NOT LIKE', `%${search.toLowerCase()}%`
+    )
+  };
+};
+
+module.exports.constructSearch = (search, fieldsToSearchIn, sequelizeInstance) => {
+  params = { [Op.or]: [] };
+
+  fieldsToSearchIn.map(field => {
+    params[Op.or].push(getLikeRule(field, search, sequelizeInstance));
   });
 
   // If the search is a valid sql id
@@ -302,7 +349,7 @@ const getModelPrimaryKeys = model => {
   if (model.primaryKeyAttributes) {
     return model.primaryKeyAttributes;
   }
-  else if (model.rawAttributes['id']) {
+  else if (model.rawAttributes && model.rawAttributes.id) {
     return ['id'];
   }
   return [];

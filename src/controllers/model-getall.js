@@ -50,17 +50,20 @@ module.exports.getAll = async (req, res) => {
 
   const queriesArray = [];
 
+  // Get sequelize instance -------------------------------------------------------------
+  const sequelizeInstance = currentModel.sequelize;
+
   // Search -----------------------------------------------------------------------------
 
   if (search) {
-    const searchQuery = fnHelper.constructSearch(search, fieldsToSearchInSafe);
+    const searchQuery = fnHelper.constructSearch(search, fieldsToSearchInSafe, sequelizeInstance);
     queriesArray.push(searchQuery);
   }
 
   // Filters ----------------------------------------------------------------------------
 
   if (filters && filters.operator && filters.list && filters.list.length) {
-    const filtersQuery = fnHelper.constructQuery(filters.list, filters.operator);
+    const filtersQuery = fnHelper.constructQuery(filters.list, filters.operator, sequelizeInstance);
     if (filtersQuery) {
       queriesArray.push(filtersQuery);
     }

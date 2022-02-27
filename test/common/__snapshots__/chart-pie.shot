@@ -6,12 +6,12 @@ Object {
     "config": null,
     "data": Array [
       Object {
-        "key": 4,
-        "value": 1,
-      },
-      Object {
         "key": 5,
         "value": 15,
+      },
+      Object {
+        "key": 4,
+        "value": 1,
       },
     ],
   },

@@ -184,6 +184,43 @@ Object {
 }
 `;
 
+exports[`Cars with a "filters" and "contains" parameter 1`] = `
+Object {
+  "count": 1,
+  "data": Array [
+    Object {
+      "id": 11,
+      "manufacturer": "Ferrari",
+      "name": "Ferrari 212 Inter",
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
+exports[`Cars with a "filters" and NOT "contains" parameter 1`] = `
+Object {
+  "count": 2,
+  "data": Array [
+    Object {
+      "id": 20,
+      "name": "Ferrari 250 LM",
+    },
+    Object {
+      "id": 12,
+      "name": "Ferrari 250 MM",
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
 exports[`Cars with a "filters" parameter 1`] = `
 Object {
   "count": 1,

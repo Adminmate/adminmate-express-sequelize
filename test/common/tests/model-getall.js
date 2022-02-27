@@ -103,6 +103,38 @@ it('Cars with a "filters" parameter', async () => {
   expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
 });
 
+it('Cars with a "filters" and "contains" parameter', async () => {
+  const { responseData } = await makeReq('cars', 'GET', {
+    filters: {
+      operator: 'and',
+      list: [
+        { field: 'name', operator: 'contains', value: 'ferrari 212' },
+        { field: 'manufacturer', operator: 'is', value: 'Ferrari' }
+      ]
+    }
+  }, {
+    'am-model-fields': ['name', 'manufacturer']
+  });
+
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
+});
+
+it('Cars with a "filters" and NOT "contains" parameter', async () => {
+  const { responseData } = await makeReq('cars', 'GET', {
+    filters: {
+      operator: 'and',
+      list: [
+        { field: 'name', operator: 'contains', value: 'ferrari 250' },
+        { field: 'name', operator: 'not_contains', value: 'gt' }
+      ]
+    }
+  }, {
+    'am-model-fields': ['name']
+  });
+
+  expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
+});
+
 // segment ------------------------------------------------------------------------------
 
 it('Cars with a "segment" parameter', async () => {

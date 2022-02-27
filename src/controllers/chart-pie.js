@@ -11,7 +11,7 @@ module.exports = async (currentModel, data) => {
     field: Joi.alternatives().conditional('operation', {
       not: 'count',
       then: Joi.string().required(),
-      otherwise: Joi.string()
+      otherwise: Joi.string().optional()
     }),
     limit: Joi.number().optional()
   });

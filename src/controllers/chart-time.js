@@ -3,6 +3,7 @@ const _ = require('lodash');
 const moment = require('moment');
 // const strftime = require('strftime');
 const { Op } = require('sequelize');
+const fnHelper = require('../helpers/functions');
 
 // const getGroupByFieldFormated_SQLite = (sequelizeObject, timerange, groupByDateField) => {
 //   switch (timerange) {
@@ -48,25 +49,10 @@ const getGroupByFieldFormated_PostgreSQL = (sequelizeObject, timerange, groupByD
   return sequelizeObject.fn('to_char', sequelizeObject.fn(
     'date_trunc',
     timerange,
-    sequelizeObject.literal(`"${groupBy}" at time zone 'Europe/Paris'`),
+    sequelizeObject.col(groupBy)
+    // sequelizeObject.literal(`"${groupBy}" at time zone 'Europe/Paris'`),
   ), 'YYYY-MM-DD 00:00:00');
 };
-
-const getSequelizeDialect = connection => {
-  return connection.options.dialect;
-};
-
-const isMySQL = connection => {
-  return ['mysql', 'mariadb'].includes(getSequelizeDialect(connection));
-};
-
-const isPostgres = connection => {
-  return ['postgres'].includes(getSequelizeDialect(connection));
-};
-
-// const isSQLite = connection => {
-//   return getSequelizeDialect(connection) === 'sqlite';
-// };
 
 module.exports = async (currentModel, data) => {
   const sequelizeInstance = currentModel.sequelize;
@@ -97,11 +83,11 @@ module.exports = async (currentModel, data) => {
   let groupByElement;
 
   // MySQL
-  if (isMySQL(sequelizeInstance)) {
+  if (fnHelper.isMySQL(sequelizeInstance)) {
     groupByElement = getGroupByFieldFormated_MySQL(sequelizeInstance, data.timeframe, data.group_by);
   }
   // PostgreSQL
-  else if (isPostgres(sequelizeInstance)) {
+  else if (fnHelper.isPostgres(sequelizeInstance)) {
     groupByElement = getGroupByFieldFormated_PostgreSQL(sequelizeInstance, data.timeframe, data.group_by);
   }
   // SQLite
@@ -147,9 +133,10 @@ module.exports = async (currentModel, data) => {
   let currentDate = min;
   while (currentDate.isSameOrBefore(max)) {
     const countForTheTimeframe = repartitionData.find(d => moment(d.key).isSame(currentDate, data.timeframe));
+    const value = countForTheTimeframe ? fnHelper.toFixedIfNecessary(countForTheTimeframe.value, 2) : 0;
     formattedData.push({
       key: currentDate.format('YYYY-MM-DD'),
-      value: countForTheTimeframe ? countForTheTimeframe.value : 0
+      value
     });
     currentDate.add(1, data.timeframe).startOf('day');
   }
