@@ -1,9 +1,9 @@
 const Joi = require('@hapi/joi');
 const _ = require('lodash');
 const moment = require('moment');
-// const strftime = require('strftime');
 const { Op } = require('sequelize');
 const fnHelper = require('../helpers/functions');
+// const strftime = require('strftime');
 
 // const getGroupByFieldFormated_SQLite = (sequelizeObject, timerange, groupByDateField) => {
 //   switch (timerange) {
