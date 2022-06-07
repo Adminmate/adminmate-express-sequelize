@@ -147,7 +147,7 @@ const constructQuery = (criterias, operator = 'and', sequelizeInstance) => {
   const query = [];
   criterias.forEach(criteria => {
     let q = {};
-    if (criteria.type === 'group') {
+    if (criteria.list) {
       q = constructQuery(criteria.list, criteria.operator, sequelizeInstance);
     }
     else {
