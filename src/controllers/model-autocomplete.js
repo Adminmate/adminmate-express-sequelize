@@ -21,7 +21,12 @@ module.exports.getAutocomplete = async (req, res) => {
   const modelNameSafe = fnHelper.getModelRealname(currentModel);
   const fieldsToSearchIn = refFields[modelNameSafe] ? refFields[modelNameSafe].split(' ') : defaultFieldsToSearchIn;
   const fieldsToFetch = refFields[modelNameSafe] ? refFields[modelNameSafe].split(' ') : defaultFieldsToFetch;
-  const findParams = fnHelper.constructSearch(search, fieldsToSearchIn);
+
+  // Get sequelize instance -------------------------------------------------------------
+  const sequelizeInstance = currentModel.sequelize;
+
+  // Search clause
+  const findParams = fnHelper.constructSearch(search, fieldsToSearchIn, sequelizeInstance);
 
   // Fetch data
   const data = await currentModel
