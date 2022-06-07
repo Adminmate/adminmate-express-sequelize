@@ -155,7 +155,7 @@ const constructQuery = (criterias, operator = 'and', sequelizeInstance) => {
         q[criteria.field] = { [Op.eq]: criteria.value };
       }
       else if (criteria.operator === 'is_not') {
-        q[criteria.field] = { [Op.neq]: criteria.value };
+        q[criteria.field] = { [Op.ne]: criteria.value };
       }
       else if (criteria.operator === 'is_true') {
         q[criteria.field] = { [Op.eq]: true };
