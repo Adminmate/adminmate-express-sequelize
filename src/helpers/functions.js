@@ -452,7 +452,7 @@ module.exports.buildError = (e, defaultMessage) => {
     const arr = [{
       message: errorObject.stack
     }];
-    return { message: defaultMessage, error_details: arr };
+    return { message: e.message, error_details: arr };
   }
   return { message: defaultMessage };
 };

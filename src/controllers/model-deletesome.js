@@ -25,7 +25,8 @@ module.exports.deleteSome = async (req, res) => {
     .then(() => {
       res.json({ deletedCount: itemIds.length });
     })
-    .catch(e => {
-      res.status(403).json({ message: e.message || 'Unable to delete the model items' });
+    .catch(err => {
+      const errorObject = fnHelper.buildError(err, 'An error occured when deleting the items');
+      res.status(403).json(errorObject);
     });
 };
