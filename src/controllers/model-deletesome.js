@@ -1,32 +1,37 @@
 const compositeHelper = require('../helpers/composite');
-const fnHelper = require('../helpers/functions');
 
-module.exports.deleteSome = async (req, res) => {
-  const modelName = req.params.model;
-  const itemIds = req.body.ids;
+module.exports = _conf => {
+  const fnHelper = require('../helpers/functions')(_conf);
 
-  if (!itemIds || !itemIds.length) {
-    return res.status(403).json({ message: 'Invalid request' });
-  }
+  const deleteSome = async (req, res) => {
+    const modelName = req.params.model;
+    const itemIds = req.body.ids;
 
-  const currentModel = fnHelper.getModelObject(modelName);
-  if (!currentModel) {
-    return res.status(403).json({ message: 'Invalid request' });
-  }
+    if (!itemIds || !itemIds.length) {
+      return res.status(403).json({ message: 'Invalid request' });
+    }
 
-  // Get model primary keys
-  const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
-  const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, itemIds);
+    const currentModel = fnHelper.getModelObject(modelName);
+    if (!currentModel) {
+      return res.status(403).json({ message: 'Invalid request' });
+    }
 
-  await currentModel
-    .destroy({
-      where: whereClause
-    })
-    .then(() => {
-      res.json({ deletedCount: itemIds.length });
-    })
-    .catch(err => {
-      const errorObject = fnHelper.buildError(err, 'An error occured when deleting the items');
-      res.status(403).json(errorObject);
-    });
+    // Get model primary keys
+    const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
+    const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, itemIds);
+
+    await currentModel
+      .destroy({
+        where: whereClause
+      })
+      .then(() => {
+        res.json({ deletedCount: itemIds.length });
+      })
+      .catch(err => {
+        const errorObject = fnHelper.buildError(err, 'An error occured when deleting the items');
+        res.status(403).json(errorObject);
+      });
+  };
+
+  return deleteSome;
 };

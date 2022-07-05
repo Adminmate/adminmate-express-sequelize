@@ -1,23 +1,28 @@
 const compositeHelper = require('../helpers/composite');
-const fnHelper = require('../helpers/functions');
 
-module.exports.getIn = async (modelName, ids) => {
-  const currentModel = fnHelper.getModelObject(modelName);
-  if (!currentModel) {
-    return null;
-  }
+module.exports = _conf => {
+  const fnHelper = require('../helpers/functions')(_conf);
 
-  // Get model primary keys
-  const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
-  const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, ids);
+  const getIn = async (modelName, ids) => {
+    const currentModel = fnHelper.getModelObject(modelName);
+    if (!currentModel) {
+      return null;
+    }
 
-  // Get corresponding items
-  const items = await currentModel
-    .findAll({
-      where: whereClause
-    });
+    // Get model primary keys
+    const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
+    const whereClause = compositeHelper.getSequelizeWhereClause(primaryKeys, ids);
 
-  const cleanItems = items.map(item => item.toJSON())
+    // Get corresponding items
+    const items = await currentModel
+      .findAll({
+        where: whereClause
+      });
 
-  return cleanItems;
+    const cleanItems = items.map(item => item.toJSON())
+
+    return cleanItems;
+  };
+
+  return getIn;
 };

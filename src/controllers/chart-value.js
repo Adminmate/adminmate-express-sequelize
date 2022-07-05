@@ -1,72 +1,77 @@
 const Joi = require('joi');
-const fnHelper = require('../helpers/functions');
 
-module.exports = async (currentModel, data) => {
-  const sequelizeInstance = currentModel.sequelize;
+module.exports = _conf => {
+  const fnHelper = require('../helpers/functions')(_conf);
 
-  const paramsSchema = Joi.object({
-    type: Joi.string().required(),
-    model: Joi.string().required(),
-    operation: Joi.string().required(),
-    field: Joi.alternatives().conditional('operation', {
-      not: 'count',
-      then: Joi.string().required(),
-      otherwise: Joi.string()
-    })
-  });
+  const chartValue = async (currentModel, data) => {
+    const sequelizeInstance = currentModel.sequelize;
 
-  // Validate params
-  const { error } = paramsSchema.validate(data);
-  if (error) {
-    return {
-      success: false,
-      message: error.details[0].message
-    };
-  }
+    const paramsSchema = Joi.object({
+      type: Joi.string().required(),
+      model: Joi.string().required(),
+      operation: Joi.string().required(),
+      field: Joi.alternatives().conditional('operation', {
+        not: 'count',
+        then: Joi.string().required(),
+        otherwise: Joi.string()
+      })
+    });
 
-  try {
-    if (data.operation === 'sum' || data.operation === 'avg') {
-      // Query database
-      const queryData = await currentModel.findAll({
-        attributes: [
-          [sequelizeInstance.fn(data.operation, sequelizeInstance.col(data.field)), 'queryResult']
-        ],
-        raw: true
-      });
+    // Validate params
+    const { error } = paramsSchema.validate(data);
+    if (error) {
+      return {
+        success: false,
+        message: error.details[0].message
+      };
+    }
 
-      if (!queryData || !queryData[0] || !queryData[0].queryResult) {
+    try {
+      if (data.operation === 'sum' || data.operation === 'avg') {
+        // Query database
+        const queryData = await currentModel.findAll({
+          attributes: [
+            [sequelizeInstance.fn(data.operation, sequelizeInstance.col(data.field)), 'queryResult']
+          ],
+          raw: true
+        });
+
+        if (!queryData || !queryData[0] || !queryData[0].queryResult) {
+          return {
+            success: false,
+            message: ''
+          };
+        }
+
+        const safeNumberOrFloat = fnHelper.toFixedIfNecessary(queryData[0].queryResult, 2);
+
         return {
-          success: false,
-          message: ''
+          success: true,
+          data: {
+            config: null,
+            data: safeNumberOrFloat
+          }
         };
       }
 
-      const safeNumberOrFloat = fnHelper.toFixedIfNecessary(queryData[0].queryResult, 2);
+      // Query database
+      const dataCount = await currentModel.count({});
 
       return {
         success: true,
         data: {
           config: null,
-          data: safeNumberOrFloat
+          data: dataCount
         }
       };
     }
+    catch(e) {
+      return {
+        success: false,
+        message: e.message
+      };
+    }
+  };
 
-    // Query database
-    const dataCount = await currentModel.count({});
-
-    return {
-      success: true,
-      data: {
-        config: null,
-        data: dataCount
-      }
-    };
-  }
-  catch(e) {
-    return {
-      success: false,
-      message: e.message
-    };
-  }
+  return chartValue;
 };

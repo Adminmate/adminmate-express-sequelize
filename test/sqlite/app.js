@@ -2,9 +2,6 @@
 
 const { Op } = require('sequelize');
 
-// If you want to use the dev version of @adminmate-express-core
-global.AM_DEV_MODE = true;
-
 // Connect to database
 const db = require('./models-init.js');
 
@@ -14,6 +11,7 @@ const amConfig = {
   secretKey: '_',
   authKey: '_',
   masterPassword: '_',
+  devMode: true, // If you want to use the dev version of @adminmate-express-core
   models: [
     {
       slug: 'users',
