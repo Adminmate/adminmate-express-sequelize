@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Joi = require('joi');
 
 module.exports = _conf => {

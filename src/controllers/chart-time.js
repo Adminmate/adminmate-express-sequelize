@@ -1,26 +1,27 @@
+const { Op } = require('sequelize');
 const Joi = require('joi');
 const _ = require('lodash');
 const moment = require('moment');
 // const strftime = require('strftime');
 
-// const getGroupByFieldFormated_SQLite = (sequelizeObject, timerange, groupByDateField) => {
-//   switch (timerange) {
-//     case 'day': {
-//       return sequelizeObject.fn('STRFTIME', '%Y-%m-%d', sequelizeObject.col(groupByDateField));
-//     }
-//     case 'week': {
-//       return sequelizeObject.fn('STRFTIME', '%Y-%W', sequelizeObject.col(groupByDateField));
-//     }
-//     case 'month': {
-//       return sequelizeObject.fn('STRFTIME', '%Y-%m', sequelizeObject.col(groupByDateField));
-//     }
-//     case 'year': {
-//       return sequelizeObject.fn('STRFTIME', '%Y', sequelizeObject.col(groupByDateField));
-//     }
-//     default:
-//       return null;
-//   }
-// };
+const getGroupByFieldFormated_SQLite = (sequelizeObject, timerange, groupByDateField) => {
+  switch (timerange) {
+    case 'day': {
+      return sequelizeObject.fn('STRFTIME', '%Y-%m-%d 00:00:00', sequelizeObject.col(groupByDateField));
+    }
+    // case 'week': {
+    //   return sequelizeObject.fn('STRFTIME', '%Y-%W', sequelizeObject.col(groupByDateField));
+    // }
+    case 'month': {
+      return sequelizeObject.fn('STRFTIME', '%Y-%m-01 00:00:00', sequelizeObject.col(groupByDateField));
+    }
+    case 'year': {
+      return sequelizeObject.fn('STRFTIME', '%Y-01-01 00:00:00', sequelizeObject.col(groupByDateField));
+    }
+    default:
+      return null;
+  }
+};
 
 const getGroupByFieldFormated_MySQL = (sequelizeObject, timerange, groupByDateField) => {
   const groupByDateFieldFormated = `\`${groupByDateField.replace('.', '`.`')}\``;
@@ -96,9 +97,15 @@ module.exports = _conf => {
       groupByElement = getGroupByFieldFormated_PostgreSQL(sequelizeInstance, data.timeframe, data.group_by);
     }
     // SQLite
-    // else if (isSQLite(sequelizeInstance)) {
-    //   groupByElement = getGroupByFieldFormated_SQLite(sequelizeInstance, data.timeframe, data.group_by);
-    // }
+    else if (fnHelper.isSQLite(sequelizeInstance)) {
+      if (data.timeframe === 'week') {
+        return {
+          success: false,
+          message: 'Unmanaged timeframe for the sqlite database'
+        };
+      }
+      groupByElement = getGroupByFieldFormated_SQLite(sequelizeInstance, data.timeframe, data.group_by);
+    }
     else {
       return {
         success: false,
