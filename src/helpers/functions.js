@@ -359,7 +359,7 @@ module.exports = _conf => {
     // List all the models that reference the current model
     const associationsList = [];
     _conf.models
-      .filter(mc => getModelRealname(mc.model) !== currentModelRealName)
+      .filter(mc => !!mc.model && getModelRealname(mc.model) !== currentModelRealName)
       .forEach(mc => {
         const modelProperties = getModelProperties(mc.model);
         if (modelProperties && modelProperties.length) {

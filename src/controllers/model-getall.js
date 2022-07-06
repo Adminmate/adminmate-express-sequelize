@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const { uniq, intersection } = require('lodash');
 const { Op } = require('sequelize');
 const compositeHelper = require('../helpers/composite');
 
@@ -36,10 +36,18 @@ module.exports = _conf => {
     const orderSafe = fnHelper.validateOrderStructure(order) ? order : defaultOrdering;
 
     // Construct default fields to fetch
-    const defaultFieldsToFetch = keys
+    let fieldsToFetchSafe = keys
       .filter(key => !key.path.includes('.'))
       .map(key => key.path);
-    const fieldsToFetchSafe = Array.isArray(fieldsToFetch) && fieldsToFetch.length ? fieldsToFetch : defaultFieldsToFetch;
+
+    // If we get specific fields to display
+    if (Array.isArray(fieldsToFetch) && fieldsToFetch.length > 0) {
+      const flatKeys = keys.map(key => key.path);
+      const validKeys = intersection(fieldsToFetch, flatKeys);
+      if (validKeys.length > 0) {
+        fieldsToFetchSafe = validKeys;
+      }
+    }
 
     // Construct default fields to search in (only String type)
     const defaultFieldsToSearchIn = keys
@@ -83,7 +91,7 @@ module.exports = _conf => {
     const findParams = queriesArray.length ? { [Op.and]: queriesArray } : {};
 
     // Attributes to fetch (just to be sure primary keys are in)
-    const attributes = _.uniq([...fieldsToFetchSafe, ...primaryKeys]);
+    const attributes = uniq([...fieldsToFetchSafe, ...primaryKeys]);
 
     // Fetch data
     const data = await currentModel
