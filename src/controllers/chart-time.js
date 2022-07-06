@@ -69,7 +69,11 @@ module.exports = _conf => {
         then: Joi.string().required(),
         otherwise: Joi.string()
       }),
-      limit: Joi.number().optional()
+      limit: Joi.number().optional(),
+      filters: Joi.object({
+        operator: Joi.string().valid('and', 'or').required(),
+        list: Joi.array().required()
+      })
     });
 
     // Validate params
@@ -102,6 +106,15 @@ module.exports = _conf => {
       };
     }
 
+    // Filters
+    let findParams = {};
+    if (data.filters && data.filters.operator && data.filters.list && data.filters.list.length > 0) {
+      const filtersQuery = fnHelper.constructQuery(data.filters.list, data.filters.operator, sequelizeInstance);
+      if (filtersQuery) {
+        findParams = { [Op.and]: filtersQuery };
+      }
+    }
+
     let repartitionData;
     try {
       const seqFnField = data.field ? sequelizeInstance.col(data.field) : 1;
@@ -112,6 +125,7 @@ module.exports = _conf => {
           [ sequelizeInstance.fn(data.operation, seqFnField), 'value' ]
         ],
         group: 'key',
+        where: findParams,
         // where: {
         //   [data.group_by]: matchReq
         // },

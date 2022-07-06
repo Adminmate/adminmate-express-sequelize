@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Joi = require('joi');
 
 module.exports = _conf => {
@@ -14,6 +15,10 @@ module.exports = _conf => {
         not: 'count',
         then: Joi.string().required(),
         otherwise: Joi.string()
+      }),
+      filters: Joi.object({
+        operator: Joi.string().valid('and', 'or').required(),
+        list: Joi.array().required()
       })
     });
 
@@ -26,6 +31,15 @@ module.exports = _conf => {
       };
     }
 
+    // Filters
+    let findParams = {};
+    if (data.filters && data.filters.operator && data.filters.list && data.filters.list.length > 0) {
+      const filtersQuery = fnHelper.constructQuery(data.filters.list, data.filters.operator, sequelizeInstance);
+      if (filtersQuery) {
+        findParams = { [Op.and]: filtersQuery };
+      }
+    }
+
     try {
       if (data.operation === 'sum' || data.operation === 'avg') {
         // Query database
@@ -33,6 +47,7 @@ module.exports = _conf => {
           attributes: [
             [sequelizeInstance.fn(data.operation, sequelizeInstance.col(data.field)), 'queryResult']
           ],
+          where: findParams,
           raw: true
         });
 
@@ -55,7 +70,7 @@ module.exports = _conf => {
       }
 
       // Query database
-      const dataCount = await currentModel.count({});
+      const dataCount = await currentModel.count({ where: findParams });
 
       return {
         success: true,

@@ -147,18 +147,21 @@ module.exports = _conf => {
         else if (criteria.operator === 'is_not') {
           q[criteria.field] = { [Op.ne]: criteria.value };
         }
+        // Boolean
         else if (criteria.operator === 'is_true') {
           q[criteria.field] = { [Op.eq]: true };
         }
         else if (criteria.operator === 'is_false') {
           q[criteria.field] = { [Op.eq]: false };
         }
+        // Exists
         else if (criteria.operator === 'is_present') {
           q[criteria.field] = { [Op.not]: null };
         }
         else if (criteria.operator === 'is_blank') {
           q[criteria.field] = { [Op.not]: null };
         }
+        // String comparison
         else if (criteria.operator === 'starts_with') {
           q[criteria.field] = { [Op.startsWith]: criteria.value };
         }
@@ -172,6 +175,50 @@ module.exports = _conf => {
         else if (criteria.operator === 'not_contains') {
           const cond = getNotLikeRule(criteria.field, criteria.value, sequelizeInstance);
           q[criteria.field] = cond[criteria.field];
+        }
+        // Number
+        else if (criteria.operator === 'is_greater_than') {
+          q[criteria.field] = { [Op.gt]: criteria.value };
+        }
+        else if (criteria.operator === 'is_less_than') {
+          q[criteria.field] = { [Op.lt]: criteria.value };
+        }
+        // Date
+        else if (criteria.operator === 'is_before') {
+          q[criteria.field] = { [Op.lt]: criteria.value };
+        }
+        else if (criteria.operator === 'is_after') {
+          q[criteria.field] = { [Op.gt]: criteria.value };
+        }
+        else if (criteria.operator === 'is_today') {
+          q[criteria.field] = {
+            [Op.gte]: moment().startOf('day'),
+            [Op.lte]: moment().endOf('day')
+          };
+        }
+        else if (criteria.operator === 'was_yesterday') {
+          q[criteria.field] = {
+            [Op.gte]: moment().startOf('day').subtract(1, 'day'),
+            [Op.lte]: moment().endOf('day').subtract(1, 'day')
+          };
+        }
+        else if (criteria.operator === 'was_in_previous_week') {
+          q[criteria.field] = {
+            [Op.gte]: moment().subtract(1, 'week').startOf('week'),
+            [Op.lte]: moment().subtract(1, 'week').endOf('week')
+          };
+        }
+        else if (criteria.operator === 'was_in_previous_month') {
+          q[criteria.field] = {
+            [Op.gte]: moment().subtract(1, 'month').startOf('month'),
+            [Op.lte]: moment().subtract(1, 'month').endOf('month')
+          };
+        }
+        else if (criteria.operator === 'was_in_previous_year') {
+          q[criteria.field] = {
+            [Op.gte]: moment().subtract(1, 'year').startOf('year'),
+            [Op.lte]: moment().subtract(1, 'year').endOf('year')
+          };
         }
       }
       query.push(q);

@@ -19,6 +19,10 @@ module.exports = _conf => {
         otherwise: Joi.string()
       }),
       limit: Joi.number().optional(),
+      filters: Joi.object({
+        operator: Joi.string().valid('and', 'or').required(),
+        list: Joi.array().required()
+      })
     });
 
     // Validate params
@@ -58,6 +62,15 @@ module.exports = _conf => {
     const includeConfig = fnHelper.getIncludeParams(relationshipModel, relationKeys, defaultFieldsToFetch, {});
     const refModel = includeConfig.find(ic => ic.path === joinField);
 
+    // Filters
+    let findParams = {};
+    if (data.filters && data.filters.operator && data.filters.list && data.filters.list.length > 0) {
+      const filtersQuery = fnHelper.constructQuery(data.filters.list, data.filters.operator, sequelizeInstance);
+      if (filtersQuery) {
+        findParams = { [Op.and]: filtersQuery };
+      }
+    }
+
     try {
       const repartitionData = await relationshipModel.findAll({
         attributes: [
@@ -67,6 +80,7 @@ module.exports = _conf => {
         ],
         include: includeConfig,
         group: [`${refModel.as}.${primaryKey}`],
+        where: findParams,
         order: sequelizeInstance.literal('value DESC'),
         limit,
         raw: true
