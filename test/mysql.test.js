@@ -17,12 +17,12 @@ beforeAll(async () => {
 });
 
 // Init app
-require('./mysql/app.js');
+const api = require('./mysql/app.js');
 
 // Tests
-require('./common/tests/model-getall.js');
-require('./common/tests/model-pk.js');
-require('./common/tests/model-query.js');
+require('./common/tests/model-getall.js')(api);
+require('./common/tests/model-pk.js')(api);
+require('./common/tests/model-query.js')(api);
 
 // Close sequelize connection
 afterAll(async () => {

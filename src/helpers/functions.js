@@ -381,10 +381,11 @@ module.exports = _conf => {
   };
 
   const getModelPrimaryKeys = model => {
-    if (model.primaryKeyAttributes) {
-      return model.primaryKeyAttributes;
+    const modelObject = typeof model === 'string' ? getModelObject(model) : model;
+    if (modelObject.primaryKeyAttributes) {
+      return modelObject.primaryKeyAttributes;
     }
-    else if (model.rawAttributes && model.rawAttributes.id) {
+    else if (modelObject.rawAttributes && modelObject.rawAttributes.id) {
       return ['id'];
     }
     return [];

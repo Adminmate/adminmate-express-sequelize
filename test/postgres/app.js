@@ -12,6 +12,7 @@ const amConfig = {
   authKey: '_',
   masterPassword: '_',
   devMode: true, // If you want to use the dev version of @adminmate-express-core
+  testMode: true, // If you want the Adminmate init to return the api instead of the express js router (for tests purpose)
   models: [
     {
       slug: 'users',
@@ -44,4 +45,4 @@ const amConfig = {
   ]
 };
 
-require('../../index.js').init(amConfig);
+module.exports = require('../../index.js').init(amConfig);
