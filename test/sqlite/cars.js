@@ -6,6 +6,9 @@ module.exports = (sequelize, Sequelize) => {
     manufacturer: {
       type: Sequelize.STRING
     },
+    type: {
+      type: Sequelize.STRING
+    },
     year: {
       type: Sequelize.INTEGER
     }

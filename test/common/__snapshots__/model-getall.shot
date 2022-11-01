@@ -70,6 +70,7 @@ Object {
       "id": 10,
       "manufacturer": "Porsche",
       "name": "Porsche Macan",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -81,6 +82,7 @@ Object {
       "id": 9,
       "manufacturer": "Porsche",
       "name": "Porsche 924",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -92,6 +94,7 @@ Object {
       "id": 8,
       "manufacturer": "Porsche",
       "name": "Porsche 917",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -103,6 +106,7 @@ Object {
       "id": 7,
       "manufacturer": "Porsche",
       "name": "Porsche 914",
+      "type": "test",
       "userId": Object {
         "id": 1,
         "label": 1,
@@ -114,6 +118,7 @@ Object {
       "id": 6,
       "manufacturer": "Porsche",
       "name": "Porsche 908",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -125,6 +130,7 @@ Object {
       "id": 5,
       "manufacturer": "Porsche",
       "name": "Porsche 906",
+      "type": "test",
       "userId": Object {
         "id": 1,
         "label": 1,
@@ -136,6 +142,7 @@ Object {
       "id": 4,
       "manufacturer": "Porsche",
       "name": "Porsche 904",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -147,6 +154,7 @@ Object {
       "id": 3,
       "manufacturer": "Porsche",
       "name": "Porsche 911",
+      "type": "test",
       "userId": Object {
         "id": 1,
         "label": 1,
@@ -158,6 +166,7 @@ Object {
       "id": 2,
       "manufacturer": "Porsche",
       "name": "Porsche 550",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": 2,
@@ -169,6 +178,7 @@ Object {
       "id": 1,
       "manufacturer": "Porsche",
       "name": "Porsche 356",
+      "type": "test",
       "userId": Object {
         "id": 1,
         "label": 1,
@@ -342,6 +352,108 @@ Object {
 }
 `;
 
+exports[`Cars with a "search" parameter in all fields 1`] = `
+Object {
+  "count": 10,
+  "data": Array [
+    Object {
+      "id": 20,
+      "name": "Ferrari 250 LM",
+      "userId": Object {
+        "id": 2,
+        "label": "Firstname 2",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 19,
+      "name": "Ferrari 275",
+      "userId": Object {
+        "id": 2,
+        "label": "Firstname 2",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 18,
+      "name": "Ferrari 488",
+      "userId": Object {
+        "id": 2,
+        "label": "Firstname 2",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 17,
+      "name": "Ferrari 250 GT Lusso",
+      "userId": Object {
+        "id": 1,
+        "label": "Firstname 1",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 16,
+      "name": "Ferrari 250 GTO",
+      "userId": Object {
+        "id": 2,
+        "label": "Firstname 2",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 15,
+      "name": "Ferrari 250 GT 2+2",
+      "userId": Object {
+        "id": 1,
+        "label": "Firstname 1",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 14,
+      "name": "Ferrari 250 GT Berlinetta SWB",
+      "userId": Object {
+        "id": 2,
+        "label": "Firstname 2",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 13,
+      "name": "Ferrari 250 GT Coupé",
+      "userId": Object {
+        "id": 1,
+        "label": "Firstname 1",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 12,
+      "name": "Ferrari 250 MM",
+      "userId": Object {
+        "id": 2,
+        "label": "Firstname 2",
+        "type": "ref",
+      },
+    },
+    Object {
+      "id": 11,
+      "name": "Ferrari 212 Inter",
+      "userId": Object {
+        "id": 1,
+        "label": "Firstname 1",
+        "type": "ref",
+      },
+    },
+  ],
+  "pagination": Object {
+    "count": 1,
+    "current": 1,
+  },
+}
+`;
+
 exports[`Cars with a "segment" parameter 1`] = `
 Object {
   "count": 5,
@@ -387,6 +499,7 @@ Object {
       "id": 20,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 LM",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -398,6 +511,7 @@ Object {
       "id": 19,
       "manufacturer": "Ferrari",
       "name": "Ferrari 275",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -409,6 +523,7 @@ Object {
       "id": 18,
       "manufacturer": "Ferrari",
       "name": "Ferrari 488",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -420,6 +535,7 @@ Object {
       "id": 17,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GT Lusso",
+      "type": "test",
       "userId": Object {
         "id": 1,
         "label": "Firstname 1 Lastname 1",
@@ -431,6 +547,7 @@ Object {
       "id": 16,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GTO",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -442,6 +559,7 @@ Object {
       "id": 15,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GT 2+2",
+      "type": "test",
       "userId": Object {
         "id": 1,
         "label": "Firstname 1 Lastname 1",
@@ -453,6 +571,7 @@ Object {
       "id": 14,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GT Berlinetta SWB",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -464,6 +583,7 @@ Object {
       "id": 13,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 GT Coupé",
+      "type": "test",
       "userId": Object {
         "id": 1,
         "label": "Firstname 1 Lastname 1",
@@ -475,6 +595,7 @@ Object {
       "id": 12,
       "manufacturer": "Ferrari",
       "name": "Ferrari 250 MM",
+      "type": "test",
       "userId": Object {
         "id": 2,
         "label": "Firstname 2 Lastname 2 ",
@@ -486,6 +607,7 @@ Object {
       "id": 11,
       "manufacturer": "Ferrari",
       "name": "Ferrari 212 Inter",
+      "type": "test",
       "userId": Object {
         "id": 1,
         "label": "Firstname 1 Lastname 1",
@@ -512,6 +634,7 @@ Object {
       "lastname": "Lastname 16",
       "rating": 5,
       "signup_date": "2021-01-04T23:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-12-31T23:00:00.000Z",
@@ -520,6 +643,7 @@ Object {
       "lastname": "Lastname 15",
       "rating": 5,
       "signup_date": "2021-01-03T23:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-12-31T23:00:00.000Z",
@@ -528,6 +652,7 @@ Object {
       "lastname": "Lastname 14",
       "rating": 5,
       "signup_date": "2021-01-02T23:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-12-31T23:00:00.000Z",
@@ -536,6 +661,7 @@ Object {
       "lastname": "Lastname 13",
       "rating": 5,
       "signup_date": "2021-01-01T23:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-04-01T22:00:00.000Z",
@@ -544,6 +670,7 @@ Object {
       "lastname": "Lastname 12",
       "rating": 5,
       "signup_date": "2021-01-01T00:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-04-01T22:00:00.000Z",
@@ -552,6 +679,7 @@ Object {
       "lastname": "Lastname 11",
       "rating": 5,
       "signup_date": "2020-12-30T23:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-04-01T22:00:00.000Z",
@@ -560,6 +688,7 @@ Object {
       "lastname": "Lastname 10",
       "rating": 5,
       "signup_date": "2020-12-29T23:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-04-01T22:00:00.000Z",
@@ -568,6 +697,7 @@ Object {
       "lastname": "Lastname 9",
       "rating": 5,
       "signup_date": "2020-12-28T23:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-04-01T22:00:00.000Z",
@@ -576,6 +706,7 @@ Object {
       "lastname": "Lastname 8",
       "rating": 5,
       "signup_date": "2020-12-27T23:00:00.000Z",
+      "type": "test",
     },
     Object {
       "birthdate": "2020-04-01T22:00:00.000Z",
@@ -584,6 +715,7 @@ Object {
       "lastname": "Lastname 7",
       "rating": 5,
       "signup_date": "2020-12-26T23:00:00.000Z",
+      "type": "test",
     },
   ],
   "pagination": Object {

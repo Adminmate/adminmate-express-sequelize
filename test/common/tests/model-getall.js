@@ -62,6 +62,22 @@ module.exports = api => {
     expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
   });
 
+  // Try a request where the field "type" is ambigious (present in cars & users table)
+  // As the search is looking to find the "Ferrari" word in all field
+  // SQL does not know which field we are talking about (the one in cars or users?)
+  it('Cars with a "search" parameter in all fields', async () => {
+    const { responseData } = await makeReq('cars', 'GET', {
+      search: 'Ferrari'
+    }, {
+      'am-model-fields': ['name', 'userId'],
+      'am-ref-fields': {
+        users: 'firstname'
+      }
+    });
+
+    expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
+  });
+
   it('Cars with a "search" parameter', async () => {
     const { responseData } = await makeReq('cars', 'GET', {
       search: 'Ferrari'
