@@ -28,7 +28,7 @@ module.exports = _conf => {
     const sequelizeInstance = currentModel.sequelize;
 
     // Search clause
-    const findParams = fnHelper.constructSearch(search, fieldsToSearchIn, sequelizeInstance);
+    const findParams = fnHelper.constructSearch(modelNameSafe, search, fieldsToSearchIn, sequelizeInstance);
 
     // Fetch data
     const data = await currentModel

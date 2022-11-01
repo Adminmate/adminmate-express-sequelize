@@ -13,7 +13,7 @@ module.exports = api => {
   it('Pie chart - Count', async () => {
     const request = makeChartReq({
       type: 'pie',
-      model: 'users',
+      model: 'users_slug',
       group_by: 'rating',
       operation: 'count'
     });
@@ -30,7 +30,7 @@ module.exports = api => {
     it(`Bar/Lines chart - Simple ${timeframe}`, async () => {
       const request = makeChartReq({
         type: 'bar',
-        model: 'users',
+        model: 'users_slug',
         field: 'signup_date',
         group_by: 'signup_date',
         timeframe: timeframe,

@@ -26,14 +26,14 @@ module.exports = api => {
   // Simple -------------------------------------------------------------------------------
 
   it('Users simple request', async () => {
-    const { responseData } = await makeReq('users', 'GET', {});
+    const { responseData } = await makeReq('users_slug', 'GET', {});
     expect(responseData).toMatchSpecificSnapshot('./common/__snapshots__/model-getall.shot');
   });
 
   // refFields ----------------------------------------------------------------------------
 
   it('Cars with refFields params', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {}, {
+    const { responseData } = await makeReq('cars_slug', 'GET', {}, {
       'am-ref-fields': {
         users: 'firstname lastname'
       }
@@ -45,7 +45,7 @@ module.exports = api => {
   // fields -------------------------------------------------------------------------------
 
   it('Cars with "fields" parameter (name & manufacturer only)', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {}, {
+    const { responseData } = await makeReq('cars_slug', 'GET', {}, {
       'am-model-fields': ['name', 'manufacturer']
     });
 
@@ -55,7 +55,7 @@ module.exports = api => {
   // page ---------------------------------------------------------------------------------
 
   it('Cars with "page" parameter set to 2', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {
+    const { responseData } = await makeReq('cars_slug', 'GET', {
       page: 2
     });
 
@@ -66,7 +66,7 @@ module.exports = api => {
   // As the search is looking to find the "Ferrari" word in all field
   // SQL does not know which field we are talking about (the one in cars or users?)
   it('Cars with a "search" parameter in all fields', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {
+    const { responseData } = await makeReq('cars_slug', 'GET', {
       search: 'Ferrari'
     }, {
       'am-model-fields': ['name', 'userId'],
@@ -79,7 +79,7 @@ module.exports = api => {
   });
 
   it('Cars with a "search" parameter', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {
+    const { responseData } = await makeReq('cars_slug', 'GET', {
       search: 'Ferrari'
     }, {
       'am-model-fields': ['name']
@@ -91,7 +91,7 @@ module.exports = api => {
   // order --------------------------------------------------------------------------------
 
   it('Cars with a "order" parameter', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {
+    const { responseData } = await makeReq('cars_slug', 'GET', {
       search: 'Ferrari',
       order: [['name', 'ASC']]
     }, {
@@ -104,7 +104,7 @@ module.exports = api => {
   // filters ------------------------------------------------------------------------------
 
   it('Cars with a "filters" parameter', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {
+    const { responseData } = await makeReq('cars_slug', 'GET', {
       search: 'Ferrari',
       filters: {
         operator: 'or',
@@ -121,7 +121,7 @@ module.exports = api => {
   });
 
   it('Cars with a "filters" and "contains" parameter', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {
+    const { responseData } = await makeReq('cars_slug', 'GET', {
       filters: {
         operator: 'and',
         list: [
@@ -137,7 +137,7 @@ module.exports = api => {
   });
 
   it('Cars with a "filters" and NOT "contains" parameter', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {
+    const { responseData } = await makeReq('cars_slug', 'GET', {
       filters: {
         operator: 'and',
         list: [
@@ -155,7 +155,7 @@ module.exports = api => {
   // segment ------------------------------------------------------------------------------
 
   it('Cars with a "segment" parameter', async () => {
-    const { responseData } = await makeReq('cars', 'GET', {
+    const { responseData } = await makeReq('cars_slug', 'GET', {
       segment: {
         type: 'code',
         data: 'ferrari'

@@ -66,7 +66,9 @@ module.exports = _conf => {
     // Filters
     let findParams = {};
     if (data.filters && data.filters.operator && data.filters.list && data.filters.list.length > 0) {
-      const filtersQuery = fnHelper.constructQuery(data.filters.list, data.filters.operator, sequelizeInstance);
+      // Get model real name for some requests
+      const modelRealName = fnHelper.getModelRealname(currentModel);
+      const filtersQuery = fnHelper.constructQuery(modelRealName, data.filters.list, data.filters.operator, sequelizeInstance);
       if (filtersQuery) {
         findParams = { [Op.and]: filtersQuery };
       }

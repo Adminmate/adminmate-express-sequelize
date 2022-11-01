@@ -23,6 +23,9 @@ module.exports = _conf => {
       return res.status(403).json({ message: 'Invalid request' });
     }
 
+    // Get model real name for some requests
+    const modelRealName = fnHelper.getModelRealname(currentModel);
+
     // Get model primary keys
     const primaryKeys = fnHelper.getModelPrimaryKeys(currentModel);
     if (primaryKeys && primaryKeys.length) {
@@ -66,14 +69,14 @@ module.exports = _conf => {
     // Search -----------------------------------------------------------------------------
 
     if (search) {
-      const searchQuery = fnHelper.constructSearch(search, fieldsToSearchInSafe, sequelizeInstance);
+      const searchQuery = fnHelper.constructSearch(modelRealName, search, fieldsToSearchInSafe, sequelizeInstance);
       queriesArray.push(searchQuery);
     }
 
     // Filters ----------------------------------------------------------------------------
 
     if (filters && filters.operator && filters.list && filters.list.length) {
-      const filtersQuery = fnHelper.constructQuery(filters.list, filters.operator, sequelizeInstance);
+      const filtersQuery = fnHelper.constructQuery(modelRealName, filters.list, filters.operator, sequelizeInstance);
       if (filtersQuery) {
         queriesArray.push(filtersQuery);
       }

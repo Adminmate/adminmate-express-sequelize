@@ -15,12 +15,12 @@ const amConfig = {
   testMode: true, // If you want the Adminmate init to return the api instead of the express js router (for tests purpose)
   models: [
     {
-      slug: 'users',
+      slug: 'users_slug',
       model: db.users,
       actions: []
     },
     {
-      slug: 'cars',
+      slug: 'cars_slug',
       model: db.cars,
       actions: [
         {

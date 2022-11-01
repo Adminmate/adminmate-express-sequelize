@@ -129,7 +129,7 @@ module.exports = _conf => {
     return getSequelizeDialect(connection) === 'sqlite';
   };
 
-  const constructQuery = (criterias, operator = 'and', sequelizeInstance) => {
+  const constructQuery = (tableName, criterias, operator = 'and', sequelizeInstance) => {
     if (!['and', 'or'].includes(operator)) {
       return {};
     }
@@ -138,84 +138,86 @@ module.exports = _conf => {
     criterias.forEach(criteria => {
       let q = {};
       if (criteria.list) {
-        q = constructQuery(criteria.list, criteria.operator, sequelizeInstance);
+        q = constructQuery(tableName, criteria.list, criteria.operator, sequelizeInstance);
       }
       else {
+        const accurateField = `${tableName}.${criteria.field}`;
+        const returnField = `$${tableName}.${criteria.field}$`;
         if (criteria.operator === 'is') {
-          q[criteria.field] = { [Op.eq]: criteria.value };
+          q[returnField] = { [Op.eq]: criteria.value };
         }
         else if (criteria.operator === 'is_not') {
-          q[criteria.field] = { [Op.ne]: criteria.value };
+          q[returnField] = { [Op.ne]: criteria.value };
         }
         // Boolean
         else if (criteria.operator === 'is_true') {
-          q[criteria.field] = { [Op.eq]: true };
+          q[returnField] = { [Op.eq]: true };
         }
         else if (criteria.operator === 'is_false') {
-          q[criteria.field] = { [Op.eq]: false };
+          q[returnField] = { [Op.eq]: false };
         }
         // Exists
         else if (criteria.operator === 'is_present') {
-          q[criteria.field] = { [Op.not]: null };
+          q[returnField] = { [Op.not]: null };
         }
         else if (criteria.operator === 'is_blank') {
-          q[criteria.field] = { [Op.not]: null };
+          q[returnField] = { [Op.not]: null };
         }
         // String comparison
         else if (criteria.operator === 'starts_with') {
-          q[criteria.field] = { [Op.startsWith]: criteria.value };
+          q[returnField] = { [Op.startsWith]: criteria.value };
         }
         else if (criteria.operator === 'ends_with') {
-          q[criteria.field] = { [Op.endsWith]: criteria.value };
+          q[returnField] = { [Op.endsWith]: criteria.value };
         }
         else if (criteria.operator === 'contains') {
-          const cond = getLikeRule(criteria.field, criteria.value, sequelizeInstance);
-          q[criteria.field] = cond[criteria.field];
+          const cond = getLikeRule(accurateField, criteria.value, sequelizeInstance);
+          q[returnField] = cond[returnField];
         }
         else if (criteria.operator === 'not_contains') {
-          const cond = getNotLikeRule(criteria.field, criteria.value, sequelizeInstance);
-          q[criteria.field] = cond[criteria.field];
+          const cond = getNotLikeRule(accurateField, criteria.value, sequelizeInstance);
+          q[returnField] = cond[returnField];
         }
         // Number
         else if (criteria.operator === 'is_greater_than') {
-          q[criteria.field] = { [Op.gt]: criteria.value };
+          q[returnField] = { [Op.gt]: criteria.value };
         }
         else if (criteria.operator === 'is_less_than') {
-          q[criteria.field] = { [Op.lt]: criteria.value };
+          q[returnField] = { [Op.lt]: criteria.value };
         }
         // Date
         else if (criteria.operator === 'is_before') {
-          q[criteria.field] = { [Op.lt]: criteria.value };
+          q[returnField] = { [Op.lt]: criteria.value };
         }
         else if (criteria.operator === 'is_after') {
-          q[criteria.field] = { [Op.gt]: criteria.value };
+          q[returnField] = { [Op.gt]: criteria.value };
         }
         else if (criteria.operator === 'is_today') {
-          q[criteria.field] = {
+          q[returnField] = {
             [Op.gte]: moment().startOf('day'),
             [Op.lte]: moment().endOf('day')
           };
         }
         else if (criteria.operator === 'was_yesterday') {
-          q[criteria.field] = {
+          q[returnField] = {
             [Op.gte]: moment().startOf('day').subtract(1, 'day'),
             [Op.lte]: moment().endOf('day').subtract(1, 'day')
           };
         }
         else if (criteria.operator === 'was_in_previous_week') {
-          q[criteria.field] = {
+          q[returnField] = {
             [Op.gte]: moment().subtract(1, 'week').startOf('week'),
             [Op.lte]: moment().subtract(1, 'week').endOf('week')
           };
         }
         else if (criteria.operator === 'was_in_previous_month') {
-          q[criteria.field] = {
+          q[returnField] = {
             [Op.gte]: moment().subtract(1, 'month').startOf('month'),
             [Op.lte]: moment().subtract(1, 'month').endOf('month')
           };
         }
         else if (criteria.operator === 'was_in_previous_year') {
-          q[criteria.field] = {
+          q[returnField] = {
             [Op.gte]: moment().subtract(1, 'year').startOf('year'),
             [Op.lte]: moment().subtract(1, 'year').endOf('year')
           };
@@ -322,15 +324,16 @@ module.exports = _conf => {
   };
 
   const getLikeRule = (field, search, sequelizeInstance) => {
+    // we use `$${field}$` this to tell sequelize it's an accurate field
     if (isPostgres(sequelizeInstance)) {
       return {
-        [field]: {
+        [`$${field}$`]: {
           [Op.iLike]: `%${search}%`
         }
       };
     }
     return {
-      [field]: sequelizeInstance.where(
+      [`$${field}$`]: sequelizeInstance.where(
         sequelizeInstance.fn('LOWER', sequelizeInstance.col(field)), 'LIKE', `%${search.toLowerCase()}%`
       )
     };
@@ -339,23 +342,24 @@ module.exports = _conf => {
   const getNotLikeRule = (field, search, sequelizeInstance) => {
     if (isPostgres(sequelizeInstance)) {
       return {
-        [field]: {
+        [`$${field}$`]: {
           [Op.notILike]: `%${search}%`
         }
       };
     }
     return {
-      [field]: sequelizeInstance.where(
+      [`$${field}$`]: sequelizeInstance.where(
         sequelizeInstance.fn('LOWER', sequelizeInstance.col(field)), 'NOT LIKE', `%${search.toLowerCase()}%`
       )
     };
   };
 
-  const constructSearch = (search, fieldsToSearchIn, sequelizeInstance) => {
+  const constructSearch = (tableName, search, fieldsToSearchIn, sequelizeInstance) => {
     params = { [Op.or]: [] };
 
     fieldsToSearchIn.map(field => {
-      params[Op.or].push(getLikeRule(field, search, sequelizeInstance));
+      const accurateField = `${tableName}.${field}`;
+      params[Op.or].push(getLikeRule(accurateField, search, sequelizeInstance));
     });
 
     // If the search is a valid sql id
