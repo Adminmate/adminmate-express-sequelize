@@ -4,6 +4,7 @@ module.exports = _conf => {
   const chartValue = require('./chart-value')(_conf);
   const chartTime = require('./chart-time')(_conf);
   const chartRanking = require('./chart-ranking')(_conf);
+  const chartMap = require('./chart-map')(_conf);
 
   const customQuery = async (req, res) => {
     const data = req.body.data;
@@ -36,6 +37,10 @@ module.exports = _conf => {
 
       case 'ranking':
         result = await chartRanking(currentModel, data);
+        break;
+
+      case 'map_point':
+        result = await chartMap(currentModel, data);
         break;
     }
 
