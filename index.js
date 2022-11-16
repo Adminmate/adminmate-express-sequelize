@@ -29,6 +29,11 @@ const Adminmate = ({ projectId, secretKey, authKey, masterPassword, models, char
   const api = {
     // App config
     getAppConfig: fnHelper.getAppConfig,
+    getAvailableFeatures: () => {
+      return {
+        charts: ['single_value', 'pie', 'bar', 'line', 'objective', 'ranking', 'map_point']
+      };
+    },
 
     // General
     getModelProperties: fnHelper.getModelProperties,

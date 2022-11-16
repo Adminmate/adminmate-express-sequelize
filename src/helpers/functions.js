@@ -18,7 +18,7 @@ const sequelizeDatatypes = {
   'SMALLINT': 'Number',
   'TIME': 'Time',
   'DATE': 'Date',
-  'DATEONLY': 'Date',
+  'DATEONLY': 'DateOnly',
   'ENUM': 'String',
   'BOOLEAN': 'Boolean',
   'JSON': 'JSON'
