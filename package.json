@@ -1,6 +1,6 @@
 {
   "name": "adminmate-express-sequelize",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Adminmate Express/Sequelize connector",
   "author": "Marc Delalonde",
   "homepage": "http://adminmate.io",
