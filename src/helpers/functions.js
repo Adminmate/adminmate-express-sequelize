@@ -327,9 +327,10 @@ module.exports = _conf => {
     // we use `$${field}$` this to tell sequelize it's an accurate field
     if (isPostgres(sequelizeInstance)) {
       return {
-        [`$${field}$`]: {
-          [Op.iLike]: `%${search}%`
-        }
+        [`$${field}$`]: sequelizeInstance.where(
+          sequelizeInstance.cast(sequelizeInstance.col(field), 'text'),
+          {[Op.iLike]: `%${search}%`}
+        )
       };
     }
     return {
@@ -342,9 +343,10 @@ module.exports = _conf => {
   const getNotLikeRule = (field, search, sequelizeInstance) => {
     if (isPostgres(sequelizeInstance)) {
       return {
-        [`$${field}$`]: {
-          [Op.notILike]: `%${search}%`
-        }
+        [`$${field}$`]: sequelizeInstance.where(
+          sequelizeInstance.cast(sequelizeInstance.col(field), 'text'),
+          {[Op.notILike]: `%${search}%`}
+        )
       };
     }
     return {

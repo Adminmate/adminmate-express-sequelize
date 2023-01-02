@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     type: {
-      type: Sequelize.STRING
+      type: Sequelize.ENUM('test', 'other')
     },
     year: {
       type: Sequelize.INTEGER
