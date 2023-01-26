@@ -452,6 +452,15 @@ module.exports = _conf => {
     return currentModel.model;
   };
 
+  const getModelActions = modelCode => {
+    const currentModel = getModel(modelCode);
+    if (!currentModel) {
+      return null;
+    }
+
+    return currentModel.actions || [];
+  };
+
   const getModelSegment = (modelCode, segmentCode) => {
     const currentModel = getModel(modelCode);
     if (!currentModel || !currentModel.segments || currentModel.segments.length === 0) {
@@ -507,6 +516,7 @@ module.exports = _conf => {
     buildError,
     validateOrderStructure,
     getModelSegment,
+    getModelActions,
     getModelObject,
     getModelAssociations,
     getModelIdField,
