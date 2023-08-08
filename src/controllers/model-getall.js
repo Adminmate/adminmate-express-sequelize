@@ -15,7 +15,7 @@ module.exports = _conf => {
     const inlineActions = req.headers['am-inline-actions'] || [];
     const fieldsToSearchIn = req.query.search_in_fields || [];
     const page = parseInt(req.query.page || 1);
-    const nbItemPerPage = 10;
+    const rowsPerPage = parseInt(req.query.rows || 10);
     const order = req.query.order || null;
     let defaultOrdering = [];
 
@@ -108,8 +108,8 @@ module.exports = _conf => {
         include: includeConfig,
         order: orderSafe,
         // Pagination
-        offset: nbItemPerPage * (page - 1),
-        limit: nbItemPerPage
+        offset: rowsPerPage * (page - 1),
+        limit: rowsPerPage
       })
       .catch(e => {
         res.status(403).json({ message: e.message });
@@ -140,7 +140,7 @@ module.exports = _conf => {
 
     // Total result - not taking pagination in account
     const dataCount = data.count;
-    const nbPage = Math.ceil(dataCount / nbItemPerPage);
+    const nbPage = Math.ceil(dataCount / rowsPerPage);
 
     // Inline actions button
     const _inlineActions = currentModelActions.filter(action => inlineActions.includes(action.code));
@@ -157,7 +157,8 @@ module.exports = _conf => {
       count: dataCount,
       pagination: {
         current: page,
-        count: nbPage
+        count: nbPage,
+        rows_per_page: rowsPerPage
       }
     });
   };
